@@ -29,9 +29,13 @@ namespace GameAssets {
 
 	ASSET(ShaderAsset, SPOOKY_SHADER, ("shaders/spooky.vs", "shaders/spooky.fs"))
 
+    // Terrain
 	ASSET(wiz::TextureAsset, GRASS_TERRAIN, ("gfx/terrain/grass.png"))
 	ASSET(wiz::TextureAsset, WATER_TERRAIN, ("gfx/terrain/water.png"))
 	ASSET(wiz::TextureAsset, SAND_TERRAIN, ("gfx/terrain/sand.png"))
+
+    // Hiding Spots
+    ASSET(wiz::TextureAsset, HIDING_SPOT, ("gfx/bush.png"))
 }
 
 

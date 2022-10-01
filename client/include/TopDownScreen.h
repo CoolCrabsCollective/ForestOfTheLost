@@ -10,6 +10,7 @@
 #include <SFML/Graphics/RenderTexture.hpp>
 #include "world/World.h"
 #include "SFML/Graphics/Sprite.hpp"
+#include "SFML/Graphics/Texture.hpp"
 
 class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz::InputListener {
 	std::string name = "TopDownScreen";
@@ -19,6 +20,7 @@ class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz
 	sf::Sprite terrain_sprite;
 	sf::RenderTexture frameBuffer;
     sf::Shader* spookyShader = nullptr;
+    sf::Texture hiding_spot_texture;
 public:
 	TopDownScreen(wiz::Game& game);
 
