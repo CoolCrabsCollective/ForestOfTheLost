@@ -2,6 +2,7 @@
 // Created by Winter on 01/10/2022.
 //
 
+#include <iostream>
 #include "TopDownScreen.h"
 #include "GameAssets.h"
 
@@ -10,7 +11,7 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
 }
 
 void TopDownScreen::tick(float delta) {
-
+    timeAccumulator += delta;
 }
 
 void TopDownScreen::render(sf::RenderTarget& target) {
@@ -41,6 +42,7 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 		}
 	}
 
+	spookyShader->setUniform("timeAccumulator", timeAccumulator);
 	frameBuffer.display(); // done drawing fbo
 	sf::Sprite fbo(frameBuffer.getTexture());
 	target.clear();
