@@ -91,7 +91,7 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 	frameBuffer.display(); // done drawing fbo
 	sf::Sprite fbo(frameBuffer.getTexture());
 	target.clear();
-	target.draw(fbo/*, spookyShader*/);
+	target.draw(fbo, spookyShader);
 	drawUI(target);
 }
 
