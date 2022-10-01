@@ -79,6 +79,9 @@ bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
 	for(int i = -solid_range; i <= solid_range; i++) {
 		for(int j = -solid_range; j <= solid_range; j++) {
 			for(Entity* entity : entityMap[tile + sf::Vector2i{i, j}]) {
+                if (entity == exclude)
+                    continue;
+
 				Solid* solid = dynamic_cast<Solid*>(entity);
 
 				if(solid && solid->isBlocking(tile))
