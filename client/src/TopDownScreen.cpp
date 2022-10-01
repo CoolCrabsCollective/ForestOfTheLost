@@ -6,7 +6,6 @@
 #include "TopDownScreen.h"
 #include "GameAssets.h"
 #include "world/HidingSpot.h"
-#include "Alive.h"
 #include "world/Monster.h"
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
@@ -68,10 +67,11 @@ void TopDownScreen::drawWorld(sf::RenderTarget &target) {
 
     for(int i = start.x; i <= end.x; i++) {
         for(int j = start.y; j <= end.y; j++) {
-            terrain_sprite.setTexture(*terrain_textures[world.getTerrainType({i, j})]);
+            terrain_sprite.setTexture(*terrain_textures[world.getTerrainType({i, j})], true);
             terrain_sprite.setPosition({static_cast<float>(i), -static_cast<float>(j)});
-            terrain_sprite.setScale({1.0f / terrain_sprite.getTexture()->getSize().x, 1.0f / terrain_sprite.getTexture()->getSize().y});
-            target.draw(terrain_sprite);
+            terrain_sprite.setScale({1.0f / terrain_sprite.getTexture()->getSize().x,
+									 1.0f / terrain_sprite.getTexture()->getSize().y});
+			target.draw(terrain_sprite);
         }
     }
 
@@ -91,7 +91,7 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 	frameBuffer.display(); // done drawing fbo
 	sf::Sprite fbo(frameBuffer.getTexture());
 	target.clear();
-	target.draw(fbo, spookyShader);
+	target.draw(fbo/*, spookyShader*/);
 	drawUI(target);
 }
 

@@ -2,7 +2,7 @@
 // Created by cedric on 2022-10-01.
 //
 
-#include "Alive.h"
+#include "world/Alive.h"
 
 template <typename T>
 void Alive<T>::heal(T amount) {
