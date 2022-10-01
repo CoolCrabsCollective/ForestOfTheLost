@@ -134,14 +134,6 @@ void TopDownScreen::show() {
 
     spookyShader = getAssets().get(GameAssets::SPOOKY_SHADER);
     eyesShader = getAssets().get(GameAssets::EYES_SHADER);
-
-    Entity* hiding_spot1 = new HidingSpot(world, sf::Vector2i(1, 1));
-    Entity* hiding_spot2 = new HidingSpot(world, sf::Vector2i(-1, 2));
-    world.getEntities().push_back(hiding_spot1);
-    world.getEntities().push_back(hiding_spot2);
-    Entity* bat = new Monster(world, sf::Vector2i(2, 1));
-
-    world.getEntities().push_back(bat);
 }
 
 void TopDownScreen::hide() {
