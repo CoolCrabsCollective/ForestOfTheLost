@@ -5,6 +5,7 @@
 #ifndef GAMETEMPLATE_GAMEASSETS_H
 #define GAMETEMPLATE_GAMEASSETS_H
 
+#include "ShaderAsset.h"
 #include "WIZ/asset/MusicAsset.h"
 #include "WIZ/asset/SoundAsset.h"
 #include "WIZ/asset/FontAsset.h"
@@ -26,6 +27,8 @@ namespace GameAssets {
 	ASSET(wiz::TextureAsset, BACKGROUND, ("gfx/background.jpg"))
 	ASSET(wiz::TextureAsset, WHITE_PIXEL, ("gfx/white_pixel.png"))
 	ASSET(wiz::TextureAsset, LOGO, ("gfx/logo.png"))
+
+	ASSET(ShaderAsset, SPOOKY_SHADER, ("shaders/spooky.vs", "shaders/spooky.fs"))
 
 #ifdef SLOW
 	ASSET(FakeAsset, FAKE_ASSET0, ("FakeAsset0"))

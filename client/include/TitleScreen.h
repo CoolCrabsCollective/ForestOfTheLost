@@ -8,12 +8,15 @@
 #include <WIZ/game/Screen.h>
 #include <SW/SelbaWard.hpp>
 #include <SW/Common.hpp>
+#include <SFML/Graphics/Shader.hpp>
 
 class TitleScreen : public wiz::Screen, public wiz::WindowListener {
 	std::string name = "TitleScreen";
 
 	sf::Sprite logo;
 	sf::Sprite background;
+
+	sf::Shader* spookyShader = nullptr;
 
 	sw::NinePatch ninepatch;
 public:
