@@ -2,6 +2,7 @@
 // Created by Winter on 01/10/2022.
 //
 
+#include <iostream>
 #include "TopDownScreen.h"
 #include "GameAssets.h"
 #include "world/HidingSpot.h"
@@ -12,6 +13,12 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
 
 void TopDownScreen::tick(float delta) {
     timeAccumulator += delta;
+    tenSecAccumulator += delta;
+
+    if (tenSecAccumulator > 10000.0) {
+        std::cout << "10 seconds passed!" << std::endl;
+        tenSecAccumulator = 0;
+    }
 }
 
 
@@ -27,7 +34,7 @@ void TopDownScreen::drawWorld(sf::RenderTarget &target) {
     for(int i = start.x; i <= end.x; i++) {
         for(int j = start.y; j <= end.y; j++) {
             terrain_sprite.setTexture(*terrain_textures[world.getTerrainType({i, j})]);
-            terrain_sprite.setPosition({static_cast<float>(i), static_cast<float>(j)});
+            terrain_sprite.setPosition({static_cast<float>(i), -static_cast<float>(j)});
             terrain_sprite.setScale({1.0f / terrain_sprite.getTexture()->getSize().x, 1.0f / terrain_sprite.getTexture()->getSize().y});
             target.draw(terrain_sprite);
         }
@@ -62,8 +69,10 @@ void TopDownScreen::show() {
 	terrain_textures[TerrainType::WATER] = getGame().getAssets().get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = getGame().getAssets().get(GameAssets::SAND_TERRAIN);
 
-    Entity* hiding_spot = new HidingSpot(world, sf::Vector2i(1, 1));
-    world.getEntities().push_back(hiding_spot);
+    Entity* hiding_spot1 = new HidingSpot(world, sf::Vector2i(1, 1));
+    Entity* hiding_spot2 = new HidingSpot(world, sf::Vector2i(-1, 2));
+    world.getEntities().push_back(hiding_spot1);
+    world.getEntities().push_back(hiding_spot2);
 }
 
 void TopDownScreen::hide() {

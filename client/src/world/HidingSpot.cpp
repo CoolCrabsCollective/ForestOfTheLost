@@ -15,7 +15,7 @@ void HidingSpot::tick(float delta) {
 }
 
 void HidingSpot::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
-    sprite.setPosition({static_cast<float>(position.x), static_cast<float>(position.y)});
+    sprite.setPosition({static_cast<float>(position.x), static_cast<float>(-position.y)});
     sprite.setScale({ 1.0f / sprite.getTexture()->getSize().x, 1.0f / sprite.getTexture()->getSize().y });
     target.draw(sprite);
 }
