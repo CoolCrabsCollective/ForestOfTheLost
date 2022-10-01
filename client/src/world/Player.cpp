@@ -15,7 +15,6 @@ Player::Player(World& world) : Entity(world), HealthComponent<int>(3), textureMa
 	textureMap[Direction::WEST] = world.getAssets().get(GameAssets::PLAYER_RIGHT);
 }
 
-
 sf::Vector2f Player::getRenderPosition() const {
     return renderPosition;
 }
