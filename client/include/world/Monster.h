@@ -23,6 +23,7 @@ public:
     Monster(World &world, sf::Vector2i position);
     void tick(float delta) override;
     void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
+    const sf::Vector2f& getRenderPosition() const;
     void findNewSpot();
 };
 
