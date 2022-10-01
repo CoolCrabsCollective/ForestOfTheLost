@@ -9,6 +9,7 @@
 #include "world/Bush.h"
 #include "world/Monster.h"
 #include "world/Solid.h"
+#include "world/Tree.h"
 
 World::World(wiz::AssetLoader& assets)
 		: assets(assets),
