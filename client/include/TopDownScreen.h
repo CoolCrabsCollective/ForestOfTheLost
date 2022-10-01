@@ -7,8 +7,10 @@
 
 #include <WIZ/game/Screen.h>
 #include <unordered_map>
+#include <SFML/Graphics/RenderTexture.hpp>
 #include "world/World.h"
 #include "SFML/Graphics/Sprite.hpp"
+#include "SFML/Graphics/Texture.hpp"
 
 class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz::InputListener {
 	std::string name = "TopDownScreen";
@@ -16,6 +18,11 @@ class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz
 	World world;
 	std::unordered_map<TerrainType, sf::Texture*> terrain_textures;
 	sf::Sprite terrain_sprite;
+    sf::Sprite hiding_spot_sprite;
+	sf::RenderTexture frameBuffer;
+    sf::Shader* spookyShader = nullptr;
+
+    float timeAccumulator = 0.0;
 public:
 	explicit TopDownScreen(wiz::Game& game);
 
