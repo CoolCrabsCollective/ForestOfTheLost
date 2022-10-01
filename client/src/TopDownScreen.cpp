@@ -7,11 +7,11 @@
 #include "world/HidingSpot.h"
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
-		: Screen(game), world(), terrain_textures() {
+		: Screen(game), world(game.getAssets()), terrain_textures() {
 }
 
 void TopDownScreen::tick(float delta) {
-
+    timeAccumulator += delta;
 }
 
 void TopDownScreen::render(sf::RenderTarget& target) {
@@ -35,14 +35,7 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 		}
 	}
 
-    for (int i = 0 ; i < world.getEntities().size() ; i++) {
-        if(HidingSpot* hidingSpot = dynamic_cast<HidingSpot*>(world.getEntities().at(i))) {
-            sf::Sprite hiding_spot_sprite = hidingSpot->getSprite();
-            hiding_spot_sprite.setPosition(hiding_spot_sprite.getPosition());
-            frameBuffer.draw(hiding_spot_sprite);
-        }
-    }
-
+	spookyShader->setUniform("timeAccumulator", timeAccumulator);
 	frameBuffer.display(); // done drawing fbo
 	sf::Sprite fbo(frameBuffer.getTexture());
 	target.clear();
@@ -61,7 +54,7 @@ void TopDownScreen::show() {
 
     sf::Sprite* hiding_spot_sprite = new sf::Sprite(*getGame().getAssets().get(GameAssets::HIDING_SPOT));
     hiding_spot_sprite->setScale({1.0f / hiding_spot_sprite->getTexture()->getSize().x, 1.0f / hiding_spot_sprite->getTexture()->getSize().y});
-    Entity* hiding_spot = new HidingSpot(*new sf::Vector2i(3, 3), *hiding_spot_sprite);
+    Entity* hiding_spot = new HidingSpot(world, *new sf::Vector2i(3, 3), *hiding_spot_sprite);
 
     world.getEntities().push_back(hiding_spot);
 }

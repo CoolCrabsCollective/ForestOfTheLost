@@ -8,14 +8,17 @@
 
 #include "Entity.h"
 #include "SFML/Graphics/Sprite.hpp"
+#include "directions.h"
 
 class HidingSpot : public Entity {
     sf::Vector2i position;
     sf::Sprite sprite;
 public:
-    sf::Vector2i getPosition() const override;
+    sf::Vector2i getPosition() const ;
     sf::Sprite getSprite() const;
-    HidingSpot(sf::Vector2i position, sf::Sprite sprite);
+    void tick(float delta) override;
+    void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
+    HidingSpot(World &world, sf::Vector2i position, sf::Sprite sprite);
 };
 
 #endif //LD51_CLIENT_HIDINGSPOT_H

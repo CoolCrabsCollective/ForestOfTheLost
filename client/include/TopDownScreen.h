@@ -20,8 +20,10 @@ class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz
 	sf::Sprite terrain_sprite;
 	sf::RenderTexture frameBuffer;
     sf::Shader* spookyShader = nullptr;
+
+    float timeAccumulator = 0.0;
 public:
-	TopDownScreen(wiz::Game& game);
+	explicit TopDownScreen(wiz::Game& game);
 
 	void tick(float delta) override;
 

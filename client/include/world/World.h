@@ -8,14 +8,23 @@
 #include <vector>
 #include "Terrain.h"
 #include "SFML/System/Vector2.hpp"
-#include "Entity.h"
 #include "Player.h"
+#include "WIZ/asset/AssetLoader.h"
+
+class Entity;
+class Player;
 
 class World {
 	std::vector<Entity*> entities;
 	Player player;
 
+	wiz::AssetLoader& assets;
+
 public:
+	World(wiz::AssetLoader& assets)
+		: assets(assets),
+		  player(*this) {}
+
 	TerrainType getTerrainType(sf::Vector2i position);
 
 	const std::vector<Entity*>& getEntities() const;
@@ -25,6 +34,9 @@ public:
 	const Player& getPlayer() const;
 
 	Player& getPlayer();
+
+	wiz::AssetLoader& getAssets();
+
 };
 
 
