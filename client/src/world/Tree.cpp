@@ -14,3 +14,9 @@ Tree::Tree(World& world, const sf::Vector2i& position)
 bool Tree::isBlocking(sf::Vector2i vec) {
     return vec == position;
 }
+
+void Tree::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
+	sprite.setPosition({static_cast<float>(position.x - 1.5f), -static_cast<float>(position.y + 2.5f)});
+	sprite.setScale({ 3.5f / sprite.getTexture()->getSize().x, 3.5f / sprite.getTexture()->getSize().y });
+	target.draw(sprite);
+}

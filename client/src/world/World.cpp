@@ -51,8 +51,10 @@ World::World(wiz::AssetLoader& assets)
 
 				double noise2 = SimplexNoise::noise(nx2, ny2);
 
-				if(noise2 > 0.5)
-					addEntity(new Bush(*this, sf::Vector2i(i, j)));
+				if(noise2 > 0.9)
+					addEntity(new Tree(*this, { i, j }));
+				else if(noise2 > 0.5)
+					addEntity(new Bush(*this, { i, j }));
 			}
 
 		}
@@ -138,7 +140,7 @@ void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
 
 void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
 
-	sf::Vector2f viewSize = { 16.0f, 9.0f };
+	sf::Vector2f viewSize = {24.0f, 13.5f};
 
 	sf::Vector2i start = getPlayer().getPosition() - sf::Vector2i(static_cast<int>(ceil(viewSize.x / 2.0f)),
 																  static_cast<int>(ceil(viewSize.y / 2.0f))) - sf::Vector2i{1,1};

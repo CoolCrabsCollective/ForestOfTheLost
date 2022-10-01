@@ -14,6 +14,8 @@ public:
     Tree(World& world, const sf::Vector2i& position);
 
     bool isBlocking(sf::Vector2i vec);
+
+	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
 };
 
 

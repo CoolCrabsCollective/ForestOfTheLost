@@ -72,7 +72,7 @@ void TopDownScreen::drawWorld(sf::RenderTarget &target) {
 }
 
 void TopDownScreen::render(sf::RenderTarget& target) {
-    sf::Vector2f viewSize = {16.0f, 9.0f};
+    sf::Vector2f viewSize = {24.0f, 13.5f};
 
     frameBuffer.create(1280, 720);
     frameBuffer.clear();
@@ -99,7 +99,6 @@ void TopDownScreen::drawUI(sf::RenderTarget &target) {
 }
 
 void TopDownScreen::show() {
-    sf::Vector2f viewSize = {16.0f, 9.0f};
 	getGame().addWindowListener(this);
 	getGame().addInputListener(this);
 
