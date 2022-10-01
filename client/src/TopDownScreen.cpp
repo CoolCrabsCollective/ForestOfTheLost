@@ -12,6 +12,38 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
 
 void TopDownScreen::tick(float delta) {
     timeAccumulator += delta;
+
+    processInput();
+
+    world.tick(delta);
+}
+
+void TopDownScreen::processInput() {
+    bool eastPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)
+                        || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)
+                        || sf::Joystick::isButtonPressed(0, 0);
+
+    bool northPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)
+                        || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)
+                        || sf::Joystick::isButtonPressed(0, 1);
+
+    bool westPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)
+                        || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)
+                        || sf::Joystick::isButtonPressed(0, 2);
+
+    bool southPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)
+                        || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)
+                        || sf::Joystick::isButtonPressed(0, 2);
+
+    if (eastPressed && !westPressed) {
+        world.getPlayer().move(EAST);
+    } else if (northPressed && !southPressed) {
+        world.getPlayer().move(NORTH);
+    } else if (westPressed && !eastPressed) {
+        world.getPlayer().move(WEST);
+    } else if (southPressed && !northPressed) {
+        world.getPlayer().move(SOUTH);
+    }
 }
 
 void TopDownScreen::render(sf::RenderTarget& target) {
@@ -19,13 +51,13 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 
 	frameBuffer.create(1280, 720);
 	frameBuffer.clear();
-	frameBuffer.setView(sf::View({ world.getPlayer().x() + 0.5f, world.getPlayer().y() + 0.5f }, viewSize));
+	frameBuffer.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f, world.getPlayer().getRenderPosition().y + 0.5f }, viewSize));
 	target.clear();
 
 	sf::Vector2i start = world.getPlayer().getPosition() - sf::Vector2i(static_cast<int>(ceil(viewSize.x / 2.0f)),
-																		 static_cast<int>(ceil(viewSize.y / 2.0f)));
+																		 static_cast<int>(ceil(viewSize.y / 2.0f))) - sf::Vector2i{1,1};
 	sf::Vector2i end = world.getPlayer().getPosition() + sf::Vector2i(static_cast<int>(floor(viewSize.x / 2.0f)),
-																	  static_cast<int>(floor(viewSize.y / 2.0f)));
+																	  static_cast<int>(floor(viewSize.y / 2.0f))) + sf::Vector2i{1,1};
 	for(int i = start.x; i <= end.x; i++) {
 		for(int j = start.y; j <= end.y; j++) {
             terrain_sprite.setTexture(*terrain_textures[world.getTerrainType({i, j})]);

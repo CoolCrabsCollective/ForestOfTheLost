@@ -14,11 +14,12 @@
 class Entity;
 class Player;
 
-class World {
+class World : public Tickable {
 	wiz::AssetLoader& assets;
 	std::vector<Entity*> entities;
 	Player player;
-
+public:
+    void tick(float delta) override;
 
 public:
 	World(wiz::AssetLoader& assets);

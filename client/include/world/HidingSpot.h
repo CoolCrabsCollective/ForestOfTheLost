@@ -8,7 +8,7 @@
 
 #include "Entity.h"
 #include "SFML/Graphics/Sprite.hpp"
-#include "directions.h"
+#include "Direction.h"
 
 class HidingSpot : public Entity {
     sf::Vector2i position;

@@ -8,7 +8,7 @@
 
 #include <map>
 #include "Entity.h"
-#include "world/directions.h"
+#include "world/Direction.h"
 #include <optional>
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/RenderStates.hpp"

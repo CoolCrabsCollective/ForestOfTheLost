@@ -22,6 +22,9 @@ class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz
     sf::Shader* spookyShader = nullptr;
 
     float timeAccumulator = 0.0;
+
+    void processInput();
+
 public:
 	explicit TopDownScreen(wiz::Game& game);
 
