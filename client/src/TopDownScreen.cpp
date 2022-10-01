@@ -6,6 +6,7 @@
 #include "TopDownScreen.h"
 #include "GameAssets.h"
 #include "world/HidingSpot.h"
+#include "world/Monster.h"
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
 		: Screen(game), world(game.getAssets()), terrain_textures() {
@@ -104,8 +105,11 @@ void TopDownScreen::show() {
 
     Entity* hiding_spot1 = new HidingSpot(world, sf::Vector2i(1, 1));
     Entity* hiding_spot2 = new HidingSpot(world, sf::Vector2i(-1, 2));
+    Entity* bat = new Monster(world, sf::Vector2i(2, 1));
+
     world.getEntities().push_back(hiding_spot1);
     world.getEntities().push_back(hiding_spot2);
+    world.getEntities().push_back(bat);
 }
 
 void TopDownScreen::hide() {
