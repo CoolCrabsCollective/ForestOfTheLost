@@ -23,3 +23,7 @@ const Player& World::getPlayer() const {
 Player& World::getPlayer() {
 	return player;
 }
+
+wiz::AssetLoader& World::getAssets() {
+	return assets;
+}
