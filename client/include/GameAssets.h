@@ -27,6 +27,8 @@ namespace GameAssets {
 	ASSET(wiz::TextureAsset, WHITE_PIXEL, ("gfx/white_pixel.png"))
 	ASSET(wiz::TextureAsset, LOGO, ("gfx/logo.png"))
 
+	ASSET(wiz::TextureAsset, HEART, ("gfx/heart.png"))
+
 	ASSET(ShaderAsset, SPOOKY_SHADER, ("shaders/spooky.vs", "shaders/spooky.fs"))
 
     // Terrain

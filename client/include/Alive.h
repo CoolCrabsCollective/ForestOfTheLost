@@ -25,5 +25,8 @@ protected:
     T health;
 };
 
+template class Alive<int>;
+template class Alive<float>;
+
 
 #endif //LD51_CLIENT_ALIVE_H
