@@ -7,7 +7,8 @@
 
 enum TerrainType {
 	GRASS,
-	WATER
+	WATER,
+	SAND
 };
 
 #endif //LD51_CLIENT_TERRAIN_H

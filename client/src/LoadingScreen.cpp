@@ -4,6 +4,7 @@
 
 #include "LoadingScreen.h"
 #include "TitleScreen.h"
+#include "TopDownScreen.h"
 
 LoadingScreen::LoadingScreen(wiz::Game& game)
 	: Screen(game) {}
@@ -12,7 +13,7 @@ void LoadingScreen::tick(float delta) {
 	getGame().getAssets().update(16.0f);
 
 	if(getGame().getAssets().isAllLoaded())
-		getGame().setScreen(std::shared_ptr<TitleScreen>(new TitleScreen(getGame())));
+		getGame().setScreen(std::shared_ptr<TopDownScreen>(new TopDownScreen(getGame())));
 }
 
 void LoadingScreen::render(sf::RenderTarget& target) {
