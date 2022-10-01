@@ -6,7 +6,7 @@
 #include <WIZ/logging/TagLoggerWrapper.h>
 #include <WIZ/asset/AssetLoader.h>
 
-#include "ExampleGame.h"
+#include "SpookyGame.h"
 #include "LoadingScreen.h"
 
 #include <WIZ/logging/DailyFileLogger.h>
@@ -55,12 +55,12 @@ int main(int argc, char* argv[])
 #ifdef OS_SWITCH
 	mode = sf::VideoMode::getDesktopMode();
 #else
-	mode = sf::VideoMode(640, 480, 32);
+	mode = sf::VideoMode(1280, 720, 32);
 #endif
 
 	std::shared_ptr<sf::RenderWindow> window = std::make_shared<sf::RenderWindow>(mode, "SFML Game Template Project");
 
-	ExampleGame game(window, logger, loader);
+	SpookyGame game(window, logger, loader);
 
 	game.setScreen(std::shared_ptr<LoadingScreen>(new LoadingScreen(game)));
 
