@@ -7,8 +7,9 @@
 
 
 #include "SFML/System/Vector2.hpp"
+#include "Tickable.h"
 
-class Entity {
+class Entity : public Tickable {
 public:
 	virtual ~Entity() = default;
 

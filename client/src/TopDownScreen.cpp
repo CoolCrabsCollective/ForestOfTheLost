@@ -9,10 +9,6 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
 		: Screen(game), world(), terrain_textures() {
 }
 
-void TopDownScreen::tick(float delta) {
-
-}
-
 void TopDownScreen::render(sf::RenderTarget& target) {
 
 	sf::Vector2f viewSize = {16.0f, 9.0f};
