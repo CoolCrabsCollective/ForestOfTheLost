@@ -30,6 +30,12 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 			terrain_sprite.setScale({1.0f / terrain_sprite.getTexture()->getSize().x, 1.0f / terrain_sprite.getTexture()->getSize().y});
 			target.draw(terrain_sprite);
 
+            if (i % 4 == 0 && j % 3 == 0) {
+                hiding_spot_sprite.setPosition({static_cast<float>(i), static_cast<float>(j)});
+                hiding_spot_sprite.setScale({1.0f / hiding_spot_sprite.getTexture()->getSize().x, 1.0f / hiding_spot_sprite.getTexture()->getSize().y});
+                target.draw(hiding_spot_sprite);
+            }
+
 		}
 	}
 }
@@ -41,7 +47,8 @@ void TopDownScreen::show() {
 	terrain_textures[TerrainType::GRASS] = getGame().getAssets().get(GameAssets::GRASS_TERRAIN);
 	terrain_textures[TerrainType::WATER] = getGame().getAssets().get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = getGame().getAssets().get(GameAssets::SAND_TERRAIN);
-    hiding_spot_texture = *getGame().getAssets().get(GameAssets::HIDING_SPOT);
+
+    hiding_spot_sprite.setTexture(*getGame().getAssets().get(GameAssets::HIDING_SPOT));
 }
 
 void TopDownScreen::hide() {
