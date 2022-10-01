@@ -18,10 +18,10 @@ void main()
 
     if(accumulated_time < darkness_threshold_max || accumulated_time > darkness_threshold_min)
     {
-        gl_FragColor = vec4(pixel.rgba);
+        gl_FragColor = vec4(pixel.rgb, 1.0 - ten_second_darkness_multiplier);
     }
     else
     {
-        gl_FragColor = vec4(pixel.rgb, 1.0 - ten_second_darkness_multiplier);
+        gl_FragColor = vec4(pixel.rgb, 0.0);
     }
 }
