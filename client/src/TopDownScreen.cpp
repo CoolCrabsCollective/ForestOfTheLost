@@ -14,29 +14,37 @@ void TopDownScreen::tick(float delta) {
     timeAccumulator += delta;
 }
 
-void TopDownScreen::render(sf::RenderTarget& target) {
-	sf::Vector2f viewSize = {16.0f, 9.0f};
 
-	frameBuffer.create(1280, 720);
-	frameBuffer.clear();
-	frameBuffer.setView(sf::View({ world.getPlayer().x() + 0.5f, world.getPlayer().y() + 0.5f }, viewSize));
-	target.clear();
+void TopDownScreen::drawWorld(sf::RenderTarget &target) {
+    sf::Vector2f viewSize = {16.0f, 9.0f};
+    target.clear();
 
-	sf::Vector2i start = world.getPlayer().getPosition() - sf::Vector2i(static_cast<int>(ceil(viewSize.x / 2.0f)),
-																		 static_cast<int>(ceil(viewSize.y / 2.0f)));
-	sf::Vector2i end = world.getPlayer().getPosition() + sf::Vector2i(static_cast<int>(floor(viewSize.x / 2.0f)),
-																	  static_cast<int>(floor(viewSize.y / 2.0f)));
-	for(int i = start.x; i <= end.x; i++) {
-		for(int j = start.y; j <= end.y; j++) {
+    sf::Vector2i start = world.getPlayer().getPosition() - sf::Vector2i(static_cast<int>(ceil(viewSize.x / 2.0f)),
+                                                                        static_cast<int>(ceil(viewSize.y / 2.0f)));
+    sf::Vector2i end = world.getPlayer().getPosition() + sf::Vector2i(static_cast<int>(floor(viewSize.x / 2.0f)),
+                                                                      static_cast<int>(floor(viewSize.y / 2.0f)));
+
+
+    for(int i = start.x; i <= end.x; i++) {
+        for(int j = start.y; j <= end.y; j++) {
             terrain_sprite.setTexture(*terrain_textures[world.getTerrainType({i, j})]);
-			terrain_sprite.setPosition({static_cast<float>(i), -static_cast<float>(j)});
-			terrain_sprite.setScale({1.0f / terrain_sprite.getTexture()->getSize().x, 1.0f / terrain_sprite.getTexture()->getSize().y});
-            frameBuffer.draw(terrain_sprite);
-		}
-	}
+            terrain_sprite.setPosition({static_cast<float>(i), -static_cast<float>(j)});
+            terrain_sprite.setScale({1.0f / terrain_sprite.getTexture()->getSize().x, 1.0f / terrain_sprite.getTexture()->getSize().y});
+            target.draw(terrain_sprite);
+        }
+    }
 
-	for(Entity* entity : world.getEntities())
-		frameBuffer.draw(*entity);
+    for(Entity* entity : world.getEntities())
+        target.draw(*entity);
+}
+
+void TopDownScreen::render(sf::RenderTarget& target) {
+    sf::Vector2f viewSize = {16.0f, 9.0f};
+
+    frameBuffer.create(1280, 720);
+    frameBuffer.clear();
+    frameBuffer.setView(sf::View({ world.getPlayer().x() + 0.5f, world.getPlayer().y() + 0.5f }, viewSize));
+	drawWorld(frameBuffer);
 
 	spookyShader->setUniform("timeAccumulator", timeAccumulator);
 	frameBuffer.display(); // done drawing fbo
@@ -71,3 +79,4 @@ const std::string& TopDownScreen::getName() const {
 void TopDownScreen::windowClosed() {
 	getGame().getWindow().close();
 }
+

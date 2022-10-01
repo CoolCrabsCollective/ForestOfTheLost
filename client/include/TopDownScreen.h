@@ -25,6 +25,8 @@ class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz
 public:
 	explicit TopDownScreen(wiz::Game& game);
 
+	void drawWorld(sf::RenderTarget& target);
+
 	void tick(float delta) override;
 
 	void render(sf::RenderTarget& target) override;

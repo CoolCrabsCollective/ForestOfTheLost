@@ -17,7 +17,6 @@ void main()
     float normalized_sin = (sin(timeCounter) + 1.0) / 2.0;
     float periodic = 1.0 - ( normalized_sin / periodic_divider);
 
-
     float distance = malformed_euclidean_distance(center, gl_TexCoord[0].xy, 16.0/9.0);
 
     gl_FragColor = vec4(pixel.rgb, 1.0 - 2.0 * periodic * distance);
