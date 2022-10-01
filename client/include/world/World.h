@@ -8,8 +8,10 @@
 #include <vector>
 #include "Terrain.h"
 #include "SFML/System/Vector2.hpp"
-#include "Entity.h"
 #include "Player.h"
+
+class Entity;
+class Player;
 
 class World {
 	std::vector<Entity> entities;
@@ -25,6 +27,7 @@ public:
 	const Player& getPlayer() const;
 
 	Player& getPlayer();
+
 
 
 };

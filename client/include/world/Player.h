@@ -6,11 +6,15 @@
 #define LD51_CLIENT_PLAYER_H
 
 
+#include <optional>
+#include <map>
 #include "Entity.h"
 #include "world/directions.h"
+#include "SFML/Graphics/RenderTarget.hpp"
+#include "SFML/Graphics/RenderStates.hpp"
+#include "SFML/Graphics/Sprite.hpp"
 
 class Player : public Entity {
-	sf::Vector2i position = {};
     sf::Vector2i destination = {};
 
     sf::Vector2f renderPosition = {};
@@ -29,11 +33,17 @@ class Player : public Entity {
     void rotateToHeading(sf::Vector2i direction);
     bool checkCollision();
 
+	mutable sf::Sprite sprite;
+	std::map<Direction, sf::Texture*> textureMap;
 public:
-	sf::Vector2i getPosition() const override;
+	Player(World& world);
+
     sf::Vector2f getRenderPosition() const;
     void move(std::optional<Direction> direction);
     void tick(float delta) override;
+
+
+	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
 };
 
 

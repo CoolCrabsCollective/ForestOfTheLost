@@ -5,9 +5,10 @@
 #include "world/Player.h"
 #include <optional>
 
-sf::Vector2i Player::getPosition() const {
-	return position;
+Player::Player(World& world) : Entity(world), textureMap() {
+
 }
+
 
 sf::Vector2f Player::getRenderPosition() const {
     return renderPosition;
@@ -28,13 +29,19 @@ void Player::tick(float delta) {
             position = destination;
             actionProgress = 0;
         } else {
-            renderPosition = (sf::Vector2f) position + sf::Vector2f(destination - position)*actionProgress;
+            renderPosition = (sf::Vector2f) position + sf::Vector2f(destination - position) * actionProgress;
         }
     } else if (rotating) {
 
     } else {
 
     }
+}
+
+void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
+	sprite.setTexture(*textureMap.at(currentDir));
+	sprite.setPosition(renderPosition);
+	//sprite.setScale(1.0f / sprite.getTexture())
 }
 
 
