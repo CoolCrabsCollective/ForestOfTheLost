@@ -4,7 +4,6 @@
 
 #include "TitleScreen.h"
 #include "GameAssets.h"
-#include "HelloSFMLScreen.h"
 #include "SFML/Window/Touch.hpp"
 
 TitleScreen::TitleScreen(wiz::Game& game)
@@ -20,17 +19,6 @@ void TitleScreen::tick(float delta) {
 	vec.x /= static_cast<float>(background.getTextureRect().getSize().x);
 	vec.y /= static_cast<float>(background.getTextureRect().getSize().y);
 	background.setScale(vec);
-
-
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)
-	   || sf::Joystick::isButtonPressed(0, 3))
-	{
-		getGame().setScreen(std::shared_ptr<HelloSFMLScreen>(new HelloSFMLScreen(getGame())));
-		return;
-	}
-
-	if(sf::Mouse::isButtonPressed(sf::Mouse::Left) || sf::Touch::isDown(1))
-		getGame().setScreen(std::shared_ptr<HelloSFMLScreen>(new HelloSFMLScreen(getGame())));
 }
 
 void TitleScreen::render(sf::RenderTarget& target) {

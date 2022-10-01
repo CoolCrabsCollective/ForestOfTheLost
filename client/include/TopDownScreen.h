@@ -17,8 +17,10 @@ class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz
 
 	World world;
 	sf::Sprite heart_sprite;
+	sf::Sprite eye_sprite;
 	sf::RenderTexture frameBuffer;
     sf::Shader* spookyShader = nullptr;
+    sf::Shader* eyesShader = nullptr;
 
     float timeAccumulator = 0.0;
     float tenSecAccumulator = 0.0;
@@ -29,6 +31,8 @@ public:
 	explicit TopDownScreen(wiz::Game& game);
 
 	void drawWorld(sf::RenderTarget& target);
+
+	void drawEyes(sf::RenderTarget& target);
 
 	void drawUI(sf::RenderTarget& target);
 
