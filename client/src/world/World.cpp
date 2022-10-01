@@ -8,17 +8,19 @@
 #include "world/HidingSpot.h"
 #include "GameAssets.h"
 #include "world/Bush.h"
+#include "world/Monster.h"
 
 World::World(wiz::AssetLoader& assets)
 		: assets(assets),
 		  player(*this),
 		  terrainMap(),
+          entityMap(),
 		  terrain_textures() {
 	terrain_textures[TerrainType::GRASS] = assets.get(GameAssets::GRASS_TERRAIN);
 	terrain_textures[TerrainType::WATER] = assets.get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = assets.get(GameAssets::SAND_TERRAIN);
 
-	entities.push_back(&player);
+    addEntity(&player);
 
 	for(int i = -200; i <= 200; i++) {
 		for(int j = -200; j <= 200; j++) {
@@ -34,9 +36,24 @@ World::World(wiz::AssetLoader& assets)
 			else if(noise < -0.7f)
 				terrainMap[sf::Vector2i(i, j)] = TerrainType::SAND;
 			else if(noise > 0.5f)
-				entities.push_back(new Bush(*this, sf::Vector2i(i, j)));
+                addEntity(new Bush(*this, sf::Vector2i(i, j)));
 		}
 	}
+
+    Entity* hiding_spot1 = new HidingSpot(*this, sf::Vector2i(1, 1));
+    Entity* hiding_spot2 = new HidingSpot(*this, sf::Vector2i(-1, 2));
+    Entity* hiding_spot3 = new HidingSpot(*this, sf::Vector2i(-2, -2));
+    Entity* hiding_spot4 = new HidingSpot(*this, sf::Vector2i(0, -4));
+    addEntity(hiding_spot1);
+    addEntity(hiding_spot2);
+    addEntity(hiding_spot3);
+    addEntity(hiding_spot4);
+
+    Entity* bat1 = new Monster(*this, sf::Vector2i(2, 1));
+    Entity* bat2 = new Monster(*this, sf::Vector2i(-2, -1));
+
+    addEntity(bat1);
+    addEntity(bat2);
 }
 
 TerrainType World::getTerrainType(sf::Vector2i position) const {
@@ -46,10 +63,6 @@ TerrainType World::getTerrainType(sf::Vector2i position) const {
 }
 
 const std::vector<Entity*>& World::getEntities() const {
-	return entities;
-}
-
-std::vector<Entity*>& World::getEntities() {
 	return entities;
 }
 
@@ -85,6 +98,23 @@ void World::tick(float delta) {
     for (Entity *entity : entities) {
         entity->tick(delta);
     }
+}
+
+const std::vector<Entity *> &World::getEntitiesAt(sf::Vector2i position) const {
+    return entityMap.contains(position) ?  entityMap.at(position) : empty;
+}
+
+void World::addEntity(Entity* entity) {
+    entities.push_back(entity);
+    if (entityMap.contains(entity->getPosition()))
+        entityMap[entity->getPosition()].push_back(entity);
+    else
+        entityMap[entity->getPosition()] = {entity};
+}
+
+void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
+    std::remove(entityMap[oldPosition].begin(), entityMap[oldPosition].end(),entity);
+    addEntity(entity);
 }
 
 void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {

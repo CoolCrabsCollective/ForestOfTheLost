@@ -7,6 +7,7 @@
 #include "GameAssets.h"
 #include "world/HidingSpot.h"
 #include "world/Monster.h"
+#include "WIZ/input/Mapping.h"
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
 		: Screen(game), world(game.getAssets()) {
@@ -35,21 +36,22 @@ void TopDownScreen::tick(float delta) {
 }
 
 void TopDownScreen::processInput() {
+
     bool eastPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)
-                        || sf::Joystick::isButtonPressed(0, 0);
+                        || sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) > 0;
 
     bool northPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)
-                        || sf::Joystick::isButtonPressed(0, 1);
+                        || sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y) < 0;
 
     bool westPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)
-                        || sf::Joystick::isButtonPressed(0, 2);
+                        ||  sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) < 0;
 
     bool southPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)
-                        || sf::Joystick::isButtonPressed(0, 2);
+                        ||  sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y) > 0;
 
     if (eastPressed && !westPressed)
         world.getPlayer().move(EAST);
@@ -81,7 +83,7 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 	frameBuffer.display(); // done drawing fbo
 	sf::Sprite fbo(frameBuffer.getTexture());
 	target.clear();
-	target.draw(fbo/*, spookyShader*/);
+	target.draw(fbo, spookyShader);
 	drawUI(target);
 }
 
@@ -96,7 +98,6 @@ void TopDownScreen::drawUI(sf::RenderTarget &target) {
     }
 }
 
-
 void TopDownScreen::show() {
     sf::Vector2f viewSize = {16.0f, 9.0f};
 	getGame().addWindowListener(this);
@@ -106,14 +107,6 @@ void TopDownScreen::show() {
     heart_sprite.setScale({ 50.0f * 7.0f / 8.0f / heart_sprite.getTexture()->getSize().x,
 							50.0f * 7.0f / 8.0f / heart_sprite.getTexture()->getSize().y });
     spookyShader = getAssets().get(GameAssets::SPOOKY_SHADER);
-
-    Entity* hiding_spot1 = new HidingSpot(world, sf::Vector2i(1, 1));
-    Entity* hiding_spot2 = new HidingSpot(world, sf::Vector2i(-1, 2));
-    world.getEntities().push_back(hiding_spot1);
-    world.getEntities().push_back(hiding_spot2);
-    Entity* bat = new Monster(world, sf::Vector2i(2, 1));
-
-    world.getEntities().push_back(bat);
 }
 
 void TopDownScreen::hide() {

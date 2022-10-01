@@ -32,7 +32,9 @@ void Player::tick(float delta) {
         actionProgress += (delta / 1000) * movingSpeed;
 
         if (actionProgress > 1) {
+            sf::Vector2i oldPos = position;
             position = destination;
+            world.moveEntity(oldPos, this);
             actionProgress = 0;
         } else {
             renderPosition = (sf::Vector2f) position + sf::Vector2f(destination - position) * actionProgress;
@@ -51,12 +53,12 @@ void Player::tick(float delta) {
 			}
 		}
     } else if (inputDir.has_value()) {
-		if(inputDir.value() == currentDir)
-        	destination = position + directionToUnitVector(inputDir.value());
+		if(inputDir.value() == currentDir) {
+            destination = position + directionToUnitVector(inputDir.value());
             if (world.tileOccupied(destination, this)) {
                 destination = position;
             }
-		else
+        } else
 			destinationDir = inputDir.value();
     }
 }

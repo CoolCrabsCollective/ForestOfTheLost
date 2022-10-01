@@ -30,6 +30,8 @@ class World : public Tickable, public sf::Drawable {
 	mutable sf::Sprite terrain_sprite;
 
 	std::map<sf::Vector2i, TerrainType, VecCompare> terrainMap;
+    std::map<sf::Vector2i, std::vector<Entity*>, VecCompare> entityMap;
+    std::vector<Entity*> empty = {};
 
 public:
 	World(wiz::AssetLoader& assets);
@@ -37,8 +39,6 @@ public:
 	TerrainType getTerrainType(sf::Vector2i position) const;
 
 	const std::vector<Entity*>& getEntities() const;
-
-	std::vector<Entity*>& getEntities();
 
 	const Player& getPlayer() const;
 
@@ -49,6 +49,12 @@ public:
     bool tileOccupied(sf::Vector2i tile, Entity *exclude);
 
     void tick(float delta) override;
+
+    const std::vector<Entity*>& getEntitiesAt(sf::Vector2i position) const;
+
+    void addEntity(Entity* entity);
+
+    void moveEntity(sf::Vector2i oldPosition, Entity* entity);
 
 protected:
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
