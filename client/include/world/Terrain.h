@@ -8,7 +8,8 @@
 enum TerrainType {
 	GRASS,
 	WATER,
-	SAND
+	SAND,
+    HIDING_SPOT
 };
 
 #endif //LD51_CLIENT_TERRAIN_H

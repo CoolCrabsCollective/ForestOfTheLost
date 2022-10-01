@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include "world/World.h"
 #include "SFML/Graphics/Sprite.hpp"
+#include "SFML/Graphics/Texture.hpp"
 
 class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz::InputListener {
 	std::string name = "TopDownScreen";

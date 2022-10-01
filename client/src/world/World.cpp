@@ -5,6 +5,9 @@
 #include "world/World.h"
 
 TerrainType World::getTerrainType(sf::Vector2i position) {
+    if (position.x % 2 == 0)
+        return TerrainType::HIDING_SPOT;
+
 	return TerrainType::GRASS;
 }
 
