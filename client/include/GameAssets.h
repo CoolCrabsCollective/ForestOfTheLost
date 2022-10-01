@@ -32,6 +32,11 @@ namespace GameAssets {
 	ASSET(wiz::TextureAsset, GRASS_TERRAIN, ("gfx/terrain/grass.png"))
 	ASSET(wiz::TextureAsset, WATER_TERRAIN, ("gfx/terrain/water.png"))
 	ASSET(wiz::TextureAsset, SAND_TERRAIN, ("gfx/terrain/sand.png"))
+
+	ASSET(wiz::TextureAsset, PLAYER_BACK, ("gfx/player/back.png"))
+	ASSET(wiz::TextureAsset, PLAYER_FRONT, ("gfx/player/front.png"))
+	ASSET(wiz::TextureAsset, PLAYER_LEFT, ("gfx/player/left.png"))
+	ASSET(wiz::TextureAsset, PLAYER_RIGHT, ("gfx/player/right.png"))
 }
 
 
