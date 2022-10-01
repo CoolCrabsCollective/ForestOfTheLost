@@ -30,9 +30,6 @@ class Player : public Entity, public HealthComponent<int> {
     float movingSpeed = 2.0;
     float rotationSpeed = 1.0;
 
-    void rotateToHeading(sf::Vector2i direction);
-    bool checkCollision();
-
 	mutable sf::Sprite sprite;
 	std::map<Direction, sf::Texture*> textureMap;
 public:

@@ -42,15 +42,16 @@ void TopDownScreen::processInput() {
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)
                         || sf::Joystick::isButtonPressed(0, 2);
 
-    if (eastPressed && !westPressed) {
+    if (eastPressed && !westPressed)
         world.getPlayer().move(EAST);
-    } else if (northPressed && !southPressed) {
+    else if (northPressed && !southPressed)
         world.getPlayer().move(NORTH);
-    } else if (westPressed && !eastPressed) {
+    else if (westPressed && !eastPressed)
         world.getPlayer().move(WEST);
-    } else if (southPressed && !northPressed) {
+    else if (southPressed && !northPressed)
         world.getPlayer().move(SOUTH);
-    }
+    else
+		world.getPlayer().move({});
 }
 
 
