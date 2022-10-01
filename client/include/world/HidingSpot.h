@@ -12,6 +12,7 @@
 #include "Direction.h"
 
 class HidingSpot : public Entity {
+protected:
     mutable sf::Sprite sprite;
 public:
     void tick(float delta) override;

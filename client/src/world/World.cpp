@@ -7,6 +7,7 @@
 #include "util/SimplexNoise.h"
 #include "world/HidingSpot.h"
 #include "GameAssets.h"
+#include "world/Bush.h"
 
 World::World(wiz::AssetLoader& assets)
 		: assets(assets),
@@ -33,7 +34,7 @@ World::World(wiz::AssetLoader& assets)
 			else if(noise < -0.7f)
 				terrainMap[sf::Vector2i(i, j)] = TerrainType::SAND;
 			else if(noise > 0.5f)
-				entities.push_back(new HidingSpot(*this, sf::Vector2i(i, j)));
+				entities.push_back(new Bush(*this, sf::Vector2i(i, j)));
 		}
 	}
 }
@@ -88,12 +89,12 @@ void World::tick(float delta) {
 
 void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
 
-	sf::Vector2f viewSize = {16.0f, 9.0f};
+	sf::Vector2f viewSize = { 16.0f, 9.0f };
 
 	sf::Vector2i start = getPlayer().getPosition() - sf::Vector2i(static_cast<int>(ceil(viewSize.x / 2.0f)),
-																		static_cast<int>(ceil(viewSize.y / 2.0f))) - sf::Vector2i{1,1};
+																  static_cast<int>(ceil(viewSize.y / 2.0f))) - sf::Vector2i{1,1};
 	sf::Vector2i end = getPlayer().getPosition() + sf::Vector2i(static_cast<int>(floor(viewSize.x / 2.0f)),
-																	  static_cast<int>(floor(viewSize.y / 2.0f))) + sf::Vector2i{1,1};
+																static_cast<int>(floor(viewSize.y / 2.0f))) + sf::Vector2i{1,1};
 
 	for(int i = start.x; i <= end.x; i++) {
 		for(int j = start.y; j <= end.y; j++) {

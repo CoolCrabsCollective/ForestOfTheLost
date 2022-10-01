@@ -103,7 +103,8 @@ void TopDownScreen::show() {
 	getGame().addInputListener(this);
 
     heart_sprite.setTexture(*getAssets().get(GameAssets::HEART));
-    heart_sprite.setScale({ 50.0f * 7.0f / 8.0f / heart_sprite.getTexture()->getSize().x, 50.0f * 7.0f / 8.0f / heart_sprite.getTexture()->getSize().y });
+    heart_sprite.setScale({ 50.0f * 7.0f / 8.0f / heart_sprite.getTexture()->getSize().x,
+							50.0f * 7.0f / 8.0f / heart_sprite.getTexture()->getSize().y });
     spookyShader = getAssets().get(GameAssets::SPOOKY_SHADER);
 
     Entity* hiding_spot1 = new HidingSpot(world, sf::Vector2i(1, 1));

@@ -118,7 +118,7 @@ file(GLOB SOURCE_FILES
         ${PROJECT_SOURCE_DIR}/include/*/*/*.h)
 
 add_library(${PARENT_PROJECT_NAME}_libclient STATIC ${SOURCE_FILES})
-add_executable(${PARENT_PROJECT_NAME} ${SOURCE_FILES} src/world/HidingSpot.cpp include/world/HidingSpot.h src/world/Monster.cpp include/world/Monster.h)
+add_executable(${PARENT_PROJECT_NAME} ${SOURCE_FILES} src/world/HidingSpot.cpp include/world/HidingSpot.h src/world/Monster.cpp include/world/Monster.h src/world/Bush.cpp include/world/Bush.h include/world/Solid.h)
 
 target_link_libraries(${PARENT_PROJECT_NAME}
         WizEngine
