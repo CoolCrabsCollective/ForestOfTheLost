@@ -37,6 +37,10 @@ public:
     inline sf::Vector2i getDestination() const {
         return destination;
     }
+
+	inline virtual int getZOrder() const {
+		return 0;
+	}
 };
 
 #endif //LD51_CLIENT_ENTITY_H

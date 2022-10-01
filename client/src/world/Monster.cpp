@@ -10,7 +10,7 @@ Monster::Monster(World &world, sf::Vector2i position) : Entity(world) {
     this->position = position;
     this->sprite = sf::Sprite(*world.getAssets().get(GameAssets::BAT));
     renderPosition = {static_cast<float>(position.x), static_cast<float>(-position.y)};
-    findNewSpot(); // not good! What if the entities aren't added yet
+    findNewSpot(); // make sure to spawn the monsters after the hiding spots exist in the world!
 }
 
 void Monster::tick(float delta) {
@@ -22,7 +22,9 @@ void Monster::tick(float delta) {
         actionProgress += (delta / 1000) * movingSpeed;
 
         if (actionProgress > 1) {
+            sf::Vector2i oldPos = position;
             position = destination;
+            world.moveEntity(oldPos, this);
             actionProgress = 0;
         } else {
             renderPosition = (sf::Vector2f) position + sf::Vector2f(destination - position) * actionProgress;
@@ -48,13 +50,24 @@ void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) con
 
 void Monster::findNewSpot() {
     // Find the closest hiding spot
-    for (int i = 0 ; i < world.getEntities().size() ; i++) {
-        if(HidingSpot* spot = dynamic_cast<HidingSpot*>(world.getEntities().at(i))) {
-            // Don't want to go to the same bush
-            if (spot->getPosition() == position)
+    for (int searchX = position.x  - searchRadius ; searchX <= position.x + searchRadius ; searchX++) {
+        for (int searchY = position.y  - searchRadius ; searchY <= position.y + searchRadius ; searchY++) {
+            if (searchX == position.x && searchY == position.y)
                 continue;
 
-            destination = spot->getPosition();
+            // TODO: check no one else is going there
+
+            auto entitiesAt = world.getEntitiesAt({searchX, searchY});
+
+            for (int k = 0 ; k < entitiesAt.size() ; k++) {
+                if(HidingSpot* spot = dynamic_cast<HidingSpot*>(entitiesAt.at(k))) {
+                    destination = spot->getPosition();
+                    return;
+                }
+            }
         }
     }
+
+
+
 }

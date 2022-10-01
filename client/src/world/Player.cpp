@@ -8,7 +8,13 @@
 #include "GameAssets.h"
 #include "world/Direction.h"
 
-Player::Player(World& world) : Entity(world), Alive<int>(3), textureMap() {
+Player::Player(World& world)
+	: Entity(world),
+	  Alive<int>(3),
+	  textureMap(),
+	  Solid(),
+	  currentDir(NORTH),
+	  destinationDir(NORTH) {
 	textureMap[Direction::NORTH] = world.getAssets().get(GameAssets::PLAYER_BACK);
 	textureMap[Direction::SOUTH] = world.getAssets().get(GameAssets::PLAYER_FRONT);
 	textureMap[Direction::EAST] = world.getAssets().get(GameAssets::PLAYER_RIGHT);
@@ -32,7 +38,10 @@ void Player::tick(float delta) {
         actionProgress += (delta / 1000) * movingSpeed;
 
         if (actionProgress > 1) {
+            sf::Vector2i oldPos = position;
             position = destination;
+			renderPosition = (sf::Vector2f) position;
+            world.moveEntity(oldPos, this);
             actionProgress = 0;
         } else {
             renderPosition = (sf::Vector2f) position + sf::Vector2f(destination - position) * actionProgress;
@@ -51,12 +60,12 @@ void Player::tick(float delta) {
 			}
 		}
     } else if (inputDir.has_value()) {
-		if(inputDir.value() == currentDir)
-        	destination = position + directionToUnitVector(inputDir.value());
+		if(inputDir.value() == currentDir) {
+            destination = position + directionToUnitVector(inputDir.value());
             if (world.tileOccupied(destination, this)) {
                 destination = position;
             }
-		else
+        } else
 			destinationDir = inputDir.value();
     }
 }
@@ -66,6 +75,14 @@ void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) cons
 	sprite.setPosition({renderPosition.x, -renderPosition.y});
 	sprite.setScale({ 1.0f / sprite.getTexture()->getSize().x, 1.0f / sprite.getTexture()->getSize().y });
 	target.draw(sprite);
+}
+
+bool Player::isBlocking(sf::Vector2i vec) {
+    return vec == position || vec == destination;
+}
+
+int Player::getZOrder() const {
+	return -1;
 }
 
 

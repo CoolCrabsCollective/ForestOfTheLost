@@ -5,37 +5,62 @@
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
 #include "util/SimplexNoise.h"
-#include "world/HidingSpot.h"
 #include "GameAssets.h"
+#include "world/Bush.h"
+#include "world/Monster.h"
+#include "world/Solid.h"
+#include "world/Tree.h"
 
 World::World(wiz::AssetLoader& assets)
 		: assets(assets),
 		  player(*this),
 		  terrainMap(),
+          entityMap(),
 		  terrain_textures() {
 	terrain_textures[TerrainType::GRASS] = assets.get(GameAssets::GRASS_TERRAIN);
 	terrain_textures[TerrainType::WATER] = assets.get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = assets.get(GameAssets::SAND_TERRAIN);
 
-	entities.push_back(&player);
+    addEntity(&player);
+
+	srand(20221001);
+
+	double offsetX = rand() * 10.0 / RAND_MAX;
+	double offsetY = rand() * 10.0 / RAND_MAX;
 
 	for(int i = -200; i <= 200; i++) {
 		for(int j = -200; j <= 200; j++) {
-			double nx = i / 400.0f - 0.5f;
-			double ny = j / 400.0f - 0.5f;
+			double nx = i / 400.0 - 0.5 + offsetX;
+			double ny = j / 400.0 - 0.5 + offsetY;
 
-			nx *= 5.0f;
-			ny *= 5.0f;
+			nx *= 5.0;
+			ny *= 5.0;
 
 			double noise = SimplexNoise::noise(nx, ny);
-			if(noise < -0.75f)
+			if(noise < -0.75)
 				terrainMap[sf::Vector2i(i, j)] = TerrainType::WATER;
-			else if(noise < -0.7f)
+			else if(noise < -0.7)
 				terrainMap[sf::Vector2i(i, j)] = TerrainType::SAND;
-			else if(noise > 0.5f)
-				entities.push_back(new HidingSpot(*this, sf::Vector2i(i, j)));
+
+			if(noise > -0.75) {
+				double nx2 = i / 400.0 - 0.5 + offsetX * 9.0;
+				double ny2 = j / 400.0 - 0.5 + offsetY * 9.0;
+
+				nx2 *= 5000.0;
+				ny2 *= 5000.0;
+
+				double noise2 = SimplexNoise::noise(nx2, ny2);
+
+				if(noise2 > 0.5)
+					addEntity(new Bush(*this, sf::Vector2i(i, j)));
+			}
+
 		}
 	}
+
+    Entity* bat1 = new Monster(*this, sf::Vector2i(0, 1));
+
+    addEntity(bat1);
 }
 
 TerrainType World::getTerrainType(sf::Vector2i position) const {
@@ -45,10 +70,6 @@ TerrainType World::getTerrainType(sf::Vector2i position) const {
 }
 
 const std::vector<Entity*>& World::getEntities() const {
-	return entities;
-}
-
-std::vector<Entity*>& World::getEntities() {
 	return entities;
 }
 
@@ -64,20 +85,28 @@ wiz::AssetLoader& World::getAssets() {
 	return assets;
 }
 
-bool World::tileOccupied(sf::Vector2i tile, Entity *exclude) {
+bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
 
-	/*
 	if(terrainMap[tile] == WATER)
 		return true;
 
-    for (Entity *entity : entities) {
-        bool occupied = (tile == entity->getPosition() || (dynamic_cast<const Player*>(entity) != nullptr && tile == entity->getDestination())) && exclude != entity;
-        if (occupied) {
-            return true;
-        }
-    }*/
+	int solid_range = 1;
 
-    return false;
+	for(int i = -solid_range; i <= solid_range; i++) {
+		for(int j = -solid_range; j <= solid_range; j++) {
+			for(Entity* entity : entityMap[tile + sf::Vector2i{i, j}]) {
+                if (entity == exclude)
+                    continue;
+
+				Solid* solid = dynamic_cast<Solid*>(entity);
+
+				if(solid && solid->isBlocking(tile))
+					return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 void World::tick(float delta) {
@@ -86,14 +115,35 @@ void World::tick(float delta) {
     }
 }
 
+const std::vector<Entity *> &World::getEntitiesAt(sf::Vector2i position) const {
+    return entityMap.contains(position) ?  entityMap.at(position) : empty;
+}
+
+void World::addEntity(Entity* entity) {
+    entities.push_back(entity);
+    if (entityMap.contains(entity->getPosition()))
+        entityMap[entity->getPosition()].push_back(entity);
+    else
+        entityMap[entity->getPosition()] = {entity};
+}
+
+void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
+    std::remove(entityMap[oldPosition].begin(), entityMap[oldPosition].end(),entity);
+
+	if (entityMap.contains(entity->getPosition()))
+		entityMap[entity->getPosition()].push_back(entity);
+	else
+		entityMap[entity->getPosition()] = {entity};
+}
+
 void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
 
-	sf::Vector2f viewSize = {16.0f, 9.0f};
+	sf::Vector2f viewSize = { 16.0f, 9.0f };
 
 	sf::Vector2i start = getPlayer().getPosition() - sf::Vector2i(static_cast<int>(ceil(viewSize.x / 2.0f)),
-																		static_cast<int>(ceil(viewSize.y / 2.0f))) - sf::Vector2i{1,1};
+																  static_cast<int>(ceil(viewSize.y / 2.0f))) - sf::Vector2i{1,1};
 	sf::Vector2i end = getPlayer().getPosition() + sf::Vector2i(static_cast<int>(floor(viewSize.x / 2.0f)),
-																	  static_cast<int>(floor(viewSize.y / 2.0f))) + sf::Vector2i{1,1};
+																static_cast<int>(floor(viewSize.y / 2.0f))) + sf::Vector2i{1,1};
 
 	for(int i = start.x; i <= end.x; i++) {
 		for(int j = start.y; j <= end.y; j++) {
@@ -107,8 +157,20 @@ void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
 
 	for(Entity* entity : getEntities())
 		if(entity->getPosition().x >= start.x
-		&& entity->getPosition().y >= start.y
-		&& entity->getPosition().x <= end.x
-		&& entity->getPosition().y <= end.y)
-			target.draw(*entity);
+		   && entity->getPosition().y >= start.y
+		   && entity->getPosition().x <= end.x
+		   && entity->getPosition().y <= end.y)
+			entityDrawList.push_back(entity);
+
+	std::sort(entityDrawList.begin(), entityDrawList.end(), [](Entity* a, Entity* b) {
+		return a->getPosition().y > b->getPosition().y
+			|| a->getPosition().y == b->getPosition().y
+			&& (a->getZOrder() < b->getZOrder()
+			|| a->getZOrder() == b->getZOrder()
+			&& a->getPosition().x > b->getPosition().x);
+	});
+
+	for(sf::Drawable* drawable : entityDrawList)
+		target.draw(*drawable);
+	entityDrawList.clear();
 }
