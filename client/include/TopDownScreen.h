@@ -6,9 +6,12 @@
 #define LD51_CLIENT_TOPDOWNSCREEN_H
 
 #include <WIZ/game/Screen.h>
+#include "world/World.h"
 
 class TopDownScreen : public wiz::Screen, public wiz::WindowListener {
 	std::string name = "TopDownScreen";
+
+	World world;
 public:
 	TopDownScreen(wiz::Game& game);
 

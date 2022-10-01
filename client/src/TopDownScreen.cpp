@@ -5,7 +5,7 @@
 #include "TopDownScreen.h"
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
-		: Screen(game) {}
+		: Screen(game), world() {}
 
 void TopDownScreen::tick(float delta) {
 
@@ -13,6 +13,8 @@ void TopDownScreen::tick(float delta) {
 
 void TopDownScreen::render(sf::RenderTarget& target) {
 
+	target.clear();
+	target.setView(sf::View({ world.getPlayer().x() + 0.5f, world.getPlayer().y() + 0.5f }, {16.0f, 9.0f}));
 }
 
 void TopDownScreen::show() {
