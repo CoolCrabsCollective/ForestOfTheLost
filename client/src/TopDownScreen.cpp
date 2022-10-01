@@ -7,6 +7,7 @@
 #include "GameAssets.h"
 #include "world/HidingSpot.h"
 #include "world/Monster.h"
+#include "WIZ/input/Mapping.h"
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
 		: Screen(game), world(game.getAssets()) {
@@ -35,21 +36,22 @@ void TopDownScreen::tick(float delta) {
 }
 
 void TopDownScreen::processInput() {
+
     bool eastPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)
-                        || sf::Joystick::isButtonPressed(0, 0);
+                        || sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) > 0;
 
     bool northPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)
-                        || sf::Joystick::isButtonPressed(0, 1);
+                        || sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y) < 0;
 
     bool westPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)
-                        || sf::Joystick::isButtonPressed(0, 2);
+                        ||  sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) < 0;
 
     bool southPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)
-                        || sf::Joystick::isButtonPressed(0, 2);
+                        ||  sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y) > 0;
 
     if (eastPressed && !westPressed)
         world.getPlayer().move(EAST);
