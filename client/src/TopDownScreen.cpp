@@ -18,6 +18,14 @@ void TopDownScreen::tick(float delta) {
 
     if (tenSecAccumulator > 10000.0) {
         std::cout << "10 seconds passed!" << std::endl;
+
+        for (int i = 0 ; i < world.getEntities().size() ; i++) {
+            if(Monster* monster = dynamic_cast<Monster*>(world.getEntities().at(i))) {
+                // Don't want to go to the same bush
+                monster->findNewSpot();
+            }
+        }
+
         tenSecAccumulator = 0;
     }
 

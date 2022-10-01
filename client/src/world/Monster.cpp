@@ -50,7 +50,10 @@ void Monster::findNewSpot() {
     // Find the closest hiding spot
     for (int i = 0 ; i < world.getEntities().size() ; i++) {
         if(HidingSpot* spot = dynamic_cast<HidingSpot*>(world.getEntities().at(i))) {
-            // do the check later
+            // Don't want to go to the same bush
+            if (spot->getPosition() == position)
+                continue;
+
             destination = spot->getPosition();
         }
     }
