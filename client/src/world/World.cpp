@@ -57,11 +57,9 @@ World::World(wiz::AssetLoader& assets)
 		}
 	}
 
-    Entity* bat1 = new Monster(*this, sf::Vector2i(2, 1));
-    Entity* bat2 = new Monster(*this, sf::Vector2i(-2, -1));
+    Entity* bat1 = new Monster(*this, sf::Vector2i(0, 1));
 
     addEntity(bat1);
-    addEntity(bat2);
 }
 
 TerrainType World::getTerrainType(sf::Vector2i position) const {
@@ -96,6 +94,9 @@ bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
 	for(int i = -solid_range; i <= solid_range; i++) {
 		for(int j = -solid_range; j <= solid_range; j++) {
 			for(Entity* entity : entityMap[tile + sf::Vector2i{i, j}]) {
+                if (entity == exclude)
+                    continue;
+
 				Solid* solid = dynamic_cast<Solid*>(entity);
 
 				if(solid && solid->isBlocking(tile))
