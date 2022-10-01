@@ -6,6 +6,7 @@
 #include "TopDownScreen.h"
 #include "GameAssets.h"
 #include "world/HidingSpot.h"
+#include "HealthComponent.h"
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
 		: Screen(game), world(game.getAssets()), terrain_textures() {
@@ -57,13 +58,28 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 	sf::Sprite fbo(frameBuffer.getTexture());
 	target.clear();
 	target.draw(fbo, spookyShader);
+	drawUI(target);
 }
+
+
+void TopDownScreen::drawUI(sf::RenderTarget &target) {
+    sf::Vector2f viewSize = {1280, 720};
+    target.setView(sf::View({viewSize.x / 2.0f, viewSize.y / 2.0f}, viewSize ));
+    for (int i = 0; i < world.getPlayer().get_health(); i++)
+    {
+        heart_sprite.setPosition({static_cast<float>(50 + 50* i), 50});
+        target.draw(heart_sprite);
+    }
+}
+
 
 void TopDownScreen::show() {
     sf::Vector2f viewSize = {16.0f, 9.0f};
 	getGame().addWindowListener(this);
 	getGame().addInputListener(this);
 
+    heart_sprite.setTexture(*getAssets().get(GameAssets::HEART));
+    heart_sprite.setScale({ heart_sprite.getTexture()->getSize().x / 8.0f, heart_sprite.getTexture()->getSize().y / 8.0f });
     spookyShader = getAssets().get(GameAssets::SPOOKY_SHADER);
 	terrain_textures[TerrainType::GRASS] = getGame().getAssets().get(GameAssets::GRASS_TERRAIN);
 	terrain_textures[TerrainType::WATER] = getGame().getAssets().get(GameAssets::WATER_TERRAIN);
@@ -87,4 +103,3 @@ const std::string& TopDownScreen::getName() const {
 void TopDownScreen::windowClosed() {
 	getGame().getWindow().close();
 }
-

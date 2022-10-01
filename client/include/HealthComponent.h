@@ -24,4 +24,6 @@ protected:
 };
 
 
+template class HealthComponent<int>;
+template class HealthComponent<float>;
 #endif //LD51_CLIENT_HEALTHCOMPONENT_H
