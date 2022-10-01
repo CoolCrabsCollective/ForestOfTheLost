@@ -16,7 +16,11 @@ const std::string &ShaderAsset::getName() const {
 
 void *ShaderAsset::load() const {
     auto* shader = new sf::Shader();
-    if(!shader->loadFromFile(vsPath, fsPath))
+#ifdef OS_SWITCH
+    if(!shader->loadFromFile("romfs/" + vsPath, "romfs/" + fsPath))
+#else
+    if(!shader->loadFromFile("res/" + vsPath, "res/" + fsPath))
+#endif
         throw std::runtime_error("Shader is BAD");
     return shader;
 }

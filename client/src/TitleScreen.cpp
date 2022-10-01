@@ -35,13 +35,14 @@ void TitleScreen::tick(float delta) {
 
 void TitleScreen::render(sf::RenderTarget& target) {
 	target.clear();
-	target.draw(background);
+	target.draw(background, spookyShader);
 	target.draw(logo);
 }
 
 void TitleScreen::show() {
 	logo.setTexture(*getAssets().get(GameAssets::LOGO));
 	background.setTexture(*getAssets().get(GameAssets::BACKGROUND));
+	spookyShader = getAssets().get(GameAssets::SPOOKY_SHADER);
 
 	getGame().addWindowListener(this);
 
