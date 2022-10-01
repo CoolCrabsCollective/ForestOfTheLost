@@ -40,15 +40,6 @@ World::World(wiz::AssetLoader& assets)
 		}
 	}
 
-    Entity* hiding_spot1 = new HidingSpot(*this, sf::Vector2i(1, 1));
-    Entity* hiding_spot2 = new HidingSpot(*this, sf::Vector2i(-1, 2));
-    Entity* hiding_spot3 = new HidingSpot(*this, sf::Vector2i(-2, -2));
-    Entity* hiding_spot4 = new HidingSpot(*this, sf::Vector2i(0, -4));
-    addEntity(hiding_spot1);
-    addEntity(hiding_spot2);
-    addEntity(hiding_spot3);
-    addEntity(hiding_spot4);
-
     Entity* bat1 = new Monster(*this, sf::Vector2i(2, 1));
     Entity* bat2 = new Monster(*this, sf::Vector2i(-2, -1));
 
@@ -114,7 +105,11 @@ void World::addEntity(Entity* entity) {
 
 void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
     std::remove(entityMap[oldPosition].begin(), entityMap[oldPosition].end(),entity);
-    addEntity(entity);
+
+	if (entityMap.contains(entity->getPosition()))
+		entityMap[entity->getPosition()].push_back(entity);
+	else
+		entityMap[entity->getPosition()] = {entity};
 }
 
 void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
