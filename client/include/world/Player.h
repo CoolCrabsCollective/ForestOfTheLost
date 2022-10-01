@@ -6,10 +6,10 @@
 #define LD51_CLIENT_PLAYER_H
 
 
-#include <optional>
 #include <map>
 #include "Entity.h"
 #include "world/directions.h"
+#include <optional>
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/RenderStates.hpp"
 #include "SFML/Graphics/Sprite.hpp"
@@ -26,9 +26,8 @@ class Player : public Entity {
 
     float actionProgress = 0;
 
-
-
     float movingSpeed = 2.0;
+    float rotationSpeed = 1.0;
 
     void rotateToHeading(sf::Vector2i direction);
     bool checkCollision();
