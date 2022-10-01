@@ -23,21 +23,38 @@ World::World(wiz::AssetLoader& assets)
 
     addEntity(&player);
 
+	srand(20221001);
+
+	double offsetX = rand() * 10.0 / RAND_MAX;
+	double offsetY = rand() * 10.0 / RAND_MAX;
+
 	for(int i = -200; i <= 200; i++) {
 		for(int j = -200; j <= 200; j++) {
-			double nx = i / 400.0f - 0.5f;
-			double ny = j / 400.0f - 0.5f;
+			double nx = i / 400.0 - 0.5 + offsetX;
+			double ny = j / 400.0 - 0.5 + offsetY;
 
-			nx *= 5.0f;
-			ny *= 5.0f;
+			nx *= 5.0;
+			ny *= 5.0;
 
 			double noise = SimplexNoise::noise(nx, ny);
-			if(noise < -0.75f)
+			if(noise < -0.75)
 				terrainMap[sf::Vector2i(i, j)] = TerrainType::WATER;
-			else if(noise < -0.7f)
+			else if(noise < -0.7)
 				terrainMap[sf::Vector2i(i, j)] = TerrainType::SAND;
-			else if(noise > 0.5f && noise < 0.9f)
-                addEntity(new Bush(*this, sf::Vector2i(i, j)));
+
+			if(noise > -0.75) {
+				double nx2 = i / 400.0 - 0.5 + offsetX * 9.0;
+				double ny2 = j / 400.0 - 0.5 + offsetY * 9.0;
+
+				nx2 *= 5000.0;
+				ny2 *= 5000.0;
+
+				double noise2 = SimplexNoise::noise(nx2, ny2);
+
+				if(noise2 > 0.5)
+					addEntity(new Bush(*this, sf::Vector2i(i, j)));
+			}
+
 		}
 	}
 
