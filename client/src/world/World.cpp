@@ -7,6 +7,7 @@
 #include "util/SimplexNoise.h"
 #include "world/HidingSpot.h"
 #include "GameAssets.h"
+#include "world/Monster.h"
 
 World::World(wiz::AssetLoader& assets)
 		: assets(assets),
@@ -37,6 +38,21 @@ World::World(wiz::AssetLoader& assets)
                 addEntity(new HidingSpot(*this, sf::Vector2i(i, j)));
 		}
 	}
+
+    Entity* hiding_spot1 = new HidingSpot(*this, sf::Vector2i(1, 1));
+    Entity* hiding_spot2 = new HidingSpot(*this, sf::Vector2i(-1, 2));
+    Entity* hiding_spot3 = new HidingSpot(*this, sf::Vector2i(-2, -2));
+    Entity* hiding_spot4 = new HidingSpot(*this, sf::Vector2i(0, -4));
+    addEntity(hiding_spot1);
+    addEntity(hiding_spot2);
+    addEntity(hiding_spot3);
+    addEntity(hiding_spot4);
+
+    Entity* bat1 = new Monster(*this, sf::Vector2i(2, 1));
+    Entity* bat2 = new Monster(*this, sf::Vector2i(-2, -1));
+
+    addEntity(bat1);
+    addEntity(bat2);
 }
 
 TerrainType World::getTerrainType(sf::Vector2i position) const {

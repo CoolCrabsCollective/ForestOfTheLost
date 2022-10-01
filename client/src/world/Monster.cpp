@@ -22,7 +22,9 @@ void Monster::tick(float delta) {
         actionProgress += (delta / 1000) * movingSpeed;
 
         if (actionProgress > 1) {
+            sf::Vector2i oldPos = position;
             position = destination;
+            world.moveEntity(oldPos, this);
             actionProgress = 0;
         } else {
             renderPosition = (sf::Vector2f) position + sf::Vector2f(destination - position) * actionProgress;
