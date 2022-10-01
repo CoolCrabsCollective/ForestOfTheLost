@@ -1,9 +1,9 @@
 //
-// Created by Winter on 01/10/2022.
+// Created by William on 01/10/2022.
 //
 
-#ifndef LD51_CLIENT_BUSH_H
-#define LD51_CLIENT_BUSH_H
+#ifndef LD51_CLIENT_TREE_H
+#define LD51_CLIENT_TREE_H
 
 
 #include "HidingSpot.h"
@@ -17,4 +17,4 @@ public:
 };
 
 
-#endif //LD51_CLIENT_BUSH_H
+#endif //LD51_CLIENT_TREE_H
