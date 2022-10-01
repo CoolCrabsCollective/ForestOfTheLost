@@ -12,8 +12,12 @@
 class Monster : public Entity {
     mutable sf::Sprite sprite;
     bool findingNewSpot;
-    HidingSpot* closestHidingSpot;
     sf::Vector2f renderPosition = {};
+    Direction currentDir = NORTH;
+    Direction destinationDir = NORTH;
+    float actionProgress = 0;
+    float movingSpeed = 0.1;
+    float rotationSpeed = 5;
 public:
     Monster(World &world, sf::Vector2i position);
     void tick(float delta) override;
