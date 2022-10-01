@@ -35,7 +35,7 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 	}
 
 	for(Entity* entity : world.getEntities())
-		target.draw(*entity);
+		frameBuffer.draw(*entity);
 
 	spookyShader->setUniform("timeAccumulator", timeAccumulator);
 	frameBuffer.display(); // done drawing fbo
