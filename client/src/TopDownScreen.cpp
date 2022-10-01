@@ -2,6 +2,7 @@
 // Created by Winter on 01/10/2022.
 //
 
+#include <iostream>
 #include "TopDownScreen.h"
 #include "GameAssets.h"
 #include "world/HidingSpot.h"
@@ -12,6 +13,12 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
 
 void TopDownScreen::tick(float delta) {
     timeAccumulator += delta;
+    tenSecAccumulator += delta;
+
+    if (tenSecAccumulator > 10000.0) {
+        std::cout << "10 seconds passed!" << std::endl;
+        tenSecAccumulator = 0;
+    }
 }
 
 
@@ -23,7 +30,6 @@ void TopDownScreen::drawWorld(sf::RenderTarget &target) {
                                                                         static_cast<int>(ceil(viewSize.y / 2.0f)));
     sf::Vector2i end = world.getPlayer().getPosition() + sf::Vector2i(static_cast<int>(floor(viewSize.x / 2.0f)),
                                                                       static_cast<int>(floor(viewSize.y / 2.0f)));
-
 
     for(int i = start.x; i <= end.x; i++) {
         for(int j = start.y; j <= end.y; j++) {
