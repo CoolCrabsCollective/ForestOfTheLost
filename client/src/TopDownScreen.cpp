@@ -63,10 +63,7 @@ void TopDownScreen::show() {
 	terrain_textures[TerrainType::WATER] = getGame().getAssets().get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = getGame().getAssets().get(GameAssets::SAND_TERRAIN);
 
-    sf::Sprite* hiding_spot_sprite = new sf::Sprite(*getGame().getAssets().get(GameAssets::HIDING_SPOT));
-    hiding_spot_sprite->setScale({1.0f / hiding_spot_sprite->getTexture()->getSize().x, 1.0f / hiding_spot_sprite->getTexture()->getSize().y});
-    Entity* hiding_spot = new HidingSpot(world, *new sf::Vector2i(3, 3), *hiding_spot_sprite);
-
+    Entity* hiding_spot = new HidingSpot(world, sf::Vector2i(1, 1));
     world.getEntities().push_back(hiding_spot);
 }
 

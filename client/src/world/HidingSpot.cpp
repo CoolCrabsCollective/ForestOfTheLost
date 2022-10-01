@@ -3,27 +3,20 @@
 //
 
 #include "world/HidingSpot.h"
+#include "GameAssets.h"
+#include <SFML/Graphics/RenderTarget.hpp>
 
-sf::Vector2i HidingSpot::getPosition() const {
-    return position;
-}
-sf::Sprite HidingSpot::getSprite() const {
-    return sprite;
-}
-
-HidingSpot::HidingSpot(World &world, sf::Vector2i position, sf::Sprite sprite) : Entity(world) {
+HidingSpot::HidingSpot(World &world, sf::Vector2i position) : Entity(world) {
     this->position = position;
-    this->sprite = sprite;
+    this->sprite = sf::Sprite(*world.getAssets().get(GameAssets::HIDING_SPOT));;
 }
 
 void HidingSpot::tick(float delta) {
 }
 
 void HidingSpot::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
-    /*
-    sprite.setTexture(*textureMap.at(currentDir));
-    sprite.setPosition(renderPosition);
-    //sprite.setScale(1.0f / sprite.getTexture())
-     */
+    sprite.setPosition({static_cast<float>(position.x), static_cast<float>(position.y)});
+    sprite.setScale({ 1.0f / sprite.getTexture()->getSize().x, 1.0f / sprite.getTexture()->getSize().y });
+    target.draw(sprite);
 }
 

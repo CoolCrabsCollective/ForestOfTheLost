@@ -19,7 +19,6 @@ class World {
 	std::vector<Entity*> entities;
 	Player player;
 
-
 public:
 	World(wiz::AssetLoader& assets);
 
