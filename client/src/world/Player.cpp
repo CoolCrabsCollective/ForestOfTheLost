@@ -11,8 +11,8 @@
 Player::Player(World& world) : Entity(world), HealthComponent<int>(3), textureMap() {
 	textureMap[Direction::NORTH] = world.getAssets().get(GameAssets::PLAYER_BACK);
 	textureMap[Direction::SOUTH] = world.getAssets().get(GameAssets::PLAYER_FRONT);
-	textureMap[Direction::EAST] = world.getAssets().get(GameAssets::PLAYER_LEFT);
-	textureMap[Direction::WEST] = world.getAssets().get(GameAssets::PLAYER_RIGHT);
+	textureMap[Direction::EAST] = world.getAssets().get(GameAssets::PLAYER_RIGHT);
+	textureMap[Direction::WEST] = world.getAssets().get(GameAssets::PLAYER_LEFT);
 }
 
 sf::Vector2f Player::getRenderPosition() const {
@@ -29,7 +29,7 @@ void Player::tick(float delta) {
 
     renderPosition = (sf::Vector2f) position;
     if (moving) {
-        actionProgress += (delta / 1000)*movingSpeed;
+        actionProgress += (delta / 1000) * movingSpeed;
 
         if (actionProgress > 1) {
             position = destination;
@@ -38,19 +38,22 @@ void Player::tick(float delta) {
             renderPosition = (sf::Vector2f) position + sf::Vector2f(destination - position) * actionProgress;
         }
     } else if (rotating) {
-        actionProgress += (delta / 1000)*rotationSpeed;
+        actionProgress += (delta / 1000) * rotationSpeed;
 
         if (actionProgress > 1) {
             currentDir = destinationDir;
             actionProgress = 0;
         }
     } else if (inputDir.has_value()) {
-        destination = position + directionToUnitVector(inputDir.value());
+		if(inputDir.value() == currentDir)
+        	destination = position + directionToUnitVector(inputDir.value());
+		else
+			destinationDir = inputDir.value();
     }
 }
 
 void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
-	sprite.setTexture(*textureMap.at(currentDir));
+	sprite.setTexture(*textureMap.at(destinationDir));
 	sprite.setPosition({renderPosition.x, -renderPosition.y});
 	sprite.setScale({ 1.0f / sprite.getTexture()->getSize().x, 1.0f / sprite.getTexture()->getSize().y });
 	target.draw(sprite);

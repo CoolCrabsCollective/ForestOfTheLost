@@ -6,6 +6,7 @@
 #include "TopDownScreen.h"
 #include "GameAssets.h"
 #include "world/HidingSpot.h"
+#include "HealthComponent.h"
 #include "world/Monster.h"
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
@@ -43,15 +44,16 @@ void TopDownScreen::processInput() {
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)
                         || sf::Joystick::isButtonPressed(0, 2);
 
-    if (eastPressed && !westPressed) {
+    if (eastPressed && !westPressed)
         world.getPlayer().move(EAST);
-    } else if (northPressed && !southPressed) {
+    else if (northPressed && !southPressed)
         world.getPlayer().move(NORTH);
-    } else if (westPressed && !eastPressed) {
+    else if (westPressed && !eastPressed)
         world.getPlayer().move(WEST);
-    } else if (southPressed && !northPressed) {
+    else if (southPressed && !northPressed)
         world.getPlayer().move(SOUTH);
-    }
+    else
+		world.getPlayer().move({});
 }
 
 
@@ -82,7 +84,7 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 
     frameBuffer.create(1280, 720);
     frameBuffer.clear();
-    frameBuffer.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f, world.getPlayer().getRenderPosition().y + 0.5f }, viewSize));
+    frameBuffer.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f, -world.getPlayer().getRenderPosition().y + 0.5f }, viewSize));
 	drawWorld(frameBuffer);
 
 	spookyShader->setUniform("timeAccumulator", timeAccumulator);
@@ -90,13 +92,28 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 	sf::Sprite fbo(frameBuffer.getTexture());
 	target.clear();
 	target.draw(fbo, spookyShader);
+	drawUI(target);
 }
+
+
+void TopDownScreen::drawUI(sf::RenderTarget &target) {
+    sf::Vector2f viewSize = {1280, 720};
+    target.setView(sf::View({viewSize.x / 2.0f, viewSize.y / 2.0f}, viewSize ));
+    for (int i = 0; i < world.getPlayer().get_health(); i++)
+    {
+        heart_sprite.setPosition({static_cast<float>(50 + 50* i), 50});
+        target.draw(heart_sprite);
+    }
+}
+
 
 void TopDownScreen::show() {
     sf::Vector2f viewSize = {16.0f, 9.0f};
 	getGame().addWindowListener(this);
 	getGame().addInputListener(this);
 
+    heart_sprite.setTexture(*getAssets().get(GameAssets::HEART));
+    heart_sprite.setScale({ heart_sprite.getTexture()->getSize().x / 8.0f, heart_sprite.getTexture()->getSize().y / 8.0f });
     spookyShader = getAssets().get(GameAssets::SPOOKY_SHADER);
 	terrain_textures[TerrainType::GRASS] = getGame().getAssets().get(GameAssets::GRASS_TERRAIN);
 	terrain_textures[TerrainType::WATER] = getGame().getAssets().get(GameAssets::WATER_TERRAIN);

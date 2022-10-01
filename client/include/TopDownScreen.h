@@ -32,6 +32,8 @@ public:
 
 	void drawWorld(sf::RenderTarget& target);
 
+	void drawUI(sf::RenderTarget& target);
+
 	void tick(float delta) override;
 
 	void render(sf::RenderTarget& target) override;

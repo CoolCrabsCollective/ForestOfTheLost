@@ -27,6 +27,8 @@ namespace GameAssets {
 	ASSET(wiz::TextureAsset, WHITE_PIXEL, ("gfx/white_pixel.png"))
 	ASSET(wiz::TextureAsset, LOGO, ("gfx/logo.png"))
 
+	ASSET(wiz::TextureAsset, HEART, ("gfx/heart.png"))
+
 	ASSET(ShaderAsset, SPOOKY_SHADER, ("shaders/spooky.vs", "shaders/spooky.fs"))
 
     // Terrain
@@ -38,7 +40,7 @@ namespace GameAssets {
     ASSET(wiz::TextureAsset, HIDING_SPOT, ("gfx/bush.png"))
 
     // Monsterse
-    ASSET(wiz::TextureAsset, BAT, ("gfx/bat.png"))
+    ASSET(wiz::TextureAsset, BAT, ("gfx/bat2.png"))
 
     // Player
 	ASSET(wiz::TextureAsset, PLAYER_BACK, ("gfx/player/back.png"))
