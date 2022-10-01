@@ -40,7 +40,7 @@ namespace GameAssets {
     ASSET(wiz::TextureAsset, HIDING_SPOT, ("gfx/bush.png"))
 
     // Monsterse
-    ASSET(wiz::TextureAsset, BAT, ("gfx/bat.png"))
+    ASSET(wiz::TextureAsset, BAT, ("gfx/bat2.png"))
 
     // Player
 	ASSET(wiz::TextureAsset, PLAYER_BACK, ("gfx/player/back.png"))
