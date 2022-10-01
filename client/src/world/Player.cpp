@@ -8,7 +8,13 @@
 #include "GameAssets.h"
 #include "world/Direction.h"
 
-Player::Player(World& world) : Entity(world), Alive<int>(3), textureMap(), Solid() {
+Player::Player(World& world)
+	: Entity(world),
+	  Alive<int>(3),
+	  textureMap(),
+	  Solid(),
+	  currentDir(NORTH),
+	  destinationDir(NORTH) {
 	textureMap[Direction::NORTH] = world.getAssets().get(GameAssets::PLAYER_BACK);
 	textureMap[Direction::SOUTH] = world.getAssets().get(GameAssets::PLAYER_FRONT);
 	textureMap[Direction::EAST] = world.getAssets().get(GameAssets::PLAYER_RIGHT);
@@ -34,6 +40,7 @@ void Player::tick(float delta) {
         if (actionProgress > 1) {
             sf::Vector2i oldPos = position;
             position = destination;
+			renderPosition = (sf::Vector2f) position;
             world.moveEntity(oldPos, this);
             actionProgress = 0;
         } else {

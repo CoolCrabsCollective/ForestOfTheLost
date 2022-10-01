@@ -19,8 +19,8 @@
 class Player : public Entity, public Alive<int>, public Solid {
     sf::Vector2f renderPosition = {};
 
-    Direction currentDir = NORTH;
-    Direction destinationDir = NORTH;
+    Direction currentDir;
+    Direction destinationDir;
 
     std::optional<Direction> inputDir;
 
@@ -40,7 +40,7 @@ public:
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
 
-    bool isBlocking(sf::Vector2i vec);
+    bool isBlocking(sf::Vector2i vec) override;
 
 	int getZOrder() const override;
 };
