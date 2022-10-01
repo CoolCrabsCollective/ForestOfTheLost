@@ -2,10 +2,10 @@
 // Created by cedric on 2022-10-01.
 //
 
-#include "HealthComponent.h"
+#include "world/Alive.h"
 
 template <typename T>
-void HealthComponent<T>::heal(T amount) {
+void Alive<T>::heal(T amount) {
     health += amount;
 
     if(health > maxHealth)
@@ -13,7 +13,7 @@ void HealthComponent<T>::heal(T amount) {
 }
 
 template<typename T>
-void HealthComponent<T>::damage(T amount) {
+void Alive<T>::damage(T amount) {
     health -= amount;
 
     if(health < static_cast<T>(0.0))
@@ -21,11 +21,11 @@ void HealthComponent<T>::damage(T amount) {
 }
 
 template<typename T>
-T HealthComponent<T>::get_health() const {
+T Alive<T>::get_health() const {
     return health;
 }
 
 template <typename T>
-bool HealthComponent<T>::is_dead() const {
+bool Alive<T>::is_dead() const {
     return health <= static_cast<T>(0.0);
 }
