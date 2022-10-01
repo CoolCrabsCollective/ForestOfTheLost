@@ -14,7 +14,6 @@ void TopDownScreen::tick(float delta) {
 }
 
 void TopDownScreen::render(sf::RenderTarget& target) {
-
 	sf::Vector2f viewSize = {16.0f, 9.0f};
 
 	target.clear();
@@ -42,7 +41,7 @@ void TopDownScreen::show() {
 	terrain_textures[TerrainType::GRASS] = getGame().getAssets().get(GameAssets::GRASS_TERRAIN);
 	terrain_textures[TerrainType::WATER] = getGame().getAssets().get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = getGame().getAssets().get(GameAssets::SAND_TERRAIN);
-    terrain_textures[TerrainType::HIDING_SPOT] = getGame().getAssets().get(GameAssets::HIDING_SPOT);
+    hiding_spot_texture = *getGame().getAssets().get(GameAssets::HIDING_SPOT);
 }
 
 void TopDownScreen::hide() {
