@@ -13,22 +13,20 @@
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/RenderStates.hpp"
 #include "SFML/Graphics/Sprite.hpp"
-#include "HealthComponent.h"
+#include "Alive.h"
 
-class Player : public Entity, public HealthComponent<int> {
+class Player : public Entity, public Alive<int> {
     sf::Vector2f renderPosition = {};
 
     Direction currentDir = NORTH;
-
-private:
     Direction destinationDir = NORTH;
 
     std::optional<Direction> inputDir;
 
     float actionProgress = 0;
 
-    float movingSpeed = 2.0;
-    float rotationSpeed = 5;
+    float movingSpeed = 3.0;
+    float rotationSpeed = 100.0;
 
 	mutable sf::Sprite sprite;
 	std::map<Direction, sf::Texture*> textureMap;
