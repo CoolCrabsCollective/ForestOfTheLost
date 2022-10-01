@@ -70,4 +70,8 @@ void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) cons
 	target.draw(sprite);
 }
 
+int Player::getZOrder() const {
+	return -1;
+}
+
 

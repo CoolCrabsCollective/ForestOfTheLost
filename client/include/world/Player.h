@@ -26,7 +26,7 @@ class Player : public Entity, public Alive<int> {
     float actionProgress = 0;
 
     const float movingSpeed = 3.0;
-    const float rotationSpeed = 100.0;
+    const float rotationSpeed = 50.0;
 
 	mutable sf::Sprite sprite;
 	std::map<Direction, sf::Texture*> textureMap;
@@ -38,6 +38,8 @@ public:
     void tick(float delta) override;
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
+
+	int getZOrder() const override;
 };
 
 

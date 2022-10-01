@@ -33,6 +33,8 @@ class World : public Tickable, public sf::Drawable {
     std::map<sf::Vector2i, std::vector<Entity*>, VecCompare> entityMap;
     std::vector<Entity*> empty = {};
 
+	mutable std::vector<Entity*> entityDrawList = {};
+
 public:
 	World(wiz::AssetLoader& assets);
 

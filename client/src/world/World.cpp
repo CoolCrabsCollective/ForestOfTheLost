@@ -5,7 +5,6 @@
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
 #include "util/SimplexNoise.h"
-#include "world/HidingSpot.h"
 #include "GameAssets.h"
 #include "world/Bush.h"
 #include "world/Monster.h"
@@ -35,7 +34,7 @@ World::World(wiz::AssetLoader& assets)
 				terrainMap[sf::Vector2i(i, j)] = TerrainType::WATER;
 			else if(noise < -0.7f)
 				terrainMap[sf::Vector2i(i, j)] = TerrainType::SAND;
-			else if(noise > 0.5f)
+			else if(noise > 0.5f && noise < 0.9f)
                 addEntity(new Bush(*this, sf::Vector2i(i, j)));
 		}
 	}
@@ -133,8 +132,20 @@ void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
 
 	for(Entity* entity : getEntities())
 		if(entity->getPosition().x >= start.x
-		&& entity->getPosition().y >= start.y
-		&& entity->getPosition().x <= end.x
-		&& entity->getPosition().y <= end.y)
-			target.draw(*entity);
+		   && entity->getPosition().y >= start.y
+		   && entity->getPosition().x <= end.x
+		   && entity->getPosition().y <= end.y)
+			entityDrawList.push_back(entity);
+
+	std::sort(entityDrawList.begin(), entityDrawList.end(), [](Entity* a, Entity* b) {
+		return a->getPosition().y > b->getPosition().y
+			|| a->getPosition().y == b->getPosition().y
+			&& (a->getZOrder() < b->getZOrder()
+			|| a->getZOrder() == b->getZOrder()
+			&& a->getPosition().x > b->getPosition().x);
+	});
+
+	for(sf::Drawable* drawable : entityDrawList)
+		target.draw(*drawable);
+	entityDrawList.clear();
 }
