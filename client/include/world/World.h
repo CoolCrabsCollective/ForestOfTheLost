@@ -14,10 +14,18 @@
 class Entity;
 class Player;
 
+struct VecCompare {
+	bool operator() (const sf::Vector2i& lhs, const sf::Vector2i& rhs) const {
+		return lhs.x < rhs.x || lhs.x == rhs.x && lhs.y < rhs.y;
+	}
+};
+
 class World : public Tickable {
 	wiz::AssetLoader& assets;
 	std::vector<Entity*> entities;
 	Player player;
+
+	std::map<sf::Vector2i, TerrainType, VecCompare> terrainMap;
 
 public:
 	World(wiz::AssetLoader& assets);

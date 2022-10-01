@@ -13,9 +13,9 @@
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/RenderStates.hpp"
 #include "SFML/Graphics/Sprite.hpp"
-#include "HealthComponent.h"
+#include "Alive.h"
 
-class Player : public Entity, public HealthComponent<int> {
+class Player : public Entity, public Alive<int> {
     sf::Vector2i destination = {};
 
     sf::Vector2f renderPosition = {};
@@ -27,8 +27,8 @@ class Player : public Entity, public HealthComponent<int> {
 
     float actionProgress = 0;
 
-    float movingSpeed = 2.0;
-    float rotationSpeed = 1.0;
+    float movingSpeed = 3.0;
+    float rotationSpeed = 100.0;
 
 	mutable sf::Sprite sprite;
 	std::map<Direction, sf::Texture*> textureMap;

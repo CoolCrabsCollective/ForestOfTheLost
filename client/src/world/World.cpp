@@ -3,8 +3,18 @@
 //
 
 #include "world/World.h"
+#include "SFML/System/Vector2.hpp"
+
+World::World(wiz::AssetLoader& assets)
+		: assets(assets),
+		  player(*this),
+		  terrainMap() {
+	entities.push_back(&player);
+}
 
 TerrainType World::getTerrainType(sf::Vector2i position) {
+	if(terrainMap.contains(position))
+		return terrainMap[position];
 	return TerrainType::GRASS;
 }
 
@@ -26,12 +36,6 @@ Player& World::getPlayer() {
 
 wiz::AssetLoader& World::getAssets() {
 	return assets;
-}
-
-World::World(wiz::AssetLoader& assets)
-	: assets(assets),
-  	  player(*this) {
-	entities.push_back(&player);
 }
 
 void World::tick(float delta) {

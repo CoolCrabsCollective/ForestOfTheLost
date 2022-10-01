@@ -5,11 +5,11 @@
 #ifndef GAMETEMPLATE_GAMEASSETS_H
 #define GAMETEMPLATE_GAMEASSETS_H
 
-#include "ShaderAsset.h"
 #include "WIZ/asset/MusicAsset.h"
 #include "WIZ/asset/SoundAsset.h"
 #include "WIZ/asset/FontAsset.h"
 #include "WIZ/asset/TextureAsset.h"
+#include "ShaderAsset.h"
 
 #ifndef ASSET
 #define ASSET(TYPE, NAME, CONSTRUCTOR) extern const TYPE NAME;
