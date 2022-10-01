@@ -56,6 +56,10 @@ void Monster::findNewSpot() {
             if (spot->getPosition() == position)
                 continue;
 
+            // TERRIBLE algorithm
+            if ((position - spot->getPosition()).lengthSq() > 3*3)
+                continue;
+
             destination = spot->getPosition();
         }
     }

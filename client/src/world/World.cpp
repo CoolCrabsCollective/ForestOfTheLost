@@ -40,11 +40,9 @@ World::World(wiz::AssetLoader& assets)
 		}
 	}
 
-    Entity* bat1 = new Monster(*this, sf::Vector2i(2, 1));
-    Entity* bat2 = new Monster(*this, sf::Vector2i(-2, -1));
+    Entity* bat1 = new Monster(*this, sf::Vector2i(0, 1));
 
     addEntity(bat1);
-    addEntity(bat2);
 }
 
 TerrainType World::getTerrainType(sf::Vector2i position) const {
