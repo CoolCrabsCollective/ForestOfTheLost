@@ -4,6 +4,7 @@
 
 #include "TopDownScreen.h"
 #include "GameAssets.h"
+#include "world/HidingSpot.h"
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
 		: Screen(game), world(), terrain_textures() {
@@ -31,15 +32,16 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 			terrain_sprite.setPosition({static_cast<float>(i), static_cast<float>(j)});
 			terrain_sprite.setScale({1.0f / terrain_sprite.getTexture()->getSize().x, 1.0f / terrain_sprite.getTexture()->getSize().y});
             frameBuffer.draw(terrain_sprite);
-
-            if (i % 4 == 0 && j % 3 == 0) {
-                hiding_spot_sprite.setPosition({static_cast<float>(i), static_cast<float>(j)});
-                hiding_spot_sprite.setScale({1.0f / hiding_spot_sprite.getTexture()->getSize().x, 1.0f / hiding_spot_sprite.getTexture()->getSize().y});
-                frameBuffer.draw(hiding_spot_sprite);
-            }
-
 		}
 	}
+
+    for (int i = 0 ; i < world.getEntities().size() ; i++) {
+        if(HidingSpot* hidingSpot = dynamic_cast<HidingSpot*>(world.getEntities().at(i))) {
+            sf::Sprite hiding_spot_sprite = hidingSpot->getSprite();
+            hiding_spot_sprite.setPosition(hiding_spot_sprite.getPosition());
+            frameBuffer.draw(hiding_spot_sprite);
+        }
+    }
 
 	frameBuffer.display(); // done drawing fbo
 	sf::Sprite fbo(frameBuffer.getTexture());
@@ -57,7 +59,11 @@ void TopDownScreen::show() {
 	terrain_textures[TerrainType::WATER] = getGame().getAssets().get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = getGame().getAssets().get(GameAssets::SAND_TERRAIN);
 
-    hiding_spot_sprite.setTexture(*getGame().getAssets().get(GameAssets::HIDING_SPOT));
+    sf::Sprite* hiding_spot_sprite = new sf::Sprite(*getGame().getAssets().get(GameAssets::HIDING_SPOT));
+    hiding_spot_sprite->setScale({1.0f / hiding_spot_sprite->getTexture()->getSize().x, 1.0f / hiding_spot_sprite->getTexture()->getSize().y});
+    Entity* hiding_spot = new HidingSpot(*new sf::Vector2i(3, 3), *hiding_spot_sprite);
+
+    world.getEntities().push_back(hiding_spot);
 }
 
 void TopDownScreen::hide() {

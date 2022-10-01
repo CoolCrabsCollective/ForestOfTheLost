@@ -12,21 +12,19 @@
 #include "Player.h"
 
 class World {
-	std::vector<Entity> entities;
+	std::vector<Entity*> entities;
 	Player player;
 
 public:
 	TerrainType getTerrainType(sf::Vector2i position);
 
-	const std::vector<Entity>& getEntities() const;
+	const std::vector<Entity*>& getEntities() const;
 
-	std::vector<Entity>& getEntities();
+	std::vector<Entity*>& getEntities();
 
 	const Player& getPlayer() const;
 
 	Player& getPlayer();
-
-
 };
 
 
