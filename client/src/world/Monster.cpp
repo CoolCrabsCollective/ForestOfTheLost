@@ -10,24 +10,36 @@ Monster::Monster(World &world, sf::Vector2i position) : Entity(world) {
     this->position = position;
     this->sprite = sf::Sprite(*world.getAssets().get(GameAssets::BAT));
     renderPosition = {static_cast<float>(position.x), static_cast<float>(-position.y)};
-    closestHidingSpot = nullptr;
     findNewSpot(); // not good! What if the entities aren't added yet
 }
 
 void Monster::tick(float delta) {
-   if (!findingNewSpot || closestHidingSpot == nullptr)
+   if (!findingNewSpot)
        return;
 
    float speed = 0.001f;
-   if (closestHidingSpot->getPosition().x > renderPosition.x)
-       renderPosition.x += speed;
-   else
-       renderPosition.x -= speed;
 
-    if (closestHidingSpot->getPosition().y > renderPosition.y)
-        renderPosition.y += speed;
-    else
-        renderPosition.y -= speed;
+    bool moving = position != destination;
+    bool rotating = currentDir != destinationDir;
+
+    renderPosition = (sf::Vector2f) position;
+    if (moving) {
+        actionProgress += (delta / 1000) * movingSpeed;
+
+        if (actionProgress > 1) {
+            position = destination;
+            actionProgress = 0;
+        } else {
+            renderPosition = (sf::Vector2f) position + sf::Vector2f(destination - position) * actionProgress;
+        }
+    } else if (rotating) {
+        actionProgress += (delta / 1000) * rotationSpeed;
+
+        if (actionProgress > 1) {
+            currentDir = destinationDir;
+            actionProgress = 0;
+        }
+    }
 }
 
 void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
@@ -44,9 +56,8 @@ void Monster::findNewSpot() {
     // Find the closest hiding spot
     for (int i = 0 ; i < world.getEntities().size() ; i++) {
         if(HidingSpot* spot = dynamic_cast<HidingSpot*>(world.getEntities().at(i))) {
-            if (closestHidingSpot == nullptr || ((abs(position.x - spot->getPosition().x) + (position.y - spot->getPosition().y) < (abs(position.x - closestHidingSpot->getPosition().x) + (position.y - closestHidingSpot->getPosition().y))))) {
-                closestHidingSpot = spot;
-            }
+            // do the check later
+            destination = spot->getPosition();
         }
     }
 }
