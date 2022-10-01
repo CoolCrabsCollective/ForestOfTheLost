@@ -63,8 +63,10 @@ void TopDownScreen::show() {
 	terrain_textures[TerrainType::WATER] = getGame().getAssets().get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = getGame().getAssets().get(GameAssets::SAND_TERRAIN);
 
-    Entity* hiding_spot = new HidingSpot(world, sf::Vector2i(1, 1));
-    world.getEntities().push_back(hiding_spot);
+    Entity* hiding_spot1 = new HidingSpot(world, sf::Vector2i(1, 1));
+    Entity* hiding_spot2 = new HidingSpot(world, sf::Vector2i(-1, 2));
+    world.getEntities().push_back(hiding_spot1);
+    world.getEntities().push_back(hiding_spot2);
 }
 
 void TopDownScreen::hide() {
