@@ -56,6 +56,9 @@ wiz::AssetLoader& World::getAssets() {
 }
 
 bool World::tileOccupied(sf::Vector2i tile, Entity *exclude) {
+	if(terrainMap[tile] == WATER)
+		return true;
+
     for (Entity *entity : entities) {
         bool occupied = (tile == entity->getPosition() || (dynamic_cast<const Player*>(entity) != nullptr && tile == entity->getDestination())) && exclude != entity;
         if (occupied) {
