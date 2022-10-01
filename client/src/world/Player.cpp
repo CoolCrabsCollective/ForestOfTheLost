@@ -6,8 +6,9 @@
 #include <optional>
 #include "world/World.h"
 #include "GameAssets.h"
+#include "world/Direction.h"
 
-Player::Player(World& world) : Entity(world), textureMap() {
+Player::Player(World& world) : Entity(world), HealthComponent<int>(3), textureMap() {
 	textureMap[Direction::NORTH] = world.getAssets().get(GameAssets::PLAYER_BACK);
 	textureMap[Direction::SOUTH] = world.getAssets().get(GameAssets::PLAYER_FRONT);
 	textureMap[Direction::EAST] = world.getAssets().get(GameAssets::PLAYER_LEFT);
@@ -44,21 +45,8 @@ void Player::tick(float delta) {
             currentDir = destinationDir;
             actionProgress = 0;
         }
-    } else {
-        switch (inputDir.value()) {
-            case EAST:
-                destination = position + sf::Vector2i{1,0};
-                break;
-            case NORTH:
-                destination = position + sf::Vector2i{0,-1};
-                break;
-            case WEST:
-                destination = position + sf::Vector2i{-1,0};
-                break;
-            case SOUTH:
-                destination = position + sf::Vector2i{0,1};
-                break;
-        }
+    } else if (inputDir.has_value()) {
+        destination = position + directionToUnitVector(inputDir.value());
     }
 }
 

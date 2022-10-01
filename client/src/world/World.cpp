@@ -33,3 +33,9 @@ World::World(wiz::AssetLoader& assets)
   	  player(*this) {
 	entities.push_back(&player);
 }
+
+void World::tick(float delta) {
+    for (Entity *entity : entities) {
+        entity->tick(delta);
+    }
+}

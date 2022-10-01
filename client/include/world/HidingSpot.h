@@ -8,8 +8,8 @@
 
 #include "Entity.h"
 #include "SFML/Graphics/Sprite.hpp"
-#include "directions.h"
 #include "world/World.h"
+#include "Direction.h"
 
 class HidingSpot : public Entity {
     mutable sf::Sprite sprite;
