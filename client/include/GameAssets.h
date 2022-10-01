@@ -36,6 +36,11 @@ namespace GameAssets {
 
     // Hiding Spots
     ASSET(wiz::TextureAsset, HIDING_SPOT, ("gfx/bush.png"))
+
+	ASSET(wiz::TextureAsset, PLAYER_BACK, ("gfx/player/back.png"))
+	ASSET(wiz::TextureAsset, PLAYER_FRONT, ("gfx/player/front.png"))
+	ASSET(wiz::TextureAsset, PLAYER_LEFT, ("gfx/player/left.png"))
+	ASSET(wiz::TextureAsset, PLAYER_RIGHT, ("gfx/player/right.png"))
 }
 
 

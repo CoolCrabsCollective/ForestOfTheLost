@@ -3,9 +3,15 @@
 //
 
 #include "world/Player.h"
+#include <optional>
+#include "world/World.h"
+#include "GameAssets.h"
 
 Player::Player(World& world) : Entity(world), textureMap() {
-
+	textureMap[Direction::NORTH] = world.getAssets().get(GameAssets::PLAYER_BACK);
+	textureMap[Direction::SOUTH] = world.getAssets().get(GameAssets::PLAYER_FRONT);
+	textureMap[Direction::EAST] = world.getAssets().get(GameAssets::PLAYER_LEFT);
+	textureMap[Direction::WEST] = world.getAssets().get(GameAssets::PLAYER_RIGHT);
 }
 
 
@@ -59,7 +65,8 @@ void Player::tick(float delta) {
 void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
 	sprite.setTexture(*textureMap.at(currentDir));
 	sprite.setPosition(renderPosition);
-	//sprite.setScale(1.0f / sprite.getTexture())
+	sprite.setScale({ 1.0f / sprite.getTexture()->getSize().x, 1.0f / sprite.getTexture()->getSize().y });
+	target.draw(sprite);
 }
 
 

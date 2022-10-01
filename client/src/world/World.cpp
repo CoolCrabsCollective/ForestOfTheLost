@@ -27,3 +27,9 @@ Player& World::getPlayer() {
 wiz::AssetLoader& World::getAssets() {
 	return assets;
 }
+
+World::World(wiz::AssetLoader& assets)
+	: assets(assets),
+  	  player(*this) {
+	entities.push_back(&player);
+}

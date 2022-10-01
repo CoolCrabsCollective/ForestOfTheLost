@@ -15,15 +15,13 @@ class Entity;
 class Player;
 
 class World {
+	wiz::AssetLoader& assets;
 	std::vector<Entity*> entities;
 	Player player;
 
-	wiz::AssetLoader& assets;
 
 public:
-	World(wiz::AssetLoader& assets)
-		: assets(assets),
-		  player(*this) {}
+	World(wiz::AssetLoader& assets);
 
 	TerrainType getTerrainType(sf::Vector2i position);
 
