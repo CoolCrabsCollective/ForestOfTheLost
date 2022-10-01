@@ -16,11 +16,11 @@
 #include "HealthComponent.h"
 
 class Player : public Entity, public HealthComponent<int> {
-    sf::Vector2i destination = {};
-
     sf::Vector2f renderPosition = {};
 
     Direction currentDir = NORTH;
+
+private:
     Direction destinationDir = NORTH;
 
     std::optional<Direction> inputDir;
@@ -28,7 +28,7 @@ class Player : public Entity, public HealthComponent<int> {
     float actionProgress = 0;
 
     float movingSpeed = 2.0;
-    float rotationSpeed = 1.0;
+    float rotationSpeed = 5;
 
 	mutable sf::Sprite sprite;
 	std::map<Direction, sf::Texture*> textureMap;
@@ -38,7 +38,6 @@ public:
     sf::Vector2f getRenderPosition() const;
     void move(std::optional<Direction> direction);
     void tick(float delta) override;
-
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
 };

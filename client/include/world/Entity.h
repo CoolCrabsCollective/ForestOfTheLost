@@ -16,6 +16,7 @@ class Entity : public Tickable, public sf::Drawable {
 protected:
 	World& world;
 	sf::Vector2i position = {};
+    sf::Vector2i destination = {};
 public:
 	Entity(World& world) : world(world) {}
 
@@ -32,7 +33,10 @@ public:
 	inline sf::Vector2i getPosition() const {
 		return position;
 	}
-};
 
+    inline sf::Vector2i getDestination() const {
+        return destination;
+    }
+};
 
 #endif //LD51_CLIENT_ENTITY_H

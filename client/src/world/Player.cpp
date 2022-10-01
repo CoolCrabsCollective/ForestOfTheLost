@@ -47,6 +47,9 @@ void Player::tick(float delta) {
     } else if (inputDir.has_value()) {
 		if(inputDir.value() == currentDir)
         	destination = position + directionToUnitVector(inputDir.value());
+            if (world.tileOccupied(destination, this)) {
+                destination = position;
+            }
 		else
 			destinationDir = inputDir.value();
     }
