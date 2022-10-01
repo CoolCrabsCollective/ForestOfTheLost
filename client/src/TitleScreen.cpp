@@ -6,7 +6,6 @@
 #include "GameAssets.h"
 #include "HelloSFMLScreen.h"
 #include "SFML/Window/Touch.hpp"
-#include "Box2DTestScreen.h"
 
 TitleScreen::TitleScreen(wiz::Game& game)
 	: Screen(game) {}
