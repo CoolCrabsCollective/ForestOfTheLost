@@ -16,8 +16,6 @@
 #include "Alive.h"
 
 class Player : public Entity, public Alive<int> {
-    sf::Vector2i destination = {};
-
     sf::Vector2f renderPosition = {};
 
     Direction currentDir = NORTH;
@@ -38,7 +36,6 @@ public:
     sf::Vector2f getRenderPosition() const;
     void move(std::optional<Direction> direction);
     void tick(float delta) override;
-
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
 };

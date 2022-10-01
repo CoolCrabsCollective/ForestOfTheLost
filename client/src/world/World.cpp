@@ -38,6 +38,17 @@ wiz::AssetLoader& World::getAssets() {
 	return assets;
 }
 
+bool World::tileOccupied(sf::Vector2i tile, Entity *exclude) {
+    for (Entity *entity : entities) {
+        bool occupied = (tile == entity->getPosition() || (dynamic_cast<const Player*>(entity) != nullptr && tile == entity->getDestination())) && exclude != entity;
+        if (occupied) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void World::tick(float delta) {
     for (Entity *entity : entities) {
         entity->tick(delta);

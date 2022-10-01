@@ -15,7 +15,6 @@ Player::Player(World& world) : Entity(world), Alive<int>(3), textureMap() {
 	textureMap[Direction::WEST] = world.getAssets().get(GameAssets::PLAYER_LEFT);
 }
 
-
 sf::Vector2f Player::getRenderPosition() const {
     return renderPosition;
 }
@@ -54,6 +53,9 @@ void Player::tick(float delta) {
     } else if (inputDir.has_value()) {
 		if(inputDir.value() == currentDir)
         	destination = position + directionToUnitVector(inputDir.value());
+            if (world.tileOccupied(destination, this)) {
+                destination = position;
+            }
 		else
 			destinationDir = inputDir.value();
     }

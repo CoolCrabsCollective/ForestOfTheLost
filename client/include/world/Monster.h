@@ -7,13 +7,18 @@
 
 
 #include "World.h"
+#include "HidingSpot.h"
 
 class Monster : public Entity {
     mutable sf::Sprite sprite;
+    bool findingNewSpot;
+    HidingSpot* closestHidingSpot;
+    sf::Vector2f renderPosition = {};
 public:
+    Monster(World &world, sf::Vector2i position);
     void tick(float delta) override;
     void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
-    Monster(World &world, sf::Vector2i position);
+    void findNewSpot();
 };
 
 

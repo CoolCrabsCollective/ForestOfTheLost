@@ -42,8 +42,9 @@ public:
 
 	wiz::AssetLoader& getAssets();
 
-    void tick(float delta) override;
+    bool tileOccupied(sf::Vector2i tile, Entity *exclude);
 
+    void tick(float delta) override;
 };
 
 
