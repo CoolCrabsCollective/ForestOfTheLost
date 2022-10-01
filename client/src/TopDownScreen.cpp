@@ -29,7 +29,7 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 	for(int i = start.x; i <= end.x; i++) {
 		for(int j = start.y; j <= end.y; j++) {
             terrain_sprite.setTexture(*terrain_textures[world.getTerrainType({i, j})]);
-			terrain_sprite.setPosition({static_cast<float>(i), static_cast<float>(j)});
+			terrain_sprite.setPosition({static_cast<float>(i), -static_cast<float>(j)});
 			terrain_sprite.setScale({1.0f / terrain_sprite.getTexture()->getSize().x, 1.0f / terrain_sprite.getTexture()->getSize().y});
             frameBuffer.draw(terrain_sprite);
 		}
