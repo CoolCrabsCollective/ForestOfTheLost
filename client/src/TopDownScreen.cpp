@@ -83,7 +83,7 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 
     frameBuffer.create(1280, 720);
     frameBuffer.clear();
-    frameBuffer.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f, world.getPlayer().getRenderPosition().y + 0.5f }, viewSize));
+    frameBuffer.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f, -world.getPlayer().getRenderPosition().y + 0.5f }, viewSize));
 	drawWorld(frameBuffer);
 
 	spookyShader->setUniform("timeAccumulator", timeAccumulator);
