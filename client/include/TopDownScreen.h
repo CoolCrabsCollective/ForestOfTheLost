@@ -18,9 +18,9 @@ class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz
 	World world;
 	std::unordered_map<TerrainType, sf::Texture*> terrain_textures;
 	sf::Sprite terrain_sprite;
+    sf::Sprite hiding_spot_sprite;
 	sf::RenderTexture frameBuffer;
     sf::Shader* spookyShader = nullptr;
-    sf::Texture hiding_spot_texture;
 public:
 	TopDownScreen(wiz::Game& game);
 
