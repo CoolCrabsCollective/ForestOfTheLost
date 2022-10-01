@@ -35,7 +35,7 @@ void TopDownScreen::render(sf::RenderTarget& target) {
             if (i % 4 == 0 && j % 3 == 0) {
                 hiding_spot_sprite.setPosition({static_cast<float>(i), static_cast<float>(j)});
                 hiding_spot_sprite.setScale({1.0f / hiding_spot_sprite.getTexture()->getSize().x, 1.0f / hiding_spot_sprite.getTexture()->getSize().y});
-                frameBuffert .draw(hiding_spot_sprite);
+                frameBuffer.draw(hiding_spot_sprite);
             }
 
 		}
