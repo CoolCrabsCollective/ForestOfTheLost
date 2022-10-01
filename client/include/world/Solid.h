@@ -9,7 +9,10 @@
 #include "SFML/System/Vector2.hpp"
 
 class Solid {
-	bool isBlocking(sf::Vector2i vec);
+public:
+	virtual ~Solid() = default;
+
+	virtual bool isBlocking(sf::Vector2i vec) = 0;
 };
 
 

@@ -8,6 +8,7 @@
 #include "GameAssets.h"
 #include "world/Bush.h"
 #include "world/Monster.h"
+#include "world/Solid.h"
 
 World::World(wiz::AssetLoader& assets)
 		: assets(assets),
@@ -68,20 +69,25 @@ wiz::AssetLoader& World::getAssets() {
 	return assets;
 }
 
-bool World::tileOccupied(sf::Vector2i tile, Entity *exclude) {
+bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
 
-	/*
 	if(terrainMap[tile] == WATER)
 		return true;
 
-    for (Entity *entity : entities) {
-        bool occupied = (tile == entity->getPosition() || (dynamic_cast<const Player*>(entity) != nullptr && tile == entity->getDestination())) && exclude != entity;
-        if (occupied) {
-            return true;
-        }
-    }*/
+	int solid_range = 1;
 
-    return false;
+	for(int i = -solid_range; i <= solid_range; i++) {
+		for(int j = -solid_range; j <= solid_range; j++) {
+			for(Entity* entity : entityMap[tile + sf::Vector2i{i, j}]) {
+				Solid* solid = dynamic_cast<Solid*>(entity);
+
+				if(solid && solid->isBlocking(tile))
+					return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 void World::tick(float delta) {
