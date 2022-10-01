@@ -18,15 +18,19 @@ class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz
 	World world;
 	std::unordered_map<TerrainType, sf::Texture*> terrain_textures;
 	sf::Sprite terrain_sprite;
+	sf::Sprite heart_sprite;
 	sf::RenderTexture frameBuffer;
     sf::Shader* spookyShader = nullptr;
 
     float timeAccumulator = 0.0;
+    float tenSecAccumulator = 0.0;
 
     void processInput();
 
 public:
 	explicit TopDownScreen(wiz::Game& game);
+
+	void drawWorld(sf::RenderTarget& target);
 
 	void tick(float delta) override;
 

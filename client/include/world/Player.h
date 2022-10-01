@@ -13,8 +13,9 @@
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/RenderStates.hpp"
 #include "SFML/Graphics/Sprite.hpp"
+#include "HealthComponent.h"
 
-class Player : public Entity {
+class Player : public Entity, public HealthComponent<int> {
     sf::Vector2i destination = {};
 
     sf::Vector2f renderPosition = {};

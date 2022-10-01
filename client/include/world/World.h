@@ -18,8 +18,6 @@ class World : public Tickable {
 	wiz::AssetLoader& assets;
 	std::vector<Entity*> entities;
 	Player player;
-public:
-    void tick(float delta) override;
 
 public:
 	World(wiz::AssetLoader& assets);
@@ -35,6 +33,8 @@ public:
 	Player& getPlayer();
 
 	wiz::AssetLoader& getAssets();
+
+    void tick(float delta) override;
 
 };
 

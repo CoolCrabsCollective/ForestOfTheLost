@@ -8,7 +8,7 @@
 #include "GameAssets.h"
 #include "world/Direction.h"
 
-Player::Player(World& world) : Entity(world), textureMap() {
+Player::Player(World& world) : Entity(world), HealthComponent<int>(3), textureMap() {
 	textureMap[Direction::NORTH] = world.getAssets().get(GameAssets::PLAYER_BACK);
 	textureMap[Direction::SOUTH] = world.getAssets().get(GameAssets::PLAYER_FRONT);
 	textureMap[Direction::EAST] = world.getAssets().get(GameAssets::PLAYER_LEFT);
@@ -52,7 +52,7 @@ void Player::tick(float delta) {
 
 void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
 	sprite.setTexture(*textureMap.at(currentDir));
-	sprite.setPosition(renderPosition);
+	sprite.setPosition({renderPosition.x, -renderPosition.y});
 	sprite.setScale({ 1.0f / sprite.getTexture()->getSize().x, 1.0f / sprite.getTexture()->getSize().y });
 	target.draw(sprite);
 }
