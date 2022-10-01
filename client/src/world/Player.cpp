@@ -66,6 +66,7 @@ void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) cons
 	sprite.setTexture(*textureMap.at(currentDir));
 	sprite.setPosition(renderPosition);
 	sprite.setScale({ 1.0f / sprite.getTexture()->getSize().x, 1.0f / sprite.getTexture()->getSize().y });
+	target.draw(sprite);
 }
 
 

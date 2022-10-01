@@ -8,11 +8,11 @@ TerrainType World::getTerrainType(sf::Vector2i position) {
 	return TerrainType::GRASS;
 }
 
-const std::vector<Entity>& World::getEntities() const {
+const std::vector<Entity*>& World::getEntities() const {
 	return entities;
 }
 
-std::vector<Entity>& World::getEntities() {
+std::vector<Entity*>& World::getEntities() {
 	return entities;
 }
 
@@ -26,4 +26,10 @@ Player& World::getPlayer() {
 
 wiz::AssetLoader& World::getAssets() {
 	return assets;
+}
+
+World::World(wiz::AssetLoader& assets)
+	: assets(assets),
+  	  player(*this) {
+	entities.push_back(&player);
 }
