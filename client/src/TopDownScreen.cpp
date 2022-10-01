@@ -24,7 +24,6 @@ void TopDownScreen::drawWorld(sf::RenderTarget &target) {
     sf::Vector2i end = world.getPlayer().getPosition() + sf::Vector2i(static_cast<int>(floor(viewSize.x / 2.0f)),
                                                                       static_cast<int>(floor(viewSize.y / 2.0f)));
 
-
     for(int i = start.x; i <= end.x; i++) {
         for(int j = start.y; j <= end.y; j++) {
             terrain_sprite.setTexture(*terrain_textures[world.getTerrainType({i, j})]);
