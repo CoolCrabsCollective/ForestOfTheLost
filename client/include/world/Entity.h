@@ -32,14 +32,6 @@ public:
 	inline sf::Vector2i getPosition() const {
 		return position;
 	}
-
-	inline int x() const {
-		return getPosition().x;
-	}
-
-	inline int y() const {
-		return getPosition().y;
-	}
 };
 
 

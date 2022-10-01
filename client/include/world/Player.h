@@ -8,7 +8,7 @@
 
 #include <map>
 #include "Entity.h"
-#include "world/directions.h"
+#include "world/Direction.h"
 #include <optional>
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/RenderStates.hpp"
@@ -29,9 +29,6 @@ class Player : public Entity, public HealthComponent<int> {
 
     float movingSpeed = 2.0;
     float rotationSpeed = 1.0;
-
-    void rotateToHeading(sf::Vector2i direction);
-    bool checkCollision();
 
 	mutable sf::Sprite sprite;
 	std::map<Direction, sf::Texture*> textureMap;
