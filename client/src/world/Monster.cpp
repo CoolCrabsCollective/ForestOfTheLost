@@ -46,7 +46,7 @@ void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) con
     if (!findingNewSpot)
         return;
 
-    sprite.setPosition(renderPosition);
+    sprite.setPosition({renderPosition.x, -renderPosition.y});
     sprite.setScale({ 1.0f / sprite.getTexture()->getSize().x, 1.0f / sprite.getTexture()->getSize().y });
     target.draw(sprite);
 }
