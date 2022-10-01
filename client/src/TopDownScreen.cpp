@@ -27,7 +27,10 @@ void TopDownScreen::tick(float delta) {
             }
         }
 
-        tenSecAccumulator = 0;
+        do
+        {
+            tenSecAccumulator -= 10000.0;
+        } while (tenSecAccumulator >= 10000.0);
     }
 
     processInput();
@@ -74,7 +77,11 @@ void TopDownScreen::drawWorld(sf::RenderTarget &target) {
 void TopDownScreen::render(sf::RenderTarget& target) {
     sf::Vector2f viewSize = {24.0f, 13.5f};
 
-    frameBuffer.create(1280, 720);
+    if(!frameBuffer.create(1280, 720))
+    {
+        throw std::runtime_error("Failed to create FBO!");
+    }
+
     frameBuffer.clear();
     frameBuffer.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f, -world.getPlayer().getRenderPosition().y + 0.5f }, viewSize));
 	drawWorld(frameBuffer);
@@ -84,9 +91,24 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 	sf::Sprite fbo(frameBuffer.getTexture());
 	target.clear();
 	target.draw(fbo, spookyShader);
+	drawEyes(target);
 	drawUI(target);
 }
 
+void TopDownScreen::drawEyes(sf::RenderTarget &target) {
+    sf::Vector2f viewSize = {16.0f, 9.0f};
+    target.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f, -world.getPlayer().getRenderPosition().y + 0.5f }, viewSize));
+
+    eyesShader->setUniform("timeAccumulator", timeAccumulator);
+    for(auto entity : world.getEntities())
+    {
+        if(Monster* monster = dynamic_cast<Monster*>(entity))
+        {
+            eye_sprite.setPosition(sf::Vector2f {static_cast<float>(monster->getPosition().x), -static_cast<float>(monster->getPosition().y)});
+            target.draw(eye_sprite, eyesShader);
+        }
+    }
+}
 
 void TopDownScreen::drawUI(sf::RenderTarget &target) {
     sf::Vector2f viewSize = {1280, 720};
@@ -104,13 +126,18 @@ void TopDownScreen::show() {
 
     heart_sprite.setTexture(*getAssets().get(GameAssets::HEART));
     heart_sprite.setScale({ 50.0f * 7.0f / 8.0f / heart_sprite.getTexture()->getSize().x,
-							50.0f * 7.0f / 8.0f / heart_sprite.getTexture()->getSize().y });
+                            50.0f * 7.0f / 8.0f / heart_sprite.getTexture()->getSize().y });
+    eye_sprite.setTexture(*getAssets().get(GameAssets::SPOOKY_EYES));
+
+    eye_sprite.setScale({ 1.0f / eye_sprite.getTexture()->getSize().x, 1.0f / eye_sprite.getTexture()->getSize().y });
+
     spookyShader = getAssets().get(GameAssets::SPOOKY_SHADER);
+    eyesShader = getAssets().get(GameAssets::EYES_SHADER);
 }
 
 void TopDownScreen::hide() {
 	getGame().removeWindowListener(this);
-	getGame().removeWindowListener(this);
+	getGame().removeInputListener(this);
 }
 
 const std::string& TopDownScreen::getName() const {

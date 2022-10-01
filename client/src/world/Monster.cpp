@@ -40,8 +40,8 @@ void Monster::tick(float delta) {
 }
 
 void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
-    if (position == destination)
-        return;
+    //if (position == destination)
+    //    return;
 
     sprite.setPosition({renderPosition.x, -renderPosition.y});
     sprite.setScale({ 1.0f / sprite.getTexture()->getSize().x, 1.0f / sprite.getTexture()->getSize().y });
@@ -50,17 +50,24 @@ void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) con
 
 void Monster::findNewSpot() {
     // Find the closest hiding spot
-    for (int i = 0 ; i < world.getEntities().size() ; i++) {
-        if(HidingSpot* spot = dynamic_cast<HidingSpot*>(world.getEntities().at(i))) {
-            // Don't want to go to the same bush
-            if (spot->getPosition() == position)
+    for (int searchX = position.x  - searchRadius ; searchX <= position.x + searchRadius ; searchX++) {
+        for (int searchY = position.y  - searchRadius ; searchY <= position.y + searchRadius ; searchY++) {
+            if (searchX == position.x && searchY == position.y)
                 continue;
 
-            // TERRIBLE algorithm
-            if ((position - spot->getPosition()).lengthSq() > 3*3)
-                continue;
+            // TODO: check no one else is going there
 
-            destination = spot->getPosition();
+            auto entitiesAt = world.getEntitiesAt({searchX, searchY});
+
+            for (int k = 0 ; k < entitiesAt.size() ; k++) {
+                if(HidingSpot* spot = dynamic_cast<HidingSpot*>(entitiesAt.at(k))) {
+                    destination = spot->getPosition();
+                    return;
+                }
+            }
         }
     }
+
+
+
 }
