@@ -114,7 +114,6 @@ void TopDownScreen::drawUI(sf::RenderTarget &target) {
     }
 }
 
-
 void TopDownScreen::show() {
     sf::Vector2f viewSize = {16.0f, 9.0f};
 	getGame().addWindowListener(this);
@@ -129,11 +128,17 @@ void TopDownScreen::show() {
 
     Entity* hiding_spot1 = new HidingSpot(world, sf::Vector2i(1, 1));
     Entity* hiding_spot2 = new HidingSpot(world, sf::Vector2i(-1, 2));
+    Entity* hiding_spot3 = new HidingSpot(world, sf::Vector2i(-2, -2));
+    Entity* hiding_spot4 = new HidingSpot(world, sf::Vector2i(0, -4));
     world.getEntities().push_back(hiding_spot1);
     world.getEntities().push_back(hiding_spot2);
-    Entity* bat = new Monster(world, sf::Vector2i(2, 1));
+    world.getEntities().push_back(hiding_spot3);
+    world.getEntities().push_back(hiding_spot4);
+    Entity* bat1 = new Monster(world, sf::Vector2i(2, 1));
+    Entity* bat2 = new Monster(world, sf::Vector2i(-2, -1));
 
-    world.getEntities().push_back(bat);
+    world.getEntities().push_back(bat1);
+    world.getEntities().push_back(bat2);
 }
 
 void TopDownScreen::hide() {

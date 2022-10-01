@@ -9,8 +9,9 @@
 World::World(wiz::AssetLoader& assets)
 		: assets(assets),
 		  player(*this),
-		  terrainMap() {
-	entities.push_back(&player);
+		  terrainMap(),
+          entityMap() {
+    addEntity(&player);
 
 	for(int i = -200; i <= 200; i++) {
 		for(int j = -200; j <= 200; j++) {
@@ -73,4 +74,21 @@ void World::tick(float delta) {
     for (Entity *entity : entities) {
         entity->tick(delta);
     }
+}
+
+const std::vector<Entity *> &World::getEntitiesAt(sf::Vector2i position) const {
+    return entityMap.contains(position) ?  entityMap.at(position) : empty;
+}
+
+void World::addEntity(Entity* entity) {
+    entities.push_back(entity);
+    if (entityMap.contains(entity->getPosition()))
+        entityMap[entity->getPosition()].push_back(entity);
+    else
+        entityMap[entity->getPosition()] = {entity};
+}
+
+void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
+    std::remove(entityMap[oldPosition].begin(), entityMap[oldPosition].end(),entity);
+    addEntity(entity);
 }

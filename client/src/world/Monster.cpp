@@ -10,7 +10,7 @@ Monster::Monster(World &world, sf::Vector2i position) : Entity(world) {
     this->position = position;
     this->sprite = sf::Sprite(*world.getAssets().get(GameAssets::BAT));
     renderPosition = {static_cast<float>(position.x), static_cast<float>(-position.y)};
-    findNewSpot(); // not good! What if the entities aren't added yet
+    findNewSpot(); // make sure to spawn the monsters after the hiding spots exist in the world!
 }
 
 void Monster::tick(float delta) {
