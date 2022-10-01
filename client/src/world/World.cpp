@@ -5,10 +5,10 @@
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
 #include "util/SimplexNoise.h"
-#include "world/HidingSpot.h"
 #include "GameAssets.h"
 #include "world/Bush.h"
 #include "world/Monster.h"
+#include "world/Solid.h"
 
 World::World(wiz::AssetLoader& assets)
 		: assets(assets),
@@ -35,7 +35,7 @@ World::World(wiz::AssetLoader& assets)
 				terrainMap[sf::Vector2i(i, j)] = TerrainType::WATER;
 			else if(noise < -0.7f)
 				terrainMap[sf::Vector2i(i, j)] = TerrainType::SAND;
-			else if(noise > 0.5f)
+			else if(noise > 0.5f && noise < 0.9f)
                 addEntity(new Bush(*this, sf::Vector2i(i, j)));
 		}
 	}
@@ -67,20 +67,25 @@ wiz::AssetLoader& World::getAssets() {
 	return assets;
 }
 
-bool World::tileOccupied(sf::Vector2i tile, Entity *exclude) {
+bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
 
-	/*
 	if(terrainMap[tile] == WATER)
 		return true;
 
-    for (Entity *entity : entities) {
-        bool occupied = (tile == entity->getPosition() || (dynamic_cast<const Player*>(entity) != nullptr && tile == entity->getDestination())) && exclude != entity;
-        if (occupied) {
-            return true;
-        }
-    }*/
+	int solid_range = 1;
 
-    return false;
+	for(int i = -solid_range; i <= solid_range; i++) {
+		for(int j = -solid_range; j <= solid_range; j++) {
+			for(Entity* entity : entityMap[tile + sf::Vector2i{i, j}]) {
+				Solid* solid = dynamic_cast<Solid*>(entity);
+
+				if(solid && solid->isBlocking(tile))
+					return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 void World::tick(float delta) {
@@ -131,8 +136,20 @@ void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
 
 	for(Entity* entity : getEntities())
 		if(entity->getPosition().x >= start.x
-		&& entity->getPosition().y >= start.y
-		&& entity->getPosition().x <= end.x
-		&& entity->getPosition().y <= end.y)
-			target.draw(*entity);
+		   && entity->getPosition().y >= start.y
+		   && entity->getPosition().x <= end.x
+		   && entity->getPosition().y <= end.y)
+			entityDrawList.push_back(entity);
+
+	std::sort(entityDrawList.begin(), entityDrawList.end(), [](Entity* a, Entity* b) {
+		return a->getPosition().y > b->getPosition().y
+			|| a->getPosition().y == b->getPosition().y
+			&& (a->getZOrder() < b->getZOrder()
+			|| a->getZOrder() == b->getZOrder()
+			&& a->getPosition().x > b->getPosition().x);
+	});
+
+	for(sf::Drawable* drawable : entityDrawList)
+		target.draw(*drawable);
+	entityDrawList.clear();
 }

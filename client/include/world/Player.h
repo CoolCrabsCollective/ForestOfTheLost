@@ -14,8 +14,9 @@
 #include "SFML/Graphics/RenderStates.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 #include "Alive.h"
+#include "Solid.h"
 
-class Player : public Entity, public Alive<int> {
+class Player : public Entity, public Alive<int>, public Solid {
     sf::Vector2f renderPosition = {};
 
     Direction currentDir = NORTH;
@@ -26,7 +27,7 @@ class Player : public Entity, public Alive<int> {
     float actionProgress = 0;
 
     const float movingSpeed = 3.0;
-    const float rotationSpeed = 100.0;
+    const float rotationSpeed = 50.0;
 
 	mutable sf::Sprite sprite;
 	std::map<Direction, sf::Texture*> textureMap;
@@ -38,6 +39,10 @@ public:
     void tick(float delta) override;
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
+
+    bool isBlocking(sf::Vector2i vec);
+
+	int getZOrder() const override;
 };
 
 
