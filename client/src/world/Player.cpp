@@ -4,6 +4,6 @@
 
 #include "world/Player.h"
 
-sf::Vector2i Player::getPosition() {
+sf::Vector2i Player::getPosition() const {
 	return position;
 }

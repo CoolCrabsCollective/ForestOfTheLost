@@ -12,7 +12,15 @@ class Entity {
 public:
 	virtual ~Entity() = default;
 
-	virtual sf::Vector2i getPosition() = 0;
+	virtual sf::Vector2i getPosition() const = 0;
+
+	inline int x() const {
+		return getPosition().x;
+	}
+
+	inline int y() const {
+		return getPosition().y;
+	}
 };
 
 

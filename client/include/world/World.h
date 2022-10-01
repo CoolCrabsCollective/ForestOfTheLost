@@ -9,12 +9,24 @@
 #include "Terrain.h"
 #include "SFML/System/Vector2.hpp"
 #include "Entity.h"
+#include "Player.h"
 
 class World {
+	std::vector<Entity> entities;
+	Player player;
+
 public:
 	TerrainType getTerrainType(sf::Vector2i position);
 
-	std::vector<Entity> getEntities();
+	const std::vector<Entity>& getEntities() const;
+
+	std::vector<Entity>& getEntities();
+
+	const Player& getPlayer() const;
+
+	Player& getPlayer();
+
+
 };
 
 

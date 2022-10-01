@@ -12,7 +12,7 @@ class Player : public Entity {
 	sf::Vector2i position;
 
 public:
-	sf::Vector2i getPosition() override;
+	sf::Vector2i getPosition() const override;
 };
 
 
