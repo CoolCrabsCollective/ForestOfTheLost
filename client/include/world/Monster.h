@@ -11,7 +11,6 @@
 
 class Monster : public Entity {
     mutable sf::Sprite sprite;
-    bool findingNewSpot;
     sf::Vector2f renderPosition = {};
     Direction currentDir = NORTH;
     Direction destinationDir = NORTH;

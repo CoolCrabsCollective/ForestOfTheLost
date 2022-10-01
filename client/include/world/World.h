@@ -6,6 +6,7 @@
 #define LD51_CLIENT_WORLD_H
 
 #include <vector>
+#include <unordered_map>
 #include "Terrain.h"
 #include "SFML/System/Vector2.hpp"
 #include "Player.h"
@@ -20,17 +21,20 @@ struct VecCompare {
 	}
 };
 
-class World : public Tickable {
+class World : public Tickable, public sf::Drawable {
 	wiz::AssetLoader& assets;
 	std::vector<Entity*> entities;
 	Player player;
+
+	std::unordered_map<TerrainType, sf::Texture*> terrain_textures;
+	mutable sf::Sprite terrain_sprite;
 
 	std::map<sf::Vector2i, TerrainType, VecCompare> terrainMap;
 
 public:
 	World(wiz::AssetLoader& assets);
 
-	TerrainType getTerrainType(sf::Vector2i position);
+	TerrainType getTerrainType(sf::Vector2i position) const;
 
 	const std::vector<Entity*>& getEntities() const;
 
@@ -45,6 +49,9 @@ public:
     bool tileOccupied(sf::Vector2i tile, Entity *exclude);
 
     void tick(float delta) override;
+
+protected:
+	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
 };
 
 

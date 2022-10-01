@@ -14,11 +14,6 @@ Monster::Monster(World &world, sf::Vector2i position) : Entity(world) {
 }
 
 void Monster::tick(float delta) {
-   if (!findingNewSpot)
-       return;
-
-   float speed = 0.001f;
-
     bool moving = position != destination;
     bool rotating = currentDir != destinationDir;
 
@@ -43,7 +38,7 @@ void Monster::tick(float delta) {
 }
 
 void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
-    if (!findingNewSpot)
+    if (position == destination)
         return;
 
     sprite.setPosition({renderPosition.x, -renderPosition.y});
@@ -52,11 +47,13 @@ void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) con
 }
 
 void Monster::findNewSpot() {
-    findingNewSpot = true;
     // Find the closest hiding spot
     for (int i = 0 ; i < world.getEntities().size() ; i++) {
         if(HidingSpot* spot = dynamic_cast<HidingSpot*>(world.getEntities().at(i))) {
-            // do the check later
+            // Don't want to go to the same bush
+            if (spot->getPosition() == position)
+                continue;
+
             destination = spot->getPosition();
         }
     }
