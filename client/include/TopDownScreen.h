@@ -17,7 +17,7 @@ class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz
 	std::unordered_map<TerrainType, sf::Texture*> terrain_textures;
 	sf::Sprite terrain_sprite;
 public:
-	TopDownScreen(wiz::Game& game);
+	explicit TopDownScreen(wiz::Game& game);
 
 	void tick(float delta) override;
 

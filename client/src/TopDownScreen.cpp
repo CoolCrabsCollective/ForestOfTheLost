@@ -6,7 +6,7 @@
 #include "GameAssets.h"
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
-		: Screen(game), world(), terrain_textures() {
+		: Screen(game), world(game.getAssets()), terrain_textures() {
 }
 
 void TopDownScreen::render(sf::RenderTarget& target) {
@@ -29,6 +29,10 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 
 		}
 	}
+}
+
+void TopDownScreen::tick(float delta) {
+
 }
 
 void TopDownScreen::show() {
