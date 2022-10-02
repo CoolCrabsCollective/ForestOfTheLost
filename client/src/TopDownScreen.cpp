@@ -27,6 +27,15 @@ void TopDownScreen::tick(float delta) {
     timeAccumulator += delta;
     tenSecAccumulator += delta;
 
+    if (world.getPlayer().isLockMovement()) {
+        movementLockAccumulator += delta;
+
+        if (movementLockAccumulator > 500.0) {
+            world.getPlayer().setLockMovement(false);
+            movementLockAccumulator = 0.0;
+        }
+    }
+
     if (tenSecAccumulator > 10000.0) {
         std::cout << "10 seconds passed!" << std::endl;
 
@@ -36,6 +45,8 @@ void TopDownScreen::tick(float delta) {
                 monster->findNewSpot();
             }
         }
+
+        world.getPlayer().setLockMovement(true);
 
         do
         {
