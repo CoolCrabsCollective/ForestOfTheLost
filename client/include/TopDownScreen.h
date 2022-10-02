@@ -11,6 +11,7 @@
 #include "world/World.h"
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/Texture.hpp"
+#include "SFML/Graphics/Text.hpp"
 
 class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz::InputListener {
 	std::string name = "TopDownScreen";
@@ -24,6 +25,8 @@ class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz
 
     float timeAccumulator = 0.0;
     float tenSecAccumulator = 0.0;
+
+    sf::Text endGoalText;
 
     void processInput();
 

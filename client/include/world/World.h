@@ -35,6 +35,8 @@ class World : public Tickable, public sf::Drawable {
 
 	mutable std::vector<Entity*> entityDrawList = {};
 
+    bool endPointReached = false;
+
 public:
 	World(wiz::AssetLoader& assets);
 
@@ -57,6 +59,8 @@ public:
     void addEntity(Entity* entity);
 
     void moveEntity(sf::Vector2i oldPosition, Entity* entity);
+
+    bool isEndPointReached() const;
 
 protected:
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
