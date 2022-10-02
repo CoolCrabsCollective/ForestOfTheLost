@@ -217,31 +217,35 @@ void World::checkEntitiesInRange(Entity* entityCheck, int solidRange) {
 
 void World::tick(float delta) {
 
-	timeAccumulator += delta;
-	tenSecAccumulator += delta;
+	if(getPhase() != INITIAL || isChangingPhase()) {
+		timeAccumulator += delta;
+		tenSecAccumulator += delta;
 
-	if(tenSecAccumulator > 9250.0 || tenSecAccumulator < 500.0)
-		getPlayer().setLockMovement(true);
-	else
-		getPlayer().setLockMovement(false);
-
-	if(tenSecAccumulator > 10000.0) {
-
-		if(countBlinkBeforePhaseChange != -1) {
-			countBlinkBeforePhaseChange--;
-			if(countBlinkBeforePhaseChange == -1 && currentPhase < FINAL) {
-				generatePhase(static_cast<GamePhase>(currentPhase + 1));
-			}
+		if(getPhase() != INITIAL) {
+			if(tenSecAccumulator > 9250.0 || tenSecAccumulator < 500.0)
+				getPlayer().setLockMovement(true);
+			else
+				getPlayer().setLockMovement(false);
 		}
 
-		for(int i = 0; i < getEntities().size(); i++) {
-			if(Monster* monster = dynamic_cast<Monster*>(getEntities().at(i))) {
-				// Don't want to go to the same bush
-				monster->findNewSpot();
-			}
-		}
+		if(tenSecAccumulator > 10000.0) {
 
-		tenSecAccumulator = fmod(tenSecAccumulator, 10000.0f);
+			if(countBlinkBeforePhaseChange != -1) {
+				countBlinkBeforePhaseChange--;
+				if(countBlinkBeforePhaseChange == -1 && currentPhase < FINAL) {
+					generatePhase(static_cast<GamePhase>(currentPhase + 1));
+				}
+			}
+
+			for(int i = 0; i < getEntities().size(); i++) {
+				if(Monster* monster = dynamic_cast<Monster*>(getEntities().at(i))) {
+					// Don't want to go to the same bush
+					monster->findNewSpot();
+				}
+			}
+
+			tenSecAccumulator = fmod(tenSecAccumulator, 10000.0f);
+		}
 	}
 
     for (Entity *entity : entities) {
@@ -273,11 +277,10 @@ void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
 void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
 
 	sf::Vector2f viewSize = VIEW_SIZE;
-
 	sf::Vector2i start = getPlayer().getPosition() - sf::Vector2i(static_cast<int>(ceil(viewSize.x / 2.0f)),
-																  static_cast<int>(ceil(viewSize.y / 2.0f))) - sf::Vector2i{1,1};
+																  static_cast<int>(ceil(viewSize.y / 2.0f))) - sf::Vector2i{3, 3};
 	sf::Vector2i end = getPlayer().getPosition() + sf::Vector2i(static_cast<int>(floor(viewSize.x / 2.0f)),
-																static_cast<int>(floor(viewSize.y / 2.0f))) + sf::Vector2i{1,1};
+																static_cast<int>(floor(viewSize.y / 2.0f))) + sf::Vector2i{3, 3};
 
 	for(int i = start.x; i <= end.x; i++) {
 		for(int j = start.y; j <= end.y; j++) {
