@@ -10,6 +10,10 @@ TeddyBear::TeddyBear(World &world, sf::Vector2i position)
 
 }
 
-void TeddyBear::activate() {
+bool TeddyBear::activate() {
+	if(taken)
+		return false;
+	taken = true;
 	world.setChangePhase();
+	return true;
 }

@@ -117,7 +117,8 @@ void Player::interact() {
 	for(Entity* entity : world.getEntitiesAt(position + directionToUnitVector(currentDir)))
 		if(Interactable* interactable = dynamic_cast<Interactable*>(entity))
 		{
-			interactable->activate();
+			if(!interactable->activate())
+				continue;
 			lastInteract = std::chrono::system_clock::now();
 			interactSound.play();
 			return;

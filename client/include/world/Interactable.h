@@ -10,7 +10,7 @@ class Interactable {
 public:
 	virtual ~Interactable() = default;
 
-	virtual void activate() = 0;
+	virtual bool activate() = 0;
 };
 
 

@@ -35,9 +35,7 @@ World::World(wiz::AssetLoader& assets)
     //addEntity(new EndGoal(*this, sf::Vector2i(endGoalX, endGoalY)));
 
     Entity* bat1 = new Monster(*this, sf::Vector2i(0, 1));
-    Entity* teddy_bear = new TeddyBear(*this, sf::Vector2i(1, 1));
     addEntity(bat1);
-    addEntity(teddy_bear);
 }
 
 void World::generatePhase(GamePhase phase) {
@@ -88,8 +86,23 @@ void World::generatePhase(GamePhase phase) {
 
 					addEntity(new Tree(*this, { i, j }, type));
 				}
-				else if(noise2 > 0.5)
-					addEntity(new Bush(*this, { i, j }));
+				else if(noise2 > 0.5) {
+					addEntity(new Bush(*this, {i, j}));
+				} else if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0) {
+					if(phase == GamePhase::INITIAL) {
+						int chunkX = i / 20;
+						int chunkY = j / 20;
+
+						int x = (int)abs(SimplexNoise::noise(chunkX / 100.0, chunkY / 100.0)) % 20;
+						int y = (int)abs(SimplexNoise::noise(chunkX / 100.0, chunkY / 100.0)) % 20;
+
+						if(i % 20 == x && y == j % 20) {
+
+							Entity* teddy_bear = new TeddyBear(*this, sf::Vector2i(i, j));
+							addEntity(teddy_bear);
+						}
+					}
+				}
 			}
 
 		}
@@ -218,7 +231,7 @@ void World::addEntity(Entity* entity) {
 }
 
 void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
-    std::remove(entityMap[oldPosition].begin(), entityMap[oldPosition].end(),entity);
+    std::remove(entityMap[oldPosition].begin(), entityMap[oldPosition].end(), entity);
 
 	if (entityMap.contains(entity->getPosition()))
 		entityMap[entity->getPosition()].push_back(entity);
@@ -231,9 +244,9 @@ void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
 	sf::Vector2f viewSize = VIEW_SIZE;
 
 	sf::Vector2i start = getPlayer().getPosition() - sf::Vector2i(static_cast<int>(ceil(viewSize.x / 2.0f)),
-																  static_cast<int>(ceil(viewSize.y / 2.0f))) - sf::Vector2i{1,1};
+																  static_cast<int>(ceil(viewSize.y / 2.0f))) - sf::Vector2i{3,3};
 	sf::Vector2i end = getPlayer().getPosition() + sf::Vector2i(static_cast<int>(floor(viewSize.x / 2.0f)),
-																static_cast<int>(floor(viewSize.y / 2.0f))) + sf::Vector2i{1,1};
+																static_cast<int>(floor(viewSize.y / 2.0f))) + sf::Vector2i{3,3};
 
 	for(int i = start.x; i <= end.x; i++) {
 		for(int j = start.y; j <= end.y; j++) {
