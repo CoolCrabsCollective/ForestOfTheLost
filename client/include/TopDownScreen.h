@@ -40,6 +40,7 @@ protected:
 	float fps = 0.0f;
 
     sf::Sprite lily;
+    sf::Sprite inspector_thinking;
     bool drawLily = true;
 
 public:
