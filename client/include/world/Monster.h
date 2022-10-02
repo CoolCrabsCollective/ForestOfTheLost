@@ -27,6 +27,8 @@ protected:
 
     std::shared_ptr<EntityState> state;
     bool hasLookedForSpot = false;
+
+    std::string attackMessage;
 public:
     Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, sf::Texture* nightTexture);
     void tick(float delta) override;
@@ -42,6 +44,8 @@ public:
     const std::shared_ptr<EntityState> &getState() const;
 
     void setState(const std::shared_ptr<EntityState> &state);
+
+    std::string getAttackMessage();
 };
 
 
