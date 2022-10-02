@@ -12,11 +12,10 @@
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
 		: Screen(game),
-	    dialogBox(game.getAssets().get(GameAssets::VT323_TTF), game.getAssets().get(GameAssets::DIALOG_BOX)),
-		world(game.getAssets(), dialogBox),
-        mappingDatabase(),
-        lily(*game.getAssets().get(GameAssets::LILY)),
-        mappingDatabase() {
+	      dialogBox(game.getAssets().get(GameAssets::VT323_TTF), game.getAssets().get(GameAssets::DIALOG_BOX)),
+		  world(game.getAssets(), dialogBox),
+          mappingDatabase(),
+          lily(*game.getAssets().get(GameAssets::LILY)) {
 
 	game.getAssets().get(GameAssets::SUSPICIOUS_FOREST_MUSIC)->play();
 
