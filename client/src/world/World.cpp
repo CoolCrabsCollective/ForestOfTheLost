@@ -74,10 +74,11 @@ void World::generatePhase(GamePhase phase) {
 
 	for(Entity* entity : entities)
 		if(entity != &player)
-			free(entity);
+			delete entity;
 
 	entities.clear();
 	entityMap.clear();
+	monsters.clear();
 	addEntity(&player);
 	terrainMap.clear();
 
@@ -271,6 +272,7 @@ void World::tick(float delta) {
 			std::cout << "Despawning monster" << std::endl;
 			monsters[i] = monsters[len - 1];
 			monsters.erase(monsters.end() - 1);
+			delete monster;
 			len--;
 			i--;
 		}
@@ -297,6 +299,10 @@ const std::vector<Entity *> &World::getEntitiesAt(sf::Vector2i position) const {
 }
 
 void World::addEntity(Entity* entity) {
+	for(Entity* current : entities)
+		if(current == entity)
+			throw std::invalid_argument("Attempt to add an entity that is already there FUCKTARD");
+
     entities.push_back(entity);
     if (entityMap.contains(entity->getPosition()))
         entityMap[entity->getPosition()].push_back(entity);
