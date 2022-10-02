@@ -37,7 +37,7 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 	generatePhase(GamePhase::INITIAL);
 
     // Randomly place end goal
-    //int endGoalX = -5;9
+    //int endGoalX = -5;
     //int endGoalY = 5;
     //addEntity(new EndGoal(*this, sf::Vector2i(endGoalX, endGoalY)));
 
