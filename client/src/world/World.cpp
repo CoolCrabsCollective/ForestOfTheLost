@@ -209,31 +209,10 @@ bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
 	return false;
 }
 
-void World::checkEntitiesInRange(Entity* entityCheck, int solidRange) {
-    for(int i = -solidRange; i <= solidRange; i++) {
-        for(int j = -solidRange; j <= solidRange; j++) {
-            for(Entity* entity : entityMap[entityCheck->getPosition() + sf::Vector2i{i, j}]) {
-                if (entity == entityCheck)
-                    continue;
-
-                Player* player = dynamic_cast<Player*>(entityCheck);
-                Monster* monster = dynamic_cast<Monster*>(entity);
-
-                if (player && monster && !dynamic_pointer_cast<MonsterAttackState>(monster->getState()).get() &&
-                    monster->getTimeSinceLastAttack() >= monster->getAttackCoolDown()) {
-                    monster->setState(std::make_shared<MonsterChargeState>(monster));
-					monster->moveTowardsPlayer();
-                    monster->setTimeSinceLastAttack(0.0);
-                    monster->setTimeSinceLastAttack(0.0);
-                }
-            }
-        }
-    }
-}
-
 void World::tick(float delta) {
+    getPlayer().setLockMovement(isTimePaused());
 
-	if(getPhase() != INITIAL || isChangingPhase()) {
+	if((getPhase() != INITIAL || isChangingPhase()) && isTimePaused()) {
 		timeAccumulator += delta;
 		tenSecAccumulator += delta;
 
@@ -328,6 +307,18 @@ void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
 	entityDrawList.clear();
 }
 
+void World::handleMonsterAttack(Entity* monster) {
+//    delete &monster;
+}
+
 bool World::isEndPointReached() const {
     return endPointReached;
+}
+
+bool World::isTimePaused() const {
+    return timePaused;
+}
+
+void World::setTimePaused(bool timePaused) {
+    World::timePaused = timePaused;
 }

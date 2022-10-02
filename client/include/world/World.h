@@ -45,6 +45,7 @@ class World : public Tickable, public sf::Drawable {
 	mutable std::vector<Entity*> entityDrawList = {};
 
     bool endPointReached = false;
+    bool timePaused = false;
 
 	float grayscaleness = 0.0f;
 
@@ -93,8 +94,6 @@ public:
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
 
-    void checkEntitiesInRange(Entity* entityCheck, int solidRange);
-
 	inline void changePhaseIn(int countBlinks) {
 		countBlinkBeforePhaseChange = countBlinks - 1;
 	}
@@ -114,6 +113,13 @@ public:
 	inline GamePhase getPhase() const {
 		return currentPhase;
 	}
+
+    void handleMonsterAttack(Entity* monster);
+
+    bool isTimePaused() const;
+
+    void setTimePaused(bool timePaused);
+
 private:
 	void generatePhase(GamePhase phase);
 };
