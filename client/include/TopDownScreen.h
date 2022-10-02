@@ -26,6 +26,7 @@ class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz
     sf::Text endGoalText;
 
     void processInput();
+	bool isInteractPressed();
 
 public:
 	explicit TopDownScreen(wiz::Game& game);
