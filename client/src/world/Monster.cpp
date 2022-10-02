@@ -52,7 +52,7 @@ void Monster::tick(float delta) {
 
     state->tick(delta);
 
-    targetPlayerInRange();
+    //targetPlayerInRange();
 }
 
 void Monster::targetPlayerInRange() {
@@ -73,8 +73,10 @@ void Monster::move(sf::Vector2i des) {
 }
 
 void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
+    /*
     if (position == destination)
         return;
+        */
 
     daySprite.setPosition({renderPosition.x, -renderPosition.y});
     daySprite.setScale({ 1.0f / daySprite.getTexture()->getSize().x, 1.0f / daySprite.getTexture()->getSize().y });
@@ -91,9 +93,6 @@ void Monster::drawDarkness(sf::RenderTarget &target, sf::Shader* shader) const {
 }
 
 void Monster::findNewSpot() {
-    if (!dynamic_pointer_cast<MonsterIdleState>(state).get())
-        return;
-
     // Find the closest hiding spot
     for (int searchX = position.x  - searchRadius ; searchX <= position.x + searchRadius ; searchX++) {
         for (int searchY = position.y  - searchRadius ; searchY <= position.y + searchRadius ; searchY++) {

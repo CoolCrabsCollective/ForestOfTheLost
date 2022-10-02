@@ -212,7 +212,7 @@ bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
 void World::tick(float delta) {
     getPlayer().setLockMovement(isTimePaused());
 
-	if((getPhase() != INITIAL || isChangingPhase()) && isTimePaused()) {
+	if(!isTimePaused()) {
 		timeAccumulator += delta;
 		tenSecAccumulator += delta;
 
@@ -321,4 +321,9 @@ bool World::isTimePaused() const {
 
 void World::setTimePaused(bool timePaused) {
     World::timePaused = timePaused;
+}
+
+void World::resetAccumulator() {
+    tenSecAccumulator = 0;
+    timeAccumulator = 0;
 }

@@ -120,6 +120,8 @@ public:
 
     void setTimePaused(bool timePaused);
 
+    void resetAccumulator();
+
 private:
 	void generatePhase(GamePhase phase);
 };

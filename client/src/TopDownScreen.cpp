@@ -138,7 +138,7 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 								   -world.getPlayer().getRenderPosition().y + 0.5f }, World::VIEW_SIZE));
 	drawWorld(frameBuffer);
 
-	spookyShader->setUniform("timeAccumulator", world.getTimeAccumulator());
+	spookyShader->setUniform("timeAccumulator",  world.getTimeAccumulator());
 	spookyShader->setUniform("grayscaleness", world.getGrayscaleness());
 	frameBuffer.display(); // done drawing fbo
 	sf::Sprite fbo(frameBuffer.getTexture());

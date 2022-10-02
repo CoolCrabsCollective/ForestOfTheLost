@@ -17,6 +17,7 @@ bool TeddyBear::activate() {
 	world.getDialogBox().startDialog({ "You found an old dirty teddy bear covered in jizz." }, [&]() {
 		taken = true;
 		world.changePhaseIn(2);
+        world.resetAccumulator();
 	});
 	return true;
 }
