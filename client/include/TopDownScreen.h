@@ -23,8 +23,8 @@ class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz
     sf::Shader* spookyShader = nullptr;
     sf::Shader* eyesShader = nullptr;
 
-    float timeAccumulator = 0.0;
-    float tenSecAccumulator = 0.0;
+    float timeAccumulator = 0.0f;
+    float tenSecAccumulator = 0.0f;
 
     sf::Text endGoalText;
 

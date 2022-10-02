@@ -9,9 +9,15 @@
 #include "HidingSpot.h"
 #include "Solid.h"
 
+enum TreeType {
+	ALIVE,
+	DEAD,
+	THICK_DEAD
+};
+
 class Tree : public HidingSpot, public Solid {
 public:
-    Tree(World& world, const sf::Vector2i& position);
+    Tree(World& world, const sf::Vector2i& position, TreeType tree_type);
 
     bool isBlocking(sf::Vector2i vec);
 

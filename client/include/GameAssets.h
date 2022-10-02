@@ -41,9 +41,13 @@ namespace GameAssets {
 
     // Hiding Spots
     ASSET(wiz::TextureAsset, HIDING_SPOT, ("gfx/bush.png"))
-    ASSET(wiz::TextureAsset, TREE, ("gfx/tree.png"))
 
-    // Monsterse
+	// Tree
+    ASSET(wiz::TextureAsset, ALIVE_TREE, ("gfx/tree/alive.png"))
+	ASSET(wiz::TextureAsset, DEAD_TREE, ("gfx/tree/dead.png"))
+	ASSET(wiz::TextureAsset, THICK_DEAD_TREE, ("gfx/tree/thick_dead.png"))
+
+    // Monsters
     ASSET(wiz::TextureAsset, BAT, ("gfx/bat2.png"))
 
     // Player

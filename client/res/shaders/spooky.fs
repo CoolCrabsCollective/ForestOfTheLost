@@ -1,5 +1,6 @@
 uniform sampler2D texture;
 uniform float timeAccumulator;
+uniform float grayscaleness;
 
 #define PI 3.141592654
 
@@ -34,11 +35,11 @@ void main()
     float ambient_darkness = 1.0 - 2.0 * periodic * distance;
 
     if(accumulated_time < darkness_threshold_max || accumulated_time > darkness_threshold_min)
-    {
         gl_FragColor = vec4(pixel.rgb, ambient_darkness * ten_second_darkness_multiplier);
-    }
     else
-    {
         gl_FragColor = vec4(pixel.rgb, ambient_darkness);
-    }
+
+	float gray = 0.299 * gl_FragColor.r + 0.587 * gl_FragColor.g + 0.114 * gl_FragColor.b;
+
+	gl_FragColor = vec4(vec3(gray) * grayscaleness + gl_FragColor.rgb * (1 - grayscaleness), gl_FragColor.a);
 }
