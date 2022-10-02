@@ -23,7 +23,7 @@ protected:
 
     sf::Vector2i partDestination = {};
 
-    float searchRadius = 7;
+    float searchRadius = 4;
 
     std::shared_ptr<EntityState> state;
 public:

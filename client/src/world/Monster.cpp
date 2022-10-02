@@ -74,10 +74,8 @@ void Monster::move(sf::Vector2i des) {
 }
 
 void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
-    /*
     if (position == destination)
         return;
-        */
 
     daySprite.setPosition({renderPosition.x, -renderPosition.y});
     daySprite.setScale({ 1.0f / daySprite.getTexture()->getSize().x, 1.0f / daySprite.getTexture()->getSize().y });
@@ -103,6 +101,7 @@ void Monster::findNewSpot() {
                 continue;
 
             // TODO: check no one else is going there
+            // Update: this is kind of impossible fuck it
 
             auto entitiesAt = world.getEntitiesAt({searchX, searchY});
 
@@ -111,11 +110,11 @@ void Monster::findNewSpot() {
                     potentialSpots.push_back(spot->getPosition());
                 }
             }
-
         }
     }
 
-    move(potentialSpots.at(std::rand() % (potentialSpots.size())));
+    if (potentialSpots.size() != 0)
+        move(potentialSpots.at(std::rand() % (potentialSpots.size())));
 }
 
 void Monster::moveTowardsPlayer() {
