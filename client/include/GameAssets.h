@@ -35,6 +35,8 @@ namespace GameAssets {
 	ASSET(wiz::TextureAsset, HEART, ("gfx/heart.png"))
     ASSET(wiz::TextureAsset, ITEM_TEDDY, ("gfx/teddy_bear.png"))
 
+    ASSET(wiz::TextureAsset, DIALOG_BOX, ("gfx/dialog_box.png"))
+
 	ASSET(ShaderAsset, SPOOKY_SHADER, ("shaders/spooky.vs", "shaders/spooky.fs"))
 	ASSET(ShaderAsset, EYES_SHADER, ("shaders/eyes.vs", "shaders/eyes.fs"))
 

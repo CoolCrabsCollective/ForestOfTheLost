@@ -168,7 +168,7 @@ bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
 	return false;
 }
 
-void World::updateInteractionInRangeOf(Entity* entityCheck, int solidRange) {
+void World::checkEntitesInRange(Entity* entityCheck, int solidRange) {
     for(int i = -solidRange; i <= solidRange; i++) {
         for(int j = -solidRange; j <= solidRange; j++) {
             for(Entity* entity : entityMap[entityCheck->getPosition() + sf::Vector2i{i, j}]) {
