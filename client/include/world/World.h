@@ -90,6 +90,10 @@ public:
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
 
+	inline void setChangePhase() {
+		changePhase = true;
+	}
+
 private:
 	void generatePhase(GamePhase phase);
 };

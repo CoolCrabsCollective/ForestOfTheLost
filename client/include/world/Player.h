@@ -15,6 +15,9 @@
 #include "SFML/Graphics/Sprite.hpp"
 #include "Alive.h"
 #include "Solid.h"
+#include <chrono>
+#include "SFML/Audio/SoundBuffer.hpp"
+#include "SFML/Audio/Sound.hpp"
 
 class Player : public Entity, public Alive<int>, public Solid {
     sf::Vector2f renderPosition = {};
@@ -33,11 +36,18 @@ class Player : public Entity, public Alive<int>, public Solid {
 
 	mutable sf::Sprite sprite;
 	std::map<Direction, sf::Texture*> textureMap;
+
+	std::chrono::system_clock::time_point lastInteract = std::chrono::system_clock::now() - std::chrono::milliseconds(1000),
+		lastCollision = std::chrono::system_clock::now() - std::chrono::milliseconds(1000);
+	sf::Sound interactSound, noInteractSound, collisionSound;
 public:
 	Player(World& world);
 
     sf::Vector2f getRenderPosition() const;
-    void move(std::optional<Direction> direction);
+
+	void move(std::optional<Direction> direction);
+	void interact();
+
     void tick(float delta) override;
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;

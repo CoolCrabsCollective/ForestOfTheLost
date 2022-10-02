@@ -37,7 +37,6 @@ World::World(wiz::AssetLoader& assets)
     Entity* teddy_bear = new TeddyBear(*this, sf::Vector2i(1, 1));
     addEntity(bat1);
     addEntity(teddy_bear);
-	changePhase = true;
 }
 
 void World::generatePhase(GamePhase phase) {
@@ -167,7 +166,7 @@ void World::tick(float delta) {
 
 		if(changePhase && currentPhase < FINAL) {
 			generatePhase(static_cast<GamePhase>(currentPhase + 1));
-			//changePhase = false;
+			changePhase = false;
 		}
 
 		for(int i = 0; i < getEntities().size(); i++) {
