@@ -28,6 +28,10 @@ public:
     void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
     const sf::Vector2f& getRenderPosition() const;
     void findNewSpot();
+
+    const std::shared_ptr<EntityState> &getState() const;
+
+    void setState(const std::shared_ptr<EntityState> &state);
 };
 
 
