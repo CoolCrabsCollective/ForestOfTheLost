@@ -26,6 +26,7 @@ protected:
     float searchRadius = 4;
 
     std::shared_ptr<EntityState> state;
+    bool hasLookedForSpot = false;
 public:
     Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, sf::Texture* nightTexture);
     void tick(float delta) override;

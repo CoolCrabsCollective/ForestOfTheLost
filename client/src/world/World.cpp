@@ -72,6 +72,15 @@ void World::generatePhase(GamePhase phase) {
 		return;
 	}
 
+	for(int i = 0; i < entities.size(); i++) {
+        for(int j = 0; j < entities.size(); j++) {
+            if(i != j && entities[i] == entities[j])
+            {
+                std::cout << "FUCK!!!" << std::endl;
+            }
+        }
+	}
+
 	for(Entity* entity : entities)
 		if(entity != &player)
 			delete entity;
@@ -299,8 +308,8 @@ const std::vector<Entity *> &World::getEntitiesAt(sf::Vector2i position) const {
 }
 
 void World::addEntity(Entity* entity) {
-	for(Entity* current : entities)
-		if(current == entity)
+	for(auto it = entities.begin(); it != entities.end(); it++)
+		if(*it == entity)
 			throw std::invalid_argument("Attempt to add an entity that is already there FUCKTARD");
 
     entities.push_back(entity);
@@ -320,8 +329,10 @@ void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
 }
 
 void World::removeEntity(Entity* entity) {
-	std::remove(entityMap[entity->getPosition()].begin(), entityMap[entity->getPosition()].end(), entity);
-	std::remove(entities.begin(), entities.end(),entity);
+	if(std::remove(entityMap[entity->getPosition()].begin(), entityMap[entity->getPosition()].end(), entity) == entityMap[entity->getPosition()].end())
+	    throw std::runtime_error("Tried to removing an entity not in entity map (skill issue)");
+	if(std::remove(entities.begin(), entities.end(), entity) == entities.end())
+	    throw std::runtime_error("Tried to remove an entity not in entities vector");
 }
 
 void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
