@@ -13,6 +13,7 @@
 #include "world/Solid.h"
 #include "world/Tree.h"
 #include "world/EndGoal.h"
+#include "world/state/MonsterChargeState.h"
 
 World::World(wiz::AssetLoader& assets)
 		: assets(assets),
@@ -83,6 +84,8 @@ void World::generatePhase(GamePhase phase) {
 						type = TreeType::ALIVE;
 					else if(phase == GamePhase::FIRST_ENCOUNTER)
 						type = TreeType::DEAD;
+                    else
+                        type = TreeType::THICK_DEAD;
 
 					addEntity(new Tree(*this, { i, j }, type));
 				}
@@ -151,6 +154,24 @@ bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
 	}
 
 	return false;
+}
+
+void World::updateInteractionInRangeOf(Entity* entityCheck, int solidRange) {
+    for(int i = -solidRange; i <= solidRange; i++) {
+        for(int j = -solidRange; j <= solidRange; j++) {
+            for(Entity* entity : entityMap[entityCheck->getPosition() + sf::Vector2i{i, j}]) {
+                if (entity == entityCheck)
+                    continue;
+
+                Player* player = dynamic_cast<Player*>(entityCheck);
+                Monster* monster = dynamic_cast<Monster*>(entity);
+
+                if (player && monster) {
+                    monster->setState(std::make_shared<MonsterChargeState>(monster));
+                }
+            }
+        }
+    }
 }
 
 void World::tick(float delta) {

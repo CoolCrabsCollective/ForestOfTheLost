@@ -68,6 +68,8 @@ void Player::tick(float delta) {
         } else
 			destinationDir = inputDir.value();
     }
+
+    world.updateInteractionInRangeOf(this, 1);
 }
 
 void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {

@@ -80,3 +80,11 @@ void Monster::findNewSpot() {
 const sf::Vector2f &Monster::getRenderPosition() const {
     return renderPosition;
 }
+
+const std::shared_ptr<EntityState> &Monster::getState() const {
+    return state;
+}
+
+void Monster::setState(const std::shared_ptr<EntityState> &state) {
+    Monster::state = state;
+}
