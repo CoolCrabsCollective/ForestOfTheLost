@@ -18,6 +18,7 @@ protected:
     Direction currentDir = NORTH;
     Direction destinationDir = NORTH;
     float actionProgress = 0;
+    sf::Vector2i movingStartPos = {};
     float movingSpeed = 0.5;
     float rotationSpeed = 5;
 
@@ -31,6 +32,7 @@ public:
     virtual void drawDarkness(sf::RenderTarget& target, sf::Shader* shader) const;
     sf::Vector2f getRenderPosition() const override;
     void findNewSpot();
+    void moveTowardsPlayer();
 
     const std::shared_ptr<EntityState> &getState() const;
 

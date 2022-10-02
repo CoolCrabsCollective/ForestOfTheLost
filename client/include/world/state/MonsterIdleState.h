@@ -6,10 +6,11 @@
 #define LD51_CLIENT_MONSTERIDLESTATE_H
 
 #include "EntityState.h"
+#include "MonsterAttackState.h"
 
 class MonsterIdleState : public EntityState {
 public:
-    MonsterIdleState(Entity* monster);
+    MonsterIdleState(Entity *monster);
 
     void tick(float delta) override;
 };

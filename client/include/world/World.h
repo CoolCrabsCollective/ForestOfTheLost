@@ -71,7 +71,7 @@ public:
 
 	wiz::AssetLoader& getAssets();
 
-    bool tileOccupied(sf::Vector2i tile, Entity *exclude);
+    bool tileOccupied(sf::Vector2i tile, Entity *exclude, std::optional<Entity*> exclusive);
 
     void tick(float delta) override;
 

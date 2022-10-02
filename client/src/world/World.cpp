@@ -167,7 +167,7 @@ wiz::AssetLoader& World::getAssets() {
 	return assets;
 }
 
-bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
+bool World::tileOccupied(sf::Vector2i tile, Entity* exclude, std::optional<Entity*> exclusive) {
 
 	if(terrainMap[tile] == WATER)
 		return true;
@@ -208,6 +208,7 @@ void World::checkEntitiesInRange(Entity* entityCheck, int solidRange) {
 
                 if (player && monster) {
                     monster->setState(std::make_shared<MonsterChargeState>(monster));
+					monster->moveTowardsPlayer();
                 }
             }
         }
