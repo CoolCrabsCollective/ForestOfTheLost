@@ -15,7 +15,8 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
 	      dialogBox(game.getAssets().get(GameAssets::VT323_TTF), game.getAssets().get(GameAssets::DIALOG_BOX)),
 		  world(game.getAssets(), dialogBox),
           mappingDatabase(),
-          lily(*game.getAssets().get(GameAssets::LILY)) {
+          lily(*game.getAssets().get(GameAssets::LILY)),
+          inspector_thinking(*game.getAssets().get(GameAssets::PLAYER_LEFT)){
 
 	game.getAssets().get(GameAssets::SUSPICIOUS_FOREST_MUSIC)->play();
 
@@ -33,8 +34,11 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
 
 	mappingDatabase.loadFromCSV(*getGame().getAssets().get(GameAssets::CONTROLLER_DB));
 
-    lily.setPosition({static_cast<float>((1280 / 2) - (lily.getTexture()->getSize().x * 10 / 2)), 100});
-    lily.setScale({10, 10});
+    lily.setPosition({static_cast<float>((1280 / 2) - (lily.getTexture()->getSize().x * 16 / 2)) - 100, 30});
+    lily.setScale({16, 16});
+
+    inspector_thinking.setPosition({static_cast<float>(1280 / 2) + 200, 50});
+    inspector_thinking.setScale({16, 16});
 
     dialogBox.callback = [&]() {
         drawLily = false;
@@ -171,12 +175,16 @@ void TopDownScreen::drawUI(sf::RenderTarget &target) {
     sf::Vector2f viewSize = {1280, 720};
     target.setView(sf::View({viewSize.x / 2.0f, viewSize.y / 2.0f}, viewSize ));
 
+    if (drawLily)
+    {
+        target.clear(sf::Color(38, 92, 66));
+        target.draw(lily);
+        target.draw(inspector_thinking);
+    }
+
     target.draw(dialogBox);
 	fpsText.setString("FPS: " + std::to_string(fps));
 	target.draw(fpsText);
-
-    if (drawLily)
-        target.draw(lily);
 }
 
 void TopDownScreen::show() {
