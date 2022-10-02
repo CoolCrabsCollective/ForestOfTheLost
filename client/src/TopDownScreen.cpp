@@ -8,19 +8,30 @@
 #include "world/HidingSpot.h"
 #include "world/Monster.h"
 #include "WIZ/input/Mapping.h"
+#include "WIZ/input/MappingDatabase.h"
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
-		: Screen(game), world(game.getAssets()), dialogBox(game.getAssets().get(GameAssets::SANS_TTF), game.getAssets().get(GameAssets::DIALOG_BOX)) {
+		: Screen(game),
+		world(game.getAssets()),
+		dialogBox(game.getAssets().get(GameAssets::SANS_TTF),
+        game.getAssets().get(GameAssets::DIALOG_BOX)),
+        mappingDatabase()  {
+
+
     endGoalText.setFont(*getGame().getAssets().get(GameAssets::SANS_TTF));
     endGoalText.setCharacterSize(50);
     endGoalText.setString("Congrats you have reached the endpoint...");
     sf::FloatRect bounds = endGoalText.getLocalBounds();
     endGoalText.setPosition(sf::Vector2f(600 - bounds.getSize().x / 2, 450 - bounds.getSize().y / 2));
 
+
     dialogBox.startDialog({
         "Greetings gamers, this is an example dialog box.",
         "A copypasta is a block of text that is copied and pasted across the Internet by individuals through online forums and social networking websites.",
     });
+
+	mappingDatabase.loadFromCSV(*getGame().getAssets().get(GameAssets::CONTROLLER_DB));
+
 }
 
 void TopDownScreen::tick(float delta) {
@@ -31,56 +42,52 @@ void TopDownScreen::tick(float delta) {
     if(world.isEndPointReached() || dialogBox.isInProgress())
         return;
 
-    timeAccumulator += delta;
-    tenSecAccumulator += delta;
-
-    if (world.getPlayer().isLockMovement()) {
-        movementLockAccumulator += delta;
-
-        if (movementLockAccumulator > 500.0) {
-            world.getPlayer().setLockMovement(false);
-            movementLockAccumulator = 0.0;
-        }
-    }
-
-    if (tenSecAccumulator > 10000.0) {
-        std::cout << "10 seconds passed!" << std::endl;
-
-        for (int i = 0 ; i < world.getEntities().size() ; i++) {
-            if(Monster* monster = dynamic_cast<Monster*>(world.getEntities().at(i))) {
-                // Don't want to go to the same bush
-                monster->findNewSpot();
-            }
-        }
-
-        world.getPlayer().setLockMovement(true);
-
-        do
-        {
-            tenSecAccumulator -= 10000.0;
-        } while (tenSecAccumulator >= 10000.0);
-    }
-
     world.tick(delta);
+}
+
+bool TopDownScreen::isInteractPressed() {
+	if(sf::Joystick::isConnected(0)) {
+
+		std::string name = sf::Joystick::getIdentification(0).name;
+
+		if(mappingDatabase.hasMapping(name))
+		{
+			const wiz::Mapping& mapping = mappingDatabase.getMapping(name);
+
+			if(mapping.hasButton(wiz::MapButton::A) && sf::Joystick::isButtonPressed(0, mapping.getButton(wiz::MapButton::A))
+			   || mapping.hasButton(wiz::MapButton::B) && sf::Joystick::isButtonPressed(0, mapping.getButton(wiz::MapButton::B)))
+				return true;
+		}
+	}
+
+	return sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)
+		   || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)
+		   || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::C)
+		   || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::I);
 }
 
 void TopDownScreen::processInput() {
 
+    was_interact_pressed = is_interact_pressed;
+	bool connected = sf::Joystick::isConnected(0);
+
     bool eastPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)
-                        || sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) > 0;
+                        || connected && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) > 50;
 
     bool northPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)
-                        || sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y) < 0;
+                        || connected && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y) < -50;
 
     bool westPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)
-                        ||  sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) < 0;
+                        || connected && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) < -50;
 
     bool southPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)
-                        ||  sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y) > 0;
+                        || connected && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y) > 50;
+
+	is_interact_pressed = isInteractPressed();
 
     if (eastPressed && !westPressed)
         world.getPlayer().move(EAST);
@@ -92,6 +99,15 @@ void TopDownScreen::processInput() {
         world.getPlayer().move(SOUTH);
     else
 		world.getPlayer().move({});
+
+    if(was_interact_pressed && !is_interact_pressed)
+    {
+	    if(dialogBox.isInProgress())
+	        dialogBox.interact();
+	    else
+            world.getPlayer().interact();
+    }
+
 }
 
 
@@ -106,17 +122,15 @@ void TopDownScreen::render(sf::RenderTarget& target) {
         return;
     }
 
-    sf::Vector2f viewSize = World::VIEW_SIZE;
-
     if(!frameBuffer.create(1280, 720))
         throw std::runtime_error("Failed to create FBO!");
 
     frameBuffer.clear();
     frameBuffer.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f,
-								   -world.getPlayer().getRenderPosition().y + 0.5f }, viewSize));
+								   -world.getPlayer().getRenderPosition().y + 0.5f }, World::VIEW_SIZE));
 	drawWorld(frameBuffer);
 
-	spookyShader->setUniform("timeAccumulator", timeAccumulator);
+	spookyShader->setUniform("timeAccumulator", world.getTimeAccumulator());
 	spookyShader->setUniform("grayscaleness", world.getGrayscaleness());
 	frameBuffer.display(); // done drawing fbo
 	sf::Sprite fbo(frameBuffer.getTexture());
@@ -130,7 +144,7 @@ void TopDownScreen::drawEyes(sf::RenderTarget &target) {
     sf::Vector2f viewSize = World::VIEW_SIZE;
     target.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f, -world.getPlayer().getRenderPosition().y + 0.5f }, viewSize));
 
-    eyesShader->setUniform("timeAccumulator", timeAccumulator);
+    eyesShader->setUniform("timeAccumulator", world.getTimeAccumulator());
     for(auto entity : world.getEntities())
     {
         if(Monster* monster = dynamic_cast<Monster*>(entity))
@@ -163,8 +177,8 @@ void TopDownScreen::show() {
     heart_sprite.setTexture(*getAssets().get(GameAssets::HEART));
     heart_sprite.setScale({ 50.0f * 7.0f / 8.0f / heart_sprite.getTexture()->getSize().x,
                             50.0f * 7.0f / 8.0f / heart_sprite.getTexture()->getSize().y });
-    eye_sprite.setTexture(*getAssets().get(GameAssets::SPOOKY_EYES));
 
+    eye_sprite.setTexture(*getAssets().get(GameAssets::SPOOKY_EYES));
     eye_sprite.setScale({ 1.0f / eye_sprite.getTexture()->getSize().x, 1.0f / eye_sprite.getTexture()->getSize().y });
 
     spookyShader = getAssets().get(GameAssets::SPOOKY_SHADER);

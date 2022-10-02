@@ -7,6 +7,7 @@
 #include "world/World.h"
 #include "GameAssets.h"
 #include "world/Direction.h"
+#include "world/Interactable.h"
 
 Player::Player(World& world)
 	: Entity(world),
@@ -14,11 +15,17 @@ Player::Player(World& world)
 	  textureMap(),
 	  Solid(),
 	  currentDir(NORTH),
-	  destinationDir(NORTH) {
+	  destinationDir(NORTH),
+	  interactSound(),
+	  noInteractSound() {
 	textureMap[Direction::NORTH] = world.getAssets().get(GameAssets::PLAYER_BACK);
 	textureMap[Direction::SOUTH] = world.getAssets().get(GameAssets::PLAYER_FRONT);
 	textureMap[Direction::EAST] = world.getAssets().get(GameAssets::PLAYER_RIGHT);
 	textureMap[Direction::WEST] = world.getAssets().get(GameAssets::PLAYER_LEFT);
+
+	interactSound.setBuffer(*world.getAssets().get(GameAssets::INTERACT));
+	noInteractSound.setBuffer(*world.getAssets().get(GameAssets::NOINTERACT));
+	collisionSound.setBuffer(*world.getAssets().get(GameAssets::COLLISION));
 }
 
 sf::Vector2f Player::getRenderPosition() const {
@@ -30,6 +37,10 @@ void Player::move(std::optional<Direction> direction) {
 }
 
 void Player::tick(float delta) {
+
+	if(lastCollision > std::chrono::system_clock::now() - std::chrono::milliseconds(500))
+		return;
+
     bool moving = position != destination;
     bool rotating = currentDir != destinationDir;
 
@@ -64,14 +75,20 @@ void Player::tick(float delta) {
             destination = position + directionToUnitVector(inputDir.value());
             if (world.tileOccupied(destination, this) || lockMovement) {
                 destination = position;
+				if(!lockMovement) {
+					collisionSound.play();
+					lastCollision = std::chrono::system_clock::now();
+				}
             }
         } else
 			destinationDir = inputDir.value();
     }
+
+    world.checkEntitesInRange(this, 1);
 }
 
 void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
-	sprite.setTexture(*textureMap.at(destinationDir));
+	sprite.setTexture(*textureMap.at(destinationDir), true);
 	sprite.setPosition({renderPosition.x - 0.25f, -renderPosition.y - 0.5f});
 	sprite.setScale({ 1.5f / sprite.getTexture()->getSize().x, 1.5f / sprite.getTexture()->getSize().y });
 	target.draw(sprite);
@@ -91,6 +108,24 @@ int Player::getZOrder() const {
 
 bool Player::isLockMovement() const {
     return lockMovement;
+}
+
+void Player::interact() {
+	if(lastInteract > std::chrono::system_clock::now() - std::chrono::milliseconds(500))
+		return;
+
+	for(Entity* entity : world.getEntitiesAt(position + directionToUnitVector(currentDir)))
+		if(Interactable* interactable = dynamic_cast<Interactable*>(entity))
+		{
+			interactable->activate();
+			lastInteract = std::chrono::system_clock::now();
+			interactSound.play();
+			return;
+		}
+
+
+	lastInteract = std::chrono::system_clock::now();
+	noInteractSound.play();
 }
 
 

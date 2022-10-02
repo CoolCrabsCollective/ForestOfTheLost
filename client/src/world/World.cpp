@@ -13,6 +13,7 @@
 #include "world/Solid.h"
 #include "world/Tree.h"
 #include "world/EndGoal.h"
+#include "world/state/MonsterChargeState.h"
 
 World::World(wiz::AssetLoader& assets)
 		: assets(assets),
@@ -82,6 +83,8 @@ void World::generatePhase(GamePhase phase) {
 						type = TreeType::ALIVE;
 					else if(phase == GamePhase::FIRST_ENCOUNTER)
 						type = TreeType::DEAD;
+                    else
+                        type = TreeType::THICK_DEAD;
 
 					addEntity(new Tree(*this, { i, j }, type));
 				}
@@ -98,6 +101,7 @@ void World::generatePhase(GamePhase phase) {
 		grayscaleness = 0.5;
 	else
 		grayscaleness = 1.0;
+	currentPhase = phase;
 }
 
 TerrainType World::getTerrainType(sf::Vector2i position) const {
@@ -151,7 +155,51 @@ bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
 	return false;
 }
 
+void World::checkEntitesInRange(Entity* entityCheck, int solidRange) {
+    for(int i = -solidRange; i <= solidRange; i++) {
+        for(int j = -solidRange; j <= solidRange; j++) {
+            for(Entity* entity : entityMap[entityCheck->getPosition() + sf::Vector2i{i, j}]) {
+                if (entity == entityCheck)
+                    continue;
+
+                Player* player = dynamic_cast<Player*>(entityCheck);
+                Monster* monster = dynamic_cast<Monster*>(entity);
+
+                if (player && monster) {
+                    monster->setState(std::make_shared<MonsterChargeState>(monster));
+                }
+            }
+        }
+    }
+}
+
 void World::tick(float delta) {
+
+	timeAccumulator += delta;
+	tenSecAccumulator += delta;
+
+	if(tenSecAccumulator > 9250.0 || tenSecAccumulator < 500.0)
+		getPlayer().setLockMovement(true);
+	else
+		getPlayer().setLockMovement(false);
+
+	if(tenSecAccumulator > 10000.0) {
+
+		if(changePhase && currentPhase < FINAL) {
+			generatePhase(static_cast<GamePhase>(currentPhase + 1));
+			changePhase = false;
+		}
+
+		for(int i = 0; i < getEntities().size(); i++) {
+			if(Monster* monster = dynamic_cast<Monster*>(getEntities().at(i))) {
+				// Don't want to go to the same bush
+				monster->findNewSpot();
+			}
+		}
+
+		tenSecAccumulator = fmod(tenSecAccumulator, 10000.0f);
+	}
+
     for (Entity *entity : entities) {
         entity->tick(delta);
     }

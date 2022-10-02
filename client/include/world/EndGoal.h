@@ -19,8 +19,6 @@ public:
     void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
 
     bool isBlocking(sf::Vector2i vec);
-
-
 };
 
 #endif //LD51_CLIENT_ENDGOAL_H

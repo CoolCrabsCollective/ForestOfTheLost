@@ -8,6 +8,7 @@
 
 #include "World.h"
 #include "HidingSpot.h"
+#include "state/MonsterIdleState.h"
 
 class Monster : public Entity {
     mutable sf::Sprite sprite;
@@ -19,12 +20,18 @@ class Monster : public Entity {
     float rotationSpeed = 5;
 
     float searchRadius = 7;
+
+    std::shared_ptr<EntityState> state;
 public:
     Monster(World &world, sf::Vector2i position);
     void tick(float delta) override;
     void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
     const sf::Vector2f& getRenderPosition() const;
     void findNewSpot();
+
+    const std::shared_ptr<EntityState> &getState() const;
+
+    void setState(const std::shared_ptr<EntityState> &state);
 };
 
 

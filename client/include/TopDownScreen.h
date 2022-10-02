@@ -13,9 +13,11 @@
 #include "SFML/Graphics/Texture.hpp"
 #include "SFML/Graphics/Text.hpp"
 #include "DialogBox.h"
+#include "WIZ/input/MappingDatabase.h"
 
 class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz::InputListener {
-	std::string name = "TopDownScreen";
+protected:
+    std::string name = "TopDownScreen";
 
 	World world;
 	sf::Sprite heart_sprite;
@@ -32,8 +34,13 @@ class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz
 
     sf::Text endGoalText;
 
-    void processInput();
+	wiz::MappingDatabase mappingDatabase;
 
+    void processInput();
+	bool isInteractPressed();
+
+	bool is_interact_pressed = false;
+    bool was_interact_pressed = false;
 public:
 	explicit TopDownScreen(wiz::Game& game);
 
