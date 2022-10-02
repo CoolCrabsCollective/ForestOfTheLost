@@ -7,7 +7,7 @@
 #include "GameAssets.h"
 
 Tree::Tree(World& world, const sf::Vector2i& position, TreeType tree_type)
-	: HidingSpot(world, position), Solid() {
+	: HidingSpot(world, position), Solid(), tree_type(tree_type) {
 	sf::Texture* tex;
 	switch(tree_type) {
 		case ALIVE:
@@ -33,4 +33,14 @@ void Tree::draw(sf::RenderTarget& target, const sf::RenderStates& states) const 
 	sprite.setPosition({static_cast<float>(position.x - 1.5f), -static_cast<float>(position.y + 2.5f)});
 	sprite.setScale({ 3.5f / sprite.getTexture()->getSize().x, 3.5f / sprite.getTexture()->getSize().y });
 	target.draw(sprite);
+}
+
+bool Tree::activate() {
+	if(tree_type == ALIVE)
+		world.getDialogBox().startDialog({ "This tree looks normal." });
+	else if(tree_type == DEAD)
+		world.getDialogBox().startDialog({ "This tree looks creepy." });
+	else
+		world.getDialogBox().startDialog({ "This tree IS THICC BOI" });
+	return true;
 }

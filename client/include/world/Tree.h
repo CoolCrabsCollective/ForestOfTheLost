@@ -8,6 +8,7 @@
 
 #include "HidingSpot.h"
 #include "Solid.h"
+#include "Interactable.h"
 
 enum TreeType {
 	ALIVE,
@@ -15,13 +16,16 @@ enum TreeType {
 	THICK_DEAD
 };
 
-class Tree : public HidingSpot, public Solid {
+class Tree : public HidingSpot, public Solid, public Interactable {
+	TreeType tree_type;
 public:
     Tree(World& world, const sf::Vector2i& position, TreeType tree_type);
 
     bool isBlocking(sf::Vector2i vec);
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
+
+	bool activate() override;
 };
 
 
