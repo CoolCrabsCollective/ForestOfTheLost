@@ -34,7 +34,7 @@ World::World(wiz::AssetLoader& assets)
     //int endGoalY = 5;
     //addEntity(new EndGoal(*this, sf::Vector2i(endGoalX, endGoalY)));
 
-    Entity* bat1 = new Monster(*this, sf::Vector2i(0, 1));
+    Entity* bat1 = new Monster(*this, sf::Vector2i(0, 3));
     addEntity(bat1);
 }
 
@@ -168,7 +168,7 @@ bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
 	return false;
 }
 
-void World::updateInteractionInRangeOf(Entity* entityCheck, int solidRange) {
+void World::checkEntitiesInRange(Entity* entityCheck, int solidRange) {
     for(int i = -solidRange; i <= solidRange; i++) {
         for(int j = -solidRange; j <= solidRange; j++) {
             for(Entity* entity : entityMap[entityCheck->getPosition() + sf::Vector2i{i, j}]) {
@@ -244,9 +244,9 @@ void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
 	sf::Vector2f viewSize = VIEW_SIZE;
 
 	sf::Vector2i start = getPlayer().getPosition() - sf::Vector2i(static_cast<int>(ceil(viewSize.x / 2.0f)),
-																  static_cast<int>(ceil(viewSize.y / 2.0f))) - sf::Vector2i{3,3};
+																  static_cast<int>(ceil(viewSize.y / 2.0f))) - sf::Vector2i{1,1};
 	sf::Vector2i end = getPlayer().getPosition() + sf::Vector2i(static_cast<int>(floor(viewSize.x / 2.0f)),
-																static_cast<int>(floor(viewSize.y / 2.0f))) + sf::Vector2i{3,3};
+																static_cast<int>(floor(viewSize.y / 2.0f))) + sf::Vector2i{1,1};
 
 	for(int i = start.x; i <= end.x; i++) {
 		for(int j = start.y; j <= end.y; j++) {
