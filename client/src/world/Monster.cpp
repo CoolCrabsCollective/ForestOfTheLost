@@ -40,8 +40,8 @@ void Monster::tick(float delta) {
 }
 
 void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
-    //if (position == destination)
-    //    return;
+    if (position == destination)
+        return;
 
     sprite.setPosition({renderPosition.x, -renderPosition.y});
     sprite.setScale({ 1.0f / sprite.getTexture()->getSize().x, 1.0f / sprite.getTexture()->getSize().y });

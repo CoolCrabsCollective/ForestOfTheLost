@@ -8,11 +8,16 @@
 #include <utility>
 
 #include "World.h"
+#include "SFML/System/Vector2.hpp"
 #include "SFML/Graphics.hpp"
 
 class Item : public Entity, public Solid {
 public:
-    explicit Item(World& world, sf::Sprite sprite);
+    explicit Item(World& world, sf::Texture* texture, sf::Vector2i position);
+
+    bool isBlocking(sf::Vector2i vec) override;
+
+    void tick(float delta) override;
 
 protected:
     void draw(sf::RenderTarget &target, const sf::RenderStates &states) const override;
