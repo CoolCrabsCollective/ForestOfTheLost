@@ -6,6 +6,7 @@
 #include <random>
 #include <world/Bat.h>
 #include <world/Wraith.h>
+#include <world/GroundHog.h>
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
 #include "util/SimplexNoise.h"
@@ -41,6 +42,9 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 
     Entity* wraith1 = new Wraith(*this, sf::Vector2i(2, 1));
     addEntity(wraith1);
+
+    Entity* ground_hog1 = new GroundHog(*this, sf::Vector2i( -2, 2));
+    addEntity(ground_hog1);
 }
 
 void World::generatePhase(GamePhase phase) {
