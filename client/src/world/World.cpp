@@ -210,9 +210,12 @@ void World::checkEntitiesInRange(Entity* entityCheck, int solidRange) {
                 Player* player = dynamic_cast<Player*>(entityCheck);
                 Monster* monster = dynamic_cast<Monster*>(entity);
 
-                if (player && monster && !dynamic_pointer_cast<MonsterAttackState>(monster->getState()).get()) {
+                if (player && monster && !dynamic_pointer_cast<MonsterAttackState>(monster->getState()).get() &&
+                    monster->getTimeSinceLastAttack() >= monster->getAttackCoolDown()) {
                     monster->setState(std::make_shared<MonsterChargeState>(monster));
 					monster->moveTowardsPlayer();
+                    monster->setTimeSinceLastAttack(0.0);
+                    monster->setTimeSinceLastAttack(0.0);
                 }
             }
         }

@@ -16,7 +16,7 @@
 
 class NPC : public Entity, public Solid, public Interactable {
 
-	Direction currentDir;
+	Direction currentDir = NORTH;
 	mutable sf::Sprite sprite;
 	std::map<Direction, sf::Texture*> textureMap;
 
