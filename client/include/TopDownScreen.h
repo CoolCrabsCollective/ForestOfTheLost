@@ -12,6 +12,7 @@
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/Texture.hpp"
 #include "SFML/Graphics/Text.hpp"
+#include "DialogBox.h"
 
 class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz::InputListener {
 	std::string name = "TopDownScreen";
@@ -22,6 +23,8 @@ class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz
 	sf::RenderTexture frameBuffer;
     sf::Shader* spookyShader = nullptr;
     sf::Shader* eyesShader = nullptr;
+
+    DialogBox dialogBox;
 
     float timeAccumulator = 0.0f;
     float tenSecAccumulator = 0.0f;

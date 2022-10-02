@@ -10,18 +10,25 @@
 #include "WIZ/input/Mapping.h"
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
-		: Screen(game), world(game.getAssets()) {
+		: Screen(game), world(game.getAssets()), dialogBox(game.getAssets().get(GameAssets::SANS_TTF), game.getAssets().get(GameAssets::DIALOG_BOX)) {
     endGoalText.setFont(*getGame().getAssets().get(GameAssets::SANS_TTF));
     endGoalText.setCharacterSize(50);
     endGoalText.setString("Congrats you have reached the endpoint...");
     sf::FloatRect bounds = endGoalText.getLocalBounds();
     endGoalText.setPosition(sf::Vector2f(600 - bounds.getSize().x / 2, 450 - bounds.getSize().y / 2));
+
+    dialogBox.startDialog({
+        "Greetings gamers, this is an example dialog box.",
+        "A copypasta is a block of text that is copied and pasted across the Internet by individuals through online forums and social networking websites.",
+    });
 }
 
 void TopDownScreen::tick(float delta) {
     processInput();
 
-    if(world.isEndPointReached())
+    dialogBox.tick(delta);
+
+    if(world.isEndPointReached() || dialogBox.isInProgress())
         return;
 
     timeAccumulator += delta;
@@ -145,6 +152,8 @@ void TopDownScreen::drawUI(sf::RenderTarget &target) {
         heart_sprite.setPosition({static_cast<float>(50 + 50* i), 50});
         target.draw(heart_sprite);
     }
+
+    target.draw(dialogBox);
 }
 
 void TopDownScreen::show() {
