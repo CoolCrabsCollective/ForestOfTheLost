@@ -14,7 +14,6 @@ Monster::Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, s
 {
     this->position = position;
     this->movingStartPos = position;
-    this->sprite = sf::Sprite(*world.getAssets().get(GameAssets::BAT));
     renderPosition = {static_cast<float>(position.x), static_cast<float>(-position.y)};
 
     state = std::make_shared<MonsterIdleState>(this);
