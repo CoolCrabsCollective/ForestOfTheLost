@@ -22,18 +22,12 @@ protected:
 	DialogBox dialogBox;
 
 	World world;
-	sf::Sprite heart_sprite;
 	sf::Sprite eye_sprite;
 	sf::RenderTexture frameBuffer;
     sf::Shader* spookyShader = nullptr;
     sf::Shader* eyesShader = nullptr;
 
-
-    float timeAccumulator = 0.0f;
-    float tenSecAccumulator = 0.0f;
-    float movementLockAccumulator = 0.0f;
-
-    sf::Text endGoalText;
+    sf::Text endGoalText, fpsText;
 
 	wiz::MappingDatabase mappingDatabase;
 
@@ -42,6 +36,8 @@ protected:
 
 	bool is_interact_pressed = false;
     bool was_interact_pressed = false;
+
+	float fps = 0.0f;
 public:
 	explicit TopDownScreen(wiz::Game& game);
 
