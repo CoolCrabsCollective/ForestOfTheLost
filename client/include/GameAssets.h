@@ -51,6 +51,9 @@ namespace GameAssets {
 	ASSET(wiz::TextureAsset, PLAYER_FRONT, ("gfx/player/front.png"))
 	ASSET(wiz::TextureAsset, PLAYER_LEFT, ("gfx/player/left.png"))
 	ASSET(wiz::TextureAsset, PLAYER_RIGHT, ("gfx/player/right.png"))
+
+    // EndGoal
+    ASSET(wiz::TextureAsset, END_GOAL, ("gfx/end_goal.png"))
 }
 
 

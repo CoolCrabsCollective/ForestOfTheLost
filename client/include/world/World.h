@@ -35,6 +35,8 @@ class World : public Tickable, public sf::Drawable {
 
 	mutable std::vector<Entity*> entityDrawList = {};
 
+    bool endPointReached = false;
+
 public:
 	constexpr const static sf::Vector2f VIEW_SIZE = { 24.0f, 13.5f };
 
@@ -59,6 +61,9 @@ public:
     void addEntity(Entity* entity);
 
     void moveEntity(sf::Vector2i oldPosition, Entity* entity);
+
+    bool isEndPointReached() const;
+
 protected:
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
 };

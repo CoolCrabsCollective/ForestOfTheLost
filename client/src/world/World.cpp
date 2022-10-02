@@ -10,6 +10,7 @@
 #include "world/Monster.h"
 #include "world/Solid.h"
 #include "world/Tree.h"
+#include "world/EndGoal.h"
 
 World::World(wiz::AssetLoader& assets)
 		: assets(assets),
@@ -60,6 +61,11 @@ World::World(wiz::AssetLoader& assets)
 		}
 	}
 
+    // Randomly place end goal
+    int endGoalX = -5;
+    int endGoalY = 5;
+    addEntity(new EndGoal(*this, sf::Vector2i(endGoalX, endGoalY)));
+
     Entity* bat1 = new Monster(*this, sf::Vector2i(0, 1));
 
     addEntity(bat1);
@@ -102,8 +108,13 @@ bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
 
 				Solid* solid = dynamic_cast<Solid*>(entity);
 
-				if(solid && solid->isBlocking(tile))
-					return true;
+				if(solid && solid->isBlocking(tile)) {
+                    EndGoal *endGoal = dynamic_cast<EndGoal *>(solid);
+                    if (endGoal)
+                        endPointReached = true;
+
+                    return true;
+                }
 			}
 		}
 	}
@@ -175,4 +186,8 @@ void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
 	for(sf::Drawable* drawable : entityDrawList)
 		target.draw(*drawable);
 	entityDrawList.clear();
+}
+
+bool World::isEndPointReached() const {
+    return endPointReached;
 }

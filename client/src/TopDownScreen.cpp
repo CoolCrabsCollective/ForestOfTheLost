@@ -11,9 +11,19 @@
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
 		: Screen(game), world(game.getAssets()) {
+    endGoalText.setFont(*getGame().getAssets().get(GameAssets::SANS_TTF));
+    endGoalText.setCharacterSize(50);
+    endGoalText.setString("Congrats you have reached the endpoint...");
+    sf::FloatRect bounds = endGoalText.getLocalBounds();
+    endGoalText.setPosition(sf::Vector2f(600 - bounds.getSize().x / 2, 450 - bounds.getSize().y / 2));
 }
 
 void TopDownScreen::tick(float delta) {
+    processInput();
+
+    if(world.isEndPointReached())
+        return;
+
     timeAccumulator += delta;
     tenSecAccumulator += delta;
 
@@ -32,8 +42,6 @@ void TopDownScreen::tick(float delta) {
             tenSecAccumulator -= 10000.0;
         } while (tenSecAccumulator >= 10000.0);
     }
-
-    processInput();
 
     world.tick(delta);
 }
@@ -75,6 +83,11 @@ void TopDownScreen::drawWorld(sf::RenderTarget &target) {
 }
 
 void TopDownScreen::render(sf::RenderTarget& target) {
+    if (world.isEndPointReached()) {
+        target.draw(endGoalText);
+        return;
+    }
+
     sf::Vector2f viewSize = World::VIEW_SIZE;
 
     if(!frameBuffer.create(1280, 720))
