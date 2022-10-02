@@ -73,7 +73,7 @@ void Player::tick(float delta) {
     } else if (inputDir.has_value()) {
 		if(inputDir.value() == currentDir) {
             destination = position + directionToUnitVector(inputDir.value());
-            if (world.tileOccupied(destination, this, nullptr) || lockMovement) {
+            if (world.tileOccupied(destination, this) || lockMovement) {
                 destination = position;
 				if(!lockMovement) {
 					collisionSound.play();
@@ -84,7 +84,7 @@ void Player::tick(float delta) {
 			destinationDir = inputDir.value();
     }
 
-    world.checkEntitiesInRange(this, 5);
+    world.checkEntitiesInRange(this, 3);
 }
 
 void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {

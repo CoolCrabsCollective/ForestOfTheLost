@@ -49,6 +49,10 @@ void Monster::tick(float delta) {
         }
     }
 
+    if (position == world.getPlayer().getPosition() && dynamic_pointer_cast<MonsterAttackState>(state).get()) {
+//        getWorld().getDialogBox().startDialog({"Get fucked nerd.",});
+    }
+
     state->tick(delta);
 }
 
@@ -100,7 +104,7 @@ void Monster::moveTowardsPlayer() {
 
         sf::Vector2i unitVec = vectorToUnitVector(posDiff);
 
-        if (posDiff == unitVec) {
+        if (position == playerPos) {
             state = std::make_shared<MonsterAttackState>(this, &world.getPlayer());
         }
 
