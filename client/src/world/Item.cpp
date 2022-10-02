@@ -16,7 +16,7 @@ void Item::draw(sf::RenderTarget &target, const sf::RenderStates &states) const 
 }
 
 bool Item::isBlocking(sf::Vector2i vec) {
-    return true;
+    return vec == this->position;
 }
 
 void Item::tick(float delta) {
