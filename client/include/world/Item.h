@@ -23,6 +23,7 @@ public:
 protected:
     void draw(sf::RenderTarget &target, const sf::RenderStates &states) const override;
     mutable sf::Sprite sprite;
+	bool taken = false;
 };
 
 #endif //LD51_CLIENT_ITEM_H

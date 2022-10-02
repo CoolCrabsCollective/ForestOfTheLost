@@ -84,7 +84,7 @@ void Player::tick(float delta) {
 			destinationDir = inputDir.value();
     }
 
-    world.checkEntitesInRange(this, 1);
+    world.checkEntitiesInRange(this, 1);
 }
 
 void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
@@ -117,7 +117,8 @@ void Player::interact() {
 	for(Entity* entity : world.getEntitiesAt(position + directionToUnitVector(currentDir)))
 		if(Interactable* interactable = dynamic_cast<Interactable*>(entity))
 		{
-			interactable->activate();
+			if(!interactable->activate())
+				continue;
 			lastInteract = std::chrono::system_clock::now();
 			interactSound.play();
 			return;
