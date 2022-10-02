@@ -50,7 +50,7 @@ void Monster::tick(float delta) {
     }
 
     if (position == world.getPlayer().getPosition() && dynamic_pointer_cast<MonsterAttackState>(state).get()) {
-        getWorld().getDialogBox().startDialog({"Get fucked nerd.",});
+//        getWorld().getDialogBox().startDialog({"Get fucked nerd.",});
     }
 
     state->tick(delta);
