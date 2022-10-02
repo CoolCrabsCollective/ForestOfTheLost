@@ -29,19 +29,21 @@ void TopDownScreen::tick(float delta) {
 }
 
 bool TopDownScreen::isInteractPressed() {
-	if(sf::Joystick::isConnected(0)) {
+//	if(sf::Joystick::isConnected(0)) {
+//
+//		const wiz::Mapping& mapping = wiz::MappingDatabase::getInstance().getMapping(sf::Joystick::getIdentification(0).name);
+//
+//		if(mapping.hasButton(wiz::MapButton::A) && sf::Joystick::isButtonPressed(0, mapping.getButton(wiz::MapButton::A))
+//			|| mapping.hasButton(wiz::MapButton::B) && sf::Joystick::isButtonPressed(0, mapping.getButton(wiz::MapButton::B)))
+//			return true;
+//	}
+//
+//	return sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)
+//		   || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)
+//		   || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::C)
+//		   || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::I);
 
-		const wiz::Mapping& mapping = wiz::MappingDatabase::getInstance().getMapping(sf::Joystick::getIdentification(0).name);
-
-		if(mapping.hasButton(wiz::MapButton::A) && sf::Joystick::isButtonPressed(0, mapping.getButton(wiz::MapButton::A))
-			|| mapping.hasButton(wiz::MapButton::B) && sf::Joystick::isButtonPressed(0, mapping.getButton(wiz::MapButton::B)))
-			return true;
-	}
-
-	return sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)
-		   || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)
-		   || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::C)
-		   || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::I);
+    return false;
 }
 
 void TopDownScreen::processInput() {

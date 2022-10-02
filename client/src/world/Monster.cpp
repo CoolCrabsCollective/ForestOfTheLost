@@ -10,6 +10,8 @@ Monster::Monster(World &world, sf::Vector2i position) : Entity(world) {
     this->position = position;
     this->sprite = sf::Sprite(*world.getAssets().get(GameAssets::BAT));
     renderPosition = {static_cast<float>(position.x), static_cast<float>(-position.y)};
+
+    state = std::make_shared<MonsterIdleState>(this);
     findNewSpot(); // make sure to spawn the monsters after the hiding spots exist in the world!
 }
 
@@ -49,6 +51,9 @@ void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) con
 }
 
 void Monster::findNewSpot() {
+    if (!dynamic_pointer_cast<MonsterIdleState>(state).get())
+        return;
+
     // Find the closest hiding spot
     for (int searchX = position.x  - searchRadius ; searchX <= position.x + searchRadius ; searchX++) {
         for (int searchY = position.y  - searchRadius ; searchY <= position.y + searchRadius ; searchY++) {
