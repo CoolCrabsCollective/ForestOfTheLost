@@ -8,6 +8,7 @@
 #include <world/Wraith.h>
 #include <world/GroundHog.h>
 #include <world/Ghoul.h>
+#include <world/Snake.h>
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
 #include "util/SimplexNoise.h"
@@ -51,6 +52,10 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 
     Entity* ghoul1 = new Ghoul(*this, sf::Vector2i( -2, 0));
     addEntity(ghoul1);
+
+
+    Entity* snake1 = new Snake(*this, sf::Vector2i( 0, 5));
+    addEntity(snake1);
 }
 
 void World::generatePhase(GamePhase phase) {
