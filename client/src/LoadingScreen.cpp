@@ -53,7 +53,7 @@ void LoadingScreen::show() {
 	message.setString("Deleting System32...");
 #endif
 #ifdef OS_UNIX
-	message.setString("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+	message.setString("Sinister Sleuth");
 #endif
 #ifdef OS_MAC
 	message.setString("sudo rm -rf /");

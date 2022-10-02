@@ -45,13 +45,15 @@ void Monster::tick(float delta) {
         }
     }
 
-    if (position == world.getPlayer().getPosition()) {
-//        world.getDialogBox().startDialog({"Get fucked nerd",}, [&](){world.handleMonsterAttack(this);});
+    if (world.getPhase() != INITIAL) {
+        targetPlayerInRange();
+
+        if (position == world.getPlayer().getPosition()) {
+            world.handleMonsterAttack();
+        }
     }
 
     state->tick(delta);
-
-    //targetPlayerInRange();
 }
 
 void Monster::targetPlayerInRange() {
