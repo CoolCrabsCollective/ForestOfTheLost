@@ -63,6 +63,7 @@ namespace GameAssets {
     ASSET(wiz::TextureAsset, BAT, ("gfx/bat2.png"))
     ASSET(wiz::TextureAsset, GROUND_HOG, ("gfx/marmotte.png"))
     ASSET(wiz::TextureAsset, WRAITH, ("gfx/wraith.png"))
+    ASSET(wiz::TextureAsset, GHOUL, ("gfx/ghoul.png"))
 
     // Misc
     ASSET(wiz::TextureAsset, INVISIBLE, ("gfx/invisible.png"))
