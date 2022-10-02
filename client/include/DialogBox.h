@@ -11,6 +11,7 @@
 #include <world/Entity.h>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <functional>
 
 class DialogBox : public sf::Drawable, public Tickable {
 public:
