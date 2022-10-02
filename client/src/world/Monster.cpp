@@ -92,6 +92,8 @@ void Monster::drawDarkness(sf::RenderTarget &target, sf::Shader* shader) const {
 }
 
 void Monster::findNewSpot() {
+    std::vector<sf::Vector2i> potentialSpots;
+
     // Find the closest hiding spot
     for (int searchX = position.x  - searchRadius ; searchX <= position.x + searchRadius ; searchX++) {
         for (int searchY = position.y  - searchRadius ; searchY <= position.y + searchRadius ; searchY++) {
@@ -104,12 +106,14 @@ void Monster::findNewSpot() {
 
             for (int k = 0 ; k < entitiesAt.size() ; k++) {
                 if(HidingSpot* spot = dynamic_cast<HidingSpot*>(entitiesAt.at(k))) {
-                    move(spot->getPosition());
-                    return;
+                    potentialSpots.push_back(spot->getPosition());
                 }
             }
+
         }
     }
+
+    move(potentialSpots.at(std::rand() % (potentialSpots.size())));
 }
 
 void Monster::moveTowardsPlayer() {
