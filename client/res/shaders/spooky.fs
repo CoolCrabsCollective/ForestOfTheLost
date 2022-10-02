@@ -2,6 +2,7 @@ uniform sampler2D texture;
 uniform float timeAccumulator;
 uniform float grayscaleness;
 uniform float spookyness;
+uniform float scan_effect;
 
 #define PI 3.141592654
 float PHI = 1.61803398874989484820459;
@@ -60,18 +61,18 @@ void main()
     else
         darkness_alpha = ambient_darkness;
 
-    float grayscale_alpha = gl_FragColor.a * spookyness + (1.0 - spookyness);
+    float grayscale_alpha = darkness_alpha * spookyness + (1.0 - spookyness);
 
-	float gray = 0.299 * gl_FragColor.r + 0.587 * gl_FragColor.g + 0.114 * gl_FragColor.b;
+	float gray = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
 
 	vec3 grayscale_color = vec3(gray) * grayscaleness + pixelColor.rgb * (1.0 - grayscaleness);
 
 	float count = 600.0;
     vec2 sl = vec2(sin(gl_TexCoord[0].y * count), cos(gl_TexCoord[0].y * count));
     vec3 scanlines = vec3(sl.x, sl.y, sl.x);
-    grayscale_color += grayscale_color * scanlines * opacityScanline;
-    grayscale_color += grayscale_color * vec3(random(gl_TexCoord[0].xy*timeAccumulator)) * opacityNoise;
-    grayscale_color += grayscale_color * sin(110.0*timeAccumulator) * flickering;
+    grayscale_color += grayscale_color * scanlines * opacityScanline * scan_effect;
+    grayscale_color += grayscale_color * vec3(random(gl_TexCoord[0].xy*timeAccumulator)) * opacityNoise * scan_effect;
+    grayscale_color += grayscale_color * sin(110.0*timeAccumulator) * flickering * scan_effect;
 
-    gl_FragColor = vec4(grayscale_color, grayscale_alpha * darkness_alpha);
+    gl_FragColor = vec4(grayscale_color, grayscale_alpha);
 }

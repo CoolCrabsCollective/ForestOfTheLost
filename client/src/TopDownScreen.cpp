@@ -27,7 +27,7 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
     endGoalText.setPosition(sf::Vector2f(600 - bounds.getSize().x / 2, 450 - bounds.getSize().y / 2));
 
     dialogBox.startDialog({
-        "Another kid....",
+        "Another kid lost in this forest...",
         "Why is is always the kids...",
         "I need to find her...",
         });
@@ -147,14 +147,18 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 	frameBuffer.display(); // done drawing fbo
 	sf::Sprite fbo(frameBuffer.getTexture());
 	target.clear();
-	if(world.getPhase() == INITIAL && !world.isChangingPhaseNext())
-		target.draw(fbo);
+	if(world.getPhase() == INITIAL && !world.isChangingPhaseNext()) {
+        spookyShader->setUniform("scan_effect", 0.0f);
+        target.draw(fbo);
+    }
 	else {
 		float spookyness = (float)fmod(world.getTimeAccumulator(), 10000.0f) / 10000.0f;
 		spookyShader->setUniform("spookyness",
 								 world.isChangingPhaseNext()
 								 ? spookyness
 								 : 1.0f);
+
+        spookyShader->setUniform("scan_effect", std::min(1.0f, world.getTimeAccumulator() / 10000.f));
 		target.draw(fbo, spookyShader);
 	}
     drawNight(target);
