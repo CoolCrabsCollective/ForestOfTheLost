@@ -288,7 +288,7 @@ void World::tick(float delta) {
 	}
 
 
-	for (Entity *entity : entities) {
+	for (Entity *entity : entities)
         entity->tick(delta);
 }
 
