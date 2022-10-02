@@ -47,6 +47,12 @@ class World : public Tickable, public sf::Drawable {
 
 	float grayscaleness = 0.0f;
 
+	float timeAccumulator = 0.0f;
+	float tenSecAccumulator = 0.0f;
+
+	GamePhase currentPhase = INITIAL;
+	bool changePhase = false;
+
 public:
 	constexpr const static sf::Vector2f VIEW_SIZE = { 24.0f, 13.5f };
 
@@ -76,6 +82,10 @@ public:
 
 	inline float getGrayscaleness() const {
 		return grayscaleness;
+	}
+
+	inline float getTimeAccumulator() const {
+		return timeAccumulator;
 	}
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;

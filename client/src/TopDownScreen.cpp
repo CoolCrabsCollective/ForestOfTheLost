@@ -24,36 +24,6 @@ void TopDownScreen::tick(float delta) {
     if(world.isEndPointReached())
         return;
 
-    timeAccumulator += delta;
-    tenSecAccumulator += delta;
-
-    if (world.getPlayer().isLockMovement()) {
-        movementLockAccumulator += delta;
-
-        if (movementLockAccumulator > 500.0) {
-            world.getPlayer().setLockMovement(false);
-            movementLockAccumulator = 0.0;
-        }
-    }
-
-    if (tenSecAccumulator > 10000.0) {
-        std::cout << "10 seconds passed!" << std::endl;
-
-        for (int i = 0 ; i < world.getEntities().size() ; i++) {
-            if(Monster* monster = dynamic_cast<Monster*>(world.getEntities().at(i))) {
-                // Don't want to go to the same bush
-                monster->findNewSpot();
-            }
-        }
-
-        world.getPlayer().setLockMovement(true);
-
-        do
-        {
-            tenSecAccumulator -= 10000.0;
-        } while (tenSecAccumulator >= 10000.0);
-    }
-
     world.tick(delta);
 }
 
@@ -99,17 +69,15 @@ void TopDownScreen::render(sf::RenderTarget& target) {
         return;
     }
 
-    sf::Vector2f viewSize = World::VIEW_SIZE;
-
     if(!frameBuffer.create(1280, 720))
         throw std::runtime_error("Failed to create FBO!");
 
     frameBuffer.clear();
     frameBuffer.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f,
-								   -world.getPlayer().getRenderPosition().y + 0.5f }, viewSize));
+								   -world.getPlayer().getRenderPosition().y + 0.5f }, World::VIEW_SIZE));
 	drawWorld(frameBuffer);
 
-	spookyShader->setUniform("timeAccumulator", timeAccumulator);
+	spookyShader->setUniform("timeAccumulator", world.getTimeAccumulator());
 	spookyShader->setUniform("grayscaleness", world.getGrayscaleness());
 	frameBuffer.display(); // done drawing fbo
 	sf::Sprite fbo(frameBuffer.getTexture());
@@ -123,7 +91,7 @@ void TopDownScreen::drawEyes(sf::RenderTarget &target) {
     sf::Vector2f viewSize = World::VIEW_SIZE;
     target.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f, -world.getPlayer().getRenderPosition().y + 0.5f }, viewSize));
 
-    eyesShader->setUniform("timeAccumulator", timeAccumulator);
+    eyesShader->setUniform("timeAccumulator", world.getTimeAccumulator());
     for(auto entity : world.getEntities())
     {
         if(Monster* monster = dynamic_cast<Monster*>(entity))
@@ -154,8 +122,8 @@ void TopDownScreen::show() {
     heart_sprite.setTexture(*getAssets().get(GameAssets::HEART));
     heart_sprite.setScale({ 50.0f * 7.0f / 8.0f / heart_sprite.getTexture()->getSize().x,
                             50.0f * 7.0f / 8.0f / heart_sprite.getTexture()->getSize().y });
-    eye_sprite.setTexture(*getAssets().get(GameAssets::SPOOKY_EYES));
 
+    eye_sprite.setTexture(*getAssets().get(GameAssets::SPOOKY_EYES));
     eye_sprite.setScale({ 1.0f / eye_sprite.getTexture()->getSize().x, 1.0f / eye_sprite.getTexture()->getSize().y });
 
     spookyShader = getAssets().get(GameAssets::SPOOKY_SHADER);
