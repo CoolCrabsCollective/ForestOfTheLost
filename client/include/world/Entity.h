@@ -34,12 +34,20 @@ public:
 		return position;
 	}
 
+    inline void setPosition(sf::Vector2i pos) {
+        position = pos;
+    }
+
 	virtual inline sf::Vector2f getRenderPosition() const {
 		return sf::Vector2f(position);
 	}
 
     inline sf::Vector2i getDestination() const {
         return destination;
+    }
+
+    inline void setDestination(sf::Vector2i des) {
+        destination = des;
     }
 
 	inline virtual int getZOrder() const {

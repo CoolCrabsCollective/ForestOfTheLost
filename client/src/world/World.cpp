@@ -250,6 +250,19 @@ void World::tick(float delta) {
 		}
 	}
 
+    if (setCheckPoint) {
+        playerCheckpointPos = player.getPosition();
+        setCheckPoint = false;
+    }
+
+    if (loadCheckPoint) {
+        moveEntity(player.getPosition(), &player);
+        player.setPosition(playerCheckpointPos);
+        player.setDestination(playerCheckpointPos);
+        loadCheckPoint = false;
+    }
+
+
 	int len = monsters.size();
 	for(int i = 0; i < len; i++) {
 		Monster* monster = monsters[i];
@@ -274,7 +287,8 @@ void World::tick(float delta) {
 		last_monster_spawn = std::chrono::system_clock::now();
 	}
 
-    for(Entity *entity : entities)
+
+	for (Entity *entity : entities) {
         entity->tick(delta);
 }
 
@@ -342,8 +356,10 @@ void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
 	entityDrawList.clear();
 }
 
-void World::handleMonsterAttack(Entity* monster) {
-//    delete &monster;
+void World::handleMonsterAttack() {
+    dialogBox.startDialog({"Get fucked nerd",}, [&]{
+        loadCheckPoint = true;
+    });
 }
 
 bool World::isEndPointReached() const {
@@ -361,4 +377,12 @@ void World::setTimePaused(bool timePaused) {
 void World::resetAccumulator() {
     tenSecAccumulator = 0;
     timeAccumulator = 0;
+}
+
+bool World::isSetCheckPoint() const {
+    return setCheckPoint;
+}
+
+void World::setSetCheckPoint(bool setCheckPoint) {
+    World::setCheckPoint = setCheckPoint;
 }

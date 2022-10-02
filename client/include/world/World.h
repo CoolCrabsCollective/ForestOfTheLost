@@ -59,6 +59,10 @@ class World : public Tickable, public sf::Drawable {
 
 	DialogBox& dialogBox;
 
+    bool setCheckPoint = false;
+    bool loadCheckPoint = false;
+    sf::Vector2i playerCheckpointPos = {};
+
 	void spawnEnemy(GamePhase phase, sf::Vector2i position);
 
 	std::chrono::system_clock::time_point last_monster_spawn = std::chrono::system_clock::now();
@@ -121,11 +125,15 @@ public:
 		return currentPhase;
 	}
 
-    void handleMonsterAttack(Entity* monster);
+    void handleMonsterAttack();
 
     bool isTimePaused() const;
 
     void setTimePaused(bool timePaused);
+
+    bool isSetCheckPoint() const;
+
+    void setSetCheckPoint(bool setCheckPoint);
 
     void resetAccumulator();
 
