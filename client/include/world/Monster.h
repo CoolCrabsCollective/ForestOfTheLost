@@ -18,7 +18,7 @@ protected:
     Direction currentDir = NORTH;
     Direction destinationDir = NORTH;
     float actionProgress = 0;
-    float movingSpeed = 0.5;
+    float movingSpeed = 2;
     float rotationSpeed = 5;
 
     sf::Vector2i partDestination = {};

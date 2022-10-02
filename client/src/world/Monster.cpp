@@ -5,7 +5,6 @@
 #include "world/Monster.h"
 #include "GameAssets.h"
 #include "world/state/MonsterChargeState.h"
-#include "world/state/MonsterAttackState.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 
 Monster::Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, sf::Texture* nightTexture) : Entity(world),

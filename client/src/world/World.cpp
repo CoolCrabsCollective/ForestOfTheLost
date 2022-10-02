@@ -9,6 +9,7 @@
 #include <world/GroundHog.h>
 #include <world/Ghoul.h>
 #include <world/Snake.h>
+#include <iostream>
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
 #include "util/SimplexNoise.h"
@@ -224,6 +225,7 @@ void World::tick(float delta) {
 		}
 
 		if(tenSecAccumulator > 10000.0) {
+            std::cout << "10 seconds passed!" << std::endl;
 
 			if(countBlinkBeforePhaseChange != -1) {
 				countBlinkBeforePhaseChange--;
