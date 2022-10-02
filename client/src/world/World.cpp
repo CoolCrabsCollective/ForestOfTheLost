@@ -364,6 +364,7 @@ void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
 
 void World::handleMonsterAttack(Monster& monster) {
     dialogBox.startDialog({monster.getAttackMessage(),}, [&]{
+        timePaused = false;
         if (currentPhase != GamePhase::INITIAL)
             loadCheckPoint = true;
         else

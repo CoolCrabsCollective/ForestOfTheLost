@@ -122,7 +122,7 @@ void Monster::moveTowardsPlayer() {
 
         move(playerPos);
 
-//        world.setTimePaused(true);
+        world.setTimePaused(true);
 }
 
 sf::Vector2f Monster::getRenderPosition() const {
