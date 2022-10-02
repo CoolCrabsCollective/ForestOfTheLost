@@ -69,9 +69,12 @@ void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) con
 }
 
 void Monster::drawDarkness(sf::RenderTarget &target, sf::Shader* shader) const {
-    nightSprite.setPosition({renderPosition.x, -renderPosition.y});
-    nightSprite.setScale({ 1.0f / nightSprite.getTexture()->getSize().x, 1.0f / nightSprite.getTexture()->getSize().y });
-    target.draw(nightSprite, shader);
+    if(this->getWorld().getPhase() > GamePhase::INITIAL)
+    {
+        nightSprite.setPosition({renderPosition.x, -renderPosition.y});
+        nightSprite.setScale({ 1.0f / nightSprite.getTexture()->getSize().x, 1.0f / nightSprite.getTexture()->getSize().y });
+        target.draw(nightSprite, shader);
+    }
 }
 
 void Monster::findNewSpot() {
