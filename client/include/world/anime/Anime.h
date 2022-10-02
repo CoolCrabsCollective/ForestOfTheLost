@@ -20,7 +20,7 @@ protected:
 
 protected:
     void insertFrame(sf::Texture* attackTexture);
-    void setStateSprite(sf::Sprite* sprite);
+    void setAnimationSprite(sf::Sprite* sprite);
     void tickAnimation();
 
 public:

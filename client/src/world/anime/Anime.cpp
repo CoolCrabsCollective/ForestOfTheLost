@@ -8,7 +8,7 @@ void Anime::insertFrame(sf::Texture* Texture) {
     frames.push_back(Texture);
 }
 
-void Anime::setStateSprite(sf::Sprite* sprite) {
+void Anime::setAnimationSprite(sf::Sprite* sprite) {
     this->animationSprite = sprite;
 }
 

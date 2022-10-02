@@ -27,10 +27,7 @@ Player::Player(World& world)
 	noInteractSound.setBuffer(*world.getAssets().get(GameAssets::NOINTERACT));
 	collisionSound.setBuffer(*world.getAssets().get(GameAssets::COLLISION));
 
-    insertFrame(world.getAssets().get(GameAssets::PLAYER_FRONT_WALK_1));
-    insertFrame(world.getAssets().get(GameAssets::PLAYER_FRONT_WALK_2));
-    insertFrame(world.getAssets().get(GameAssets::PLAYER_FRONT_WALK_3));
-    insertFrame(world.getAssets().get(GameAssets::PLAYER_FRONT_WALK_4));
+    setAnimationSprite(&sprite);
     msBetweenFrames = 100.0f;
 }
 
@@ -78,8 +75,6 @@ void Player::tick(float delta) {
 			}
 		}
     } else if (inputDir.has_value()) {
-        setStateSprite(&sprite);
-        startAnimation();
 		if(inputDir.value() == currentDir) {
             destination = position + directionToUnitVector(inputDir.value());
             if (world.tileOccupied(destination, this) || lockMovement) {
@@ -91,6 +86,35 @@ void Player::tick(float delta) {
             }
         } else
 			destinationDir = inputDir.value();
+
+        frames.clear();
+        switch (inputDir.value()) {
+            case NORTH:
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_BACK_WALK_1));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_BACK_WALK_2));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_BACK_WALK_3));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_BACK_WALK_4));
+                break;
+            case EAST:
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_RIGHT_WALK_1));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_RIGHT_WALK_2));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_RIGHT_WALK_3));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_RIGHT_WALK_4));
+                break;
+            case SOUTH:
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_FRONT_WALK_1));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_FRONT_WALK_2));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_FRONT_WALK_3));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_FRONT_WALK_4));
+                break;
+            case WEST:
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_LEFT_WALK_1));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_LEFT_WALK_2));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_LEFT_WALK_3));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_LEFT_WALK_4));
+                break;
+        };
+        startAnimation();
     }
 
     world.checkEntitiesInRange(this, 3);

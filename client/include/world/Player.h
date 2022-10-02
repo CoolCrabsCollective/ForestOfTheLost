@@ -5,7 +5,6 @@
 #ifndef LD51_CLIENT_PLAYER_H
 #define LD51_CLIENT_PLAYER_H
 
-
 #include <map>
 #include "Entity.h"
 #include "world/Direction.h"
