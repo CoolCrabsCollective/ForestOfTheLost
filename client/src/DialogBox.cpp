@@ -13,17 +13,20 @@ DialogBox::DialogBox(sf::Font* font, sf::Texture* texture) : font(font), sprite(
 
 void DialogBox::interact() {
     if(currentTextProgressTime < maximumTextProgressTime)
-    {
         complete();
-    }
     else
-    {
         next();
-    }
 }
 
 void DialogBox::tick(float delta) {
     currentTextProgressTime += delta / 1000.0f;
+
+	if(!isInProgress() && wasInProgress) {
+		callback();
+		callback = [](){};
+	}
+
+	wasInProgress = isInProgress();
 }
 
 void DialogBox::draw(sf::RenderTarget &target, const sf::RenderStates &states) const {
@@ -58,9 +61,10 @@ void DialogBox::complete() {
     currentTextProgressTime = maximumTextProgressTime;
 }
 
-void DialogBox::startDialog(const std::vector<std::string> & dialog) {
+void DialogBox::startDialog(const std::vector<std::string>& dialog, std::function<void()> callback) {
     dialogIndex = 0;
     this->dialog = dialog;
+	this->callback = callback;
     currentTextProgressTime = 0;
     maximumTextProgressTime = 1.0f;
 

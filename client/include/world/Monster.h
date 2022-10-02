@@ -26,7 +26,7 @@ public:
     Monster(World &world, sf::Vector2i position);
     void tick(float delta) override;
     void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
-    const sf::Vector2f& getRenderPosition() const;
+    sf::Vector2f getRenderPosition() const override;
     void findNewSpot();
 
     const std::shared_ptr<EntityState> &getState() const;

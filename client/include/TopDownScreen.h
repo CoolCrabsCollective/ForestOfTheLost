@@ -19,6 +19,8 @@ class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz
 protected:
     std::string name = "TopDownScreen";
 
+	DialogBox dialogBox;
+
 	World world;
 	sf::Sprite heart_sprite;
 	sf::Sprite eye_sprite;
@@ -26,7 +28,6 @@ protected:
     sf::Shader* spookyShader = nullptr;
     sf::Shader* eyesShader = nullptr;
 
-    DialogBox dialogBox;
 
     float timeAccumulator = 0.0f;
     float tenSecAccumulator = 0.0f;
