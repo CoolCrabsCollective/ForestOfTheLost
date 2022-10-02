@@ -16,7 +16,7 @@ protected:
 
     bool isAnimating = false;
 
-    sf::Sprite* sprite;
+    sf::Sprite* animationSprite;
 
 protected:
     void insertFrame(sf::Texture* attackTexture);
