@@ -29,6 +29,8 @@ class Player : public Entity, public Alive<int>, public Solid {
     const float movingSpeed = 3.0;
     const float rotationSpeed = 25.0;
 
+    bool lockMovement = false;
+
 	mutable sf::Sprite sprite;
 	std::map<Direction, sf::Texture*> textureMap;
 public:
@@ -43,6 +45,10 @@ public:
     bool isBlocking(sf::Vector2i vec) override;
 
 	int getZOrder() const override;
+
+    bool isLockMovement() const;
+
+    void setLockMovement(bool lockMovement);
 };
 
 
