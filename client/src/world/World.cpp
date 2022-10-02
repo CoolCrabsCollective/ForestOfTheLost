@@ -38,7 +38,7 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
     //int endGoalY = 5;
     //addEntity(new EndGoal(*this, sf::Vector2i(endGoalX, endGoalY)));
 
-    Entity* bat1 = new Bat(*this, sf::Vector2i(0, 3));
+    Entity* bat1 = new Bat(*this, sf::Vector2i(0, 10));
     addEntity(bat1);
 
     Entity* wraith1 = new Wraith(*this, sf::Vector2i(2, 1));
@@ -167,7 +167,7 @@ wiz::AssetLoader& World::getAssets() {
 	return assets;
 }
 
-bool World::tileOccupied(sf::Vector2i tile, Entity* exclude, std::optional<Entity*> exclusive) {
+bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
 
 	if(terrainMap[tile] == WATER)
 		return true;
@@ -206,7 +206,7 @@ void World::checkEntitiesInRange(Entity* entityCheck, int solidRange) {
                 Player* player = dynamic_cast<Player*>(entityCheck);
                 Monster* monster = dynamic_cast<Monster*>(entity);
 
-                if (player && monster) {
+                if (player && monster && !dynamic_pointer_cast<MonsterAttackState>(monster->getState()).get()) {
                     monster->setState(std::make_shared<MonsterChargeState>(monster));
 					monster->moveTowardsPlayer();
                 }
