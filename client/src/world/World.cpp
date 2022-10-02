@@ -13,7 +13,7 @@
 #include "world/Solid.h"
 #include "world/Tree.h"
 #include "world/EndGoal.h"
-#include "world/state/MonsterAttackState.h"
+#include "world/state/MonsterChargeState.h"
 
 World::World(wiz::AssetLoader& assets)
 		: assets(assets),
@@ -167,7 +167,7 @@ void World::updateInteractionInRangeOf(Entity* entityCheck, int solidRange) {
                 Monster* monster = dynamic_cast<Monster*>(entity);
 
                 if (player && monster) {
-                    monster->setState(std::make_shared<MonsterAttackState>(monster));
+                    monster->setState(std::make_shared<MonsterChargeState>(monster));
                 }
             }
         }
