@@ -46,11 +46,12 @@ void TopDownScreen::tick(float delta) {
 
     dialogBox.tick(delta);
 
+    fps = 1.0f / delta * 1000.0f;
+
     if(world.isEndPointReached() || dialogBox.isInProgress())
         return;
 
     world.tick(delta);
-	fps = 1.0f / delta * 1000.0f;
 }
 
 bool TopDownScreen::isInteractPressed() {

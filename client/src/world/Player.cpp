@@ -116,8 +116,6 @@ void Player::tick(float delta) {
         };
         startAnimation();
     }
-
-    world.checkEntitiesInRange(this, 2);
 }
 
 void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
