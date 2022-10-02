@@ -117,6 +117,9 @@ void TopDownScreen::drawEyes(sf::RenderTarget &target) {
     {
         if(Monster* monster = dynamic_cast<Monster*>(entity))
         {
+            sf::Glsl::Vec2 monster_screen { monster->getRenderPosition().x - world.getPlayer().getRenderPosition().x / 1080.0f, monster->getRenderPosition().y - world.getPlayer().getRenderPosition().y / 720.0f };
+
+            //eyesShader->setUniform("monster_screen_coords", monster_screen);
             eye_sprite.setPosition(sf::Vector2f {static_cast<float>(monster->getRenderPosition().x), -static_cast<float>(monster->getRenderPosition().y)});
             target.draw(eye_sprite, eyesShader);
         }
