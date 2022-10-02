@@ -8,3 +8,17 @@
 GroundHog::GroundHog(World &world, sf::Vector2i position) : Monster(world, position, world.getAssets().get(GameAssets::GROUND_HOG), world.getAssets().get(GameAssets::PACIFIC_EYES)){
 
 }
+
+void GroundHog::drawDarkness(sf::RenderTarget &target, sf::Shader *shader) const {
+
+    if(this->getRenderPosition().x < this->world.getPlayer().getRenderPosition().x)
+    {
+        nightSprite.setScale(sf::Vector2f{1.0f, 1.0f});
+    }
+    else
+    {
+        nightSprite.setScale(sf::Vector2f{-1.0f, 1.0f});
+    }
+
+    Monster::drawDarkness(target, shader);
+}
