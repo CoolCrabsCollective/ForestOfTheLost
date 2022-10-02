@@ -32,7 +32,9 @@ namespace GameAssets {
 	ASSET(wiz::TextureAsset, WHITE_PIXEL, ("gfx/white_pixel.png"))
 	ASSET(wiz::TextureAsset, LOGO, ("gfx/logo.png"))
 
+	// Eyes
 	ASSET(wiz::TextureAsset, SPOOKY_EYES, ("gfx/spooky_face.png"))
+    ASSET(wiz::TextureAsset, PACIFIC_EYES, ("gfx/pacific_eyes.png"))
 
 	ASSET(wiz::TextureAsset, HEART, ("gfx/heart.png"))
     ASSET(wiz::TextureAsset, ITEM_TEDDY, ("gfx/teddy_bear.png"))
@@ -59,6 +61,7 @@ namespace GameAssets {
 
     // Monsters
     ASSET(wiz::TextureAsset, BAT, ("gfx/bat2.png"))
+    ASSET(wiz::TextureAsset, GROUND_HOG, ("gfx/marmotte.png"))
     ASSET(wiz::TextureAsset, WRAITH, ("gfx/wraith.png"))
 
     // Misc
@@ -69,6 +72,26 @@ namespace GameAssets {
 	ASSET(wiz::TextureAsset, PLAYER_FRONT, ("gfx/player/front.png"))
 	ASSET(wiz::TextureAsset, PLAYER_LEFT, ("gfx/player/left.png"))
 	ASSET(wiz::TextureAsset, PLAYER_RIGHT, ("gfx/player/right.png"))
+    // Player Forward Walk Animation
+    ASSET(wiz::TextureAsset, PLAYER_FRONT_WALK_1, ("gfx/player/animation/front/walk_front_1.png"))
+    ASSET(wiz::TextureAsset, PLAYER_FRONT_WALK_2, ("gfx/player/animation/front/walk_front_2.png"))
+    ASSET(wiz::TextureAsset, PLAYER_FRONT_WALK_3, ("gfx/player/animation/front/walk_front_3.png"))
+    ASSET(wiz::TextureAsset, PLAYER_FRONT_WALK_4, ("gfx/player/animation/front/walk_front_4.png"))
+    // Player Left Walk Animation
+    ASSET(wiz::TextureAsset, PLAYER_LEFT_WALK_1, ("gfx/player/animation/left/walk_left_1.png"))
+    ASSET(wiz::TextureAsset, PLAYER_LEFT_WALK_2, ("gfx/player/animation/left/walk_left_2.png"))
+    ASSET(wiz::TextureAsset, PLAYER_LEFT_WALK_3, ("gfx/player/animation/left/walk_left_3.png"))
+    ASSET(wiz::TextureAsset, PLAYER_LEFT_WALK_4, ("gfx/player/animation/left/walk_left_4.png"))
+    // Player Right Walk Animation
+    ASSET(wiz::TextureAsset, PLAYER_RIGHT_WALK_1, ("gfx/player/animation/right/walk_right_1.png"))
+    ASSET(wiz::TextureAsset, PLAYER_RIGHT_WALK_2, ("gfx/player/animation/right/walk_right_2.png"))
+    ASSET(wiz::TextureAsset, PLAYER_RIGHT_WALK_3, ("gfx/player/animation/right/walk_right_3.png"))
+    ASSET(wiz::TextureAsset, PLAYER_RIGHT_WALK_4, ("gfx/player/animation/right/walk_right_4.png"))
+    // Player BACK Walk Animation
+    ASSET(wiz::TextureAsset, PLAYER_BACK_WALK_1, ("gfx/player/animation/back/walk_back_1.png"))
+    ASSET(wiz::TextureAsset, PLAYER_BACK_WALK_2, ("gfx/player/animation/back/walk_back_2.png"))
+    ASSET(wiz::TextureAsset, PLAYER_BACK_WALK_3, ("gfx/player/animation/back/walk_back_3.png"))
+    ASSET(wiz::TextureAsset, PLAYER_BACK_WALK_4, ("gfx/player/animation/back/walk_back_4.png"))
 
 	// Teddy kid
 	ASSET(wiz::TextureAsset, TEDDY_KID_BACK, ("gfx/npcs/teddy_kid/back.png"))

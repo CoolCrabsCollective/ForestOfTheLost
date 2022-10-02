@@ -5,7 +5,6 @@
 #ifndef LD51_CLIENT_PLAYER_H
 #define LD51_CLIENT_PLAYER_H
 
-
 #include <map>
 #include "Entity.h"
 #include "world/Direction.h"
@@ -18,8 +17,9 @@
 #include <chrono>
 #include "SFML/Audio/SoundBuffer.hpp"
 #include "SFML/Audio/Sound.hpp"
+#include "world/anime/Anime.h"
 
-class Player : public Entity, public Alive<int>, public Solid {
+class Player : public Entity, public Alive<int>, public Solid, public Anime {
     sf::Vector2f renderPosition = {};
 
     Direction currentDir;

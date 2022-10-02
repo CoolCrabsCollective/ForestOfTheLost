@@ -21,5 +21,5 @@ void AnimeAttack::insertAttackFrame(sf::Texture* attackTexture) {
 }
 
 void AnimeAttack::setAttackStateSprite(sf::Sprite* sprite) {
-    Anime::setStateSprite(sprite);
+    Anime::setAnimationSprite(sprite);
 }

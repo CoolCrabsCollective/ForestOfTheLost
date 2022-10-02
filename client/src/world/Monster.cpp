@@ -50,7 +50,7 @@ void Monster::tick(float delta) {
     }
 
     if (position == world.getPlayer().getPosition() && dynamic_pointer_cast<MonsterAttackState>(state).get()) {
-//        getWorld().getDialogBox().startDialog({"Get fucked nerd.",});
+       //getWorld().getDialogBox().startDialog({"Get fucked nerd.",});
     }
 
     state->tick(delta);
@@ -64,7 +64,6 @@ void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) con
     daySprite.setScale({ 1.0f / daySprite.getTexture()->getSize().x, 1.0f / daySprite.getTexture()->getSize().y });
     target.draw(daySprite);
 }
-
 
 void Monster::drawDarkness(sf::RenderTarget &target, sf::Shader* shader) const {
     nightSprite.setPosition({renderPosition.x, -renderPosition.y});

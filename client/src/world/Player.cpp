@@ -26,6 +26,9 @@ Player::Player(World& world)
 	interactSound.setBuffer(*world.getAssets().get(GameAssets::INTERACT));
 	noInteractSound.setBuffer(*world.getAssets().get(GameAssets::NOINTERACT));
 	collisionSound.setBuffer(*world.getAssets().get(GameAssets::COLLISION));
+
+    setAnimationSprite(&sprite);
+    msBetweenFrames = 100.0f;
 }
 
 sf::Vector2f Player::getRenderPosition() const {
@@ -37,7 +40,6 @@ void Player::move(std::optional<Direction> direction) {
 }
 
 void Player::tick(float delta) {
-
 	if(lastCollision > std::chrono::system_clock::now() - std::chrono::milliseconds(500))
 		return;
 
@@ -46,6 +48,8 @@ void Player::tick(float delta) {
 
     renderPosition = (sf::Vector2f) position;
     if (moving) {
+        runAnimation(delta);
+
         actionProgress += (delta / 1000) * movingSpeed;
 
         if (actionProgress > 1) {
@@ -82,12 +86,46 @@ void Player::tick(float delta) {
             }
         } else
 			destinationDir = inputDir.value();
+
+        frames.clear();
+        switch (inputDir.value()) {
+            case NORTH:
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_BACK_WALK_1));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_BACK_WALK_2));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_BACK_WALK_3));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_BACK_WALK_4));
+                break;
+            case EAST:
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_RIGHT_WALK_1));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_RIGHT_WALK_2));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_RIGHT_WALK_3));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_RIGHT_WALK_4));
+                break;
+            case SOUTH:
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_FRONT_WALK_1));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_FRONT_WALK_2));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_FRONT_WALK_3));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_FRONT_WALK_4));
+                break;
+            case WEST:
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_LEFT_WALK_1));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_LEFT_WALK_2));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_LEFT_WALK_3));
+                frames.push_back(world.getAssets().get(GameAssets::PLAYER_LEFT_WALK_4));
+                break;
+        };
+        startAnimation();
     }
 
     world.checkEntitiesInRange(this, 3);
 }
 
 void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
+    if (position != destination) {
+        target.draw(*animationSprite);
+        return;
+    }
+
 	sprite.setTexture(*textureMap.at(destinationDir), true);
 	sprite.setPosition({renderPosition.x - 0.5f, -renderPosition.y - 1.0f});
 	sprite.setScale({ 2.0f / sprite.getTexture()->getSize().x, 2.0f / sprite.getTexture()->getSize().y });
