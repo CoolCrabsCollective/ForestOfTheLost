@@ -10,8 +10,9 @@
 #include "World.h"
 #include "SFML/System/Vector2.hpp"
 #include "SFML/Graphics.hpp"
+#include "Interactable.h"
 
-class Item : public Entity, public Solid {
+class Item : public Entity, public Solid, public Interactable {
 public:
     explicit Item(World& world, sf::Texture* texture, sf::Vector2i position);
 

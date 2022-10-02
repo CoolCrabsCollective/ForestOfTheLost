@@ -6,7 +6,8 @@
 
 #include <utility>
 
-ShaderAsset::ShaderAsset(std::string vertexShader, std::string fragmentShader) : vsPath(std::move(vertexShader)), fsPath(std::move(fragmentShader)), name(vsPath + "_" + fsPath) {
+ShaderAsset::ShaderAsset(std::string vertexShader, std::string fragmentShader)
+	: vsPath(std::move(vertexShader)), fsPath(std::move(fragmentShader)), name(vsPath + "_" + fsPath) {
 
 }
 
@@ -17,7 +18,7 @@ const std::string &ShaderAsset::getName() const {
 void *ShaderAsset::load() const {
     auto* shader = new sf::Shader();
 #ifdef OS_SWITCH
-    if(!shader->loadFromFile("romfs/" + vsPath, "romfs/" + fsPath))
+    if(!shader->loadFromFile("romfs:/" + vsPath, "romfs:/" + fsPath))
 #else
     if(!shader->loadFromFile("res/" + vsPath, "res/" + fsPath))
 #endif

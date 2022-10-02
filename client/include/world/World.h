@@ -92,6 +92,10 @@ public:
 
     void updateInteractionInRangeOf(Entity* entity, int solidRange);
 
+	inline void setChangePhase() {
+		changePhase = true;
+	}
+
 private:
 	void generatePhase(GamePhase phase);
 };

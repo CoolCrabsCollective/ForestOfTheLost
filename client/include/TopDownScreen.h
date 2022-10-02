@@ -12,6 +12,7 @@
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/Texture.hpp"
 #include "SFML/Graphics/Text.hpp"
+#include "WIZ/input/MappingDatabase.h"
 
 class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz::InputListener {
 	std::string name = "TopDownScreen";
@@ -24,6 +25,8 @@ class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz
     sf::Shader* eyesShader = nullptr;
 
     sf::Text endGoalText;
+
+	wiz::MappingDatabase mappingDatabase;
 
     void processInput();
 	bool isInteractPressed();
