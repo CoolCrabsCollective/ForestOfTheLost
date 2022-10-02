@@ -158,7 +158,7 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 								 ? spookyness
 								 : 1.0f);
 
-        spookyShader->setUniform("scan_effect", std::min(1.0f, world.getTimeAccumulator() / 10000.f));
+        spookyShader->setUniform("scan_effect", std::max(std::min(1.0f, (world.getTimeAccumulator() - 20000.f)/ 10000.f), 0.0f));
 		target.draw(fbo, spookyShader);
 	}
     drawNight(target);
