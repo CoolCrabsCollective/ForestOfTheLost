@@ -84,7 +84,7 @@ void Player::tick(float delta) {
 			destinationDir = inputDir.value();
     }
 
-    world.checkEntitesInRange(this, 1);
+    world.checkEntitiesInRange(this, 1);
 }
 
 void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
