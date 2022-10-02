@@ -55,22 +55,24 @@ void main()
 
     float ambient_darkness = 1.0 - 2.0 * periodic * distance;
 
+    float darkness_alpha = 1.0;
     if(accumulated_time < darkness_threshold_max || accumulated_time > darkness_threshold_min)
-        gl_FragColor = vec4(pixel.rgb, ambient_darkness * ten_second_darkness_multiplier);
+        darkness_alpha = ambient_darkness * ten_second_darkness_multiplier;
     else
-        gl_FragColor = vec4(pixel.rgb, ambient_darkness);
+        darkness_alpha = ambient_darkness;
 
-	gl_FragColor.a = gl_FragColor.a * spookyness + (1.0 - spookyness);
+    float grayscale_alpha = gl_FragColor.a * spookyness + (1.0 - spookyness);
 
 	float gray = 0.299 * gl_FragColor.r + 0.587 * gl_FragColor.g + 0.114 * gl_FragColor.b;
 
-	//gl_FragColor = vec4(vec3(gray) * grayscaleness + gl_FragColor.rgb * (1.0 - grayscaleness), gl_FragColor.a);
+	vec3 grayscale_color = vec3(gray) * grayscaleness + pixelColor.rgb * (1.0 - grayscaleness);
+
 	float count = 300.0;
     vec2 sl = vec2(sin(gl_TexCoord[0].y * count), cos(gl_TexCoord[0].y * count));
     vec3 scanlines = vec3(sl.x, sl.y, sl.x);
-    pixelColor += pixelColor * scanlines * opacityScanline;
-    pixelColor += pixelColor * vec3(random(gl_TexCoord[0].xy*timeAccumulator)) * opacityNoise;
-    pixelColor += pixelColor * sin(110.0*timeAccumulator) * flickering;
+    grayscale_color += grayscale_color * scanlines * opacityScanline;
+    grayscale_color += grayscale_color * vec3(random(gl_TexCoord[0].xy*timeAccumulator)) * opacityNoise;
+    grayscale_color += grayscale_color * sin(110.0*timeAccumulator) * flickering;
 
-    gl_FragColor = vec4(pixelColor,1.0);
+    gl_FragColor = vec4(grayscale_color, grayscale_alpha * darkness_alpha);
 }
