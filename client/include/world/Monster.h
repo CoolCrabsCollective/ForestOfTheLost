@@ -11,11 +11,14 @@
 #include "state/MonsterIdleState.h"
 
 class Monster : public Entity {
-    mutable sf::Sprite sprite;
+protected:
+    mutable sf::Sprite daySprite;
+    mutable sf::Sprite nightSprite;
     sf::Vector2f renderPosition = {};
     Direction currentDir = NORTH;
     Direction destinationDir = NORTH;
     float actionProgress = 0;
+    sf::Vector2i movingStartPos = {};
     float movingSpeed = 0.5;
     float rotationSpeed = 5;
 
@@ -23,11 +26,13 @@ class Monster : public Entity {
 
     std::shared_ptr<EntityState> state;
 public:
-    Monster(World &world, sf::Vector2i position);
+    Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, sf::Texture* nightTexture);
     void tick(float delta) override;
     void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
+    virtual void drawDarkness(sf::RenderTarget& target, sf::Shader* shader) const;
     sf::Vector2f getRenderPosition() const override;
     void findNewSpot();
+    void moveTowardsPlayer();
 
     const std::shared_ptr<EntityState> &getState() const;
 

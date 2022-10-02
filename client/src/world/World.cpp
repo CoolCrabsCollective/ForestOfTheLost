@@ -4,6 +4,8 @@
 
 #include <world/TeddyBear.h>
 #include <random>
+#include <world/Bat.h>
+#include <world/Wraith.h>
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
 #include "util/SimplexNoise.h"
@@ -36,8 +38,11 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
     //int endGoalY = 5;
     //addEntity(new EndGoal(*this, sf::Vector2i(endGoalX, endGoalY)));
 
-    Entity* bat1 = new Monster(*this, sf::Vector2i(0, 3));
+    Entity* bat1 = new Bat(*this, sf::Vector2i(0, 3));
     addEntity(bat1);
+
+    Entity* wraith1 = new Wraith(*this, sf::Vector2i(2, 1));
+    addEntity(wraith1);
 }
 
 void World::generatePhase(GamePhase phase) {
@@ -162,7 +167,7 @@ wiz::AssetLoader& World::getAssets() {
 	return assets;
 }
 
-bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
+bool World::tileOccupied(sf::Vector2i tile, Entity* exclude, std::optional<Entity*> exclusive) {
 
 	if(terrainMap[tile] == WATER)
 		return true;
@@ -203,6 +208,7 @@ void World::checkEntitiesInRange(Entity* entityCheck, int solidRange) {
 
                 if (player && monster) {
                     monster->setState(std::make_shared<MonsterChargeState>(monster));
+					monster->moveTowardsPlayer();
                 }
             }
         }

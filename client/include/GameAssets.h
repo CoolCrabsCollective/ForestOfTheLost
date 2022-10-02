@@ -59,6 +59,10 @@ namespace GameAssets {
 
     // Monsters
     ASSET(wiz::TextureAsset, BAT, ("gfx/bat2.png"))
+    ASSET(wiz::TextureAsset, WRAITH, ("gfx/wraith.png"))
+
+    // Misc
+    ASSET(wiz::TextureAsset, INVISIBLE, ("gfx/invisible.png"))
 
     // Player
 	ASSET(wiz::TextureAsset, PLAYER_BACK, ("gfx/player/back.png"))

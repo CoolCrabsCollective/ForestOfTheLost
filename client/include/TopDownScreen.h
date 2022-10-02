@@ -47,7 +47,7 @@ public:
 
 	void drawWorld(sf::RenderTarget& target);
 
-	void drawEyes(sf::RenderTarget& target);
+	void drawNight(sf::RenderTarget& target);
 
 	void drawUI(sf::RenderTarget& target);
 
