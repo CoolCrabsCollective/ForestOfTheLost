@@ -14,8 +14,9 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
 		: Screen(game),
 	    dialogBox(game.getAssets().get(GameAssets::VT323_TTF), game.getAssets().get(GameAssets::DIALOG_BOX)),
 		world(game.getAssets(), dialogBox),
-        mappingDatabase()  {
+        mappingDatabase() {
 
+	game.getAssets().get(GameAssets::SUSPICIOUS_FOREST_MUSIC)->play();
 
     endGoalText.setFont(*getGame().getAssets().get(GameAssets::SANS_TTF));
     endGoalText.setCharacterSize(50);

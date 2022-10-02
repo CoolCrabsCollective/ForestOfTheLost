@@ -19,7 +19,10 @@
 namespace GameAssets {
 	extern std::vector<const wiz::AssetBase*> ALL;
 
-	ASSET(wiz::MusicAsset, GREENLIFE, ("music/greenlife.ogg"))
+	// Music
+	ASSET(wiz::MusicAsset, SUSPICIOUS_FOREST_MUSIC, ("music/suspicious_forest.ogg"))
+
+	// Sounds
 	ASSET(wiz::SoundAsset, COLLISION, ("sfx/collision.ogg"))
 	ASSET(wiz::SoundAsset, INTERACT, ("sfx/interact.ogg"))
 	ASSET(wiz::SoundAsset, NOINTERACT, ("sfx/nointeract.ogg"))
