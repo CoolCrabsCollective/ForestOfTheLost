@@ -10,6 +10,9 @@
 class GroundHog : public Monster {
 public:
     explicit GroundHog(World &world, sf::Vector2i position);
+
+    void drawDarkness(sf::RenderTarget &target, sf::Shader *shader) const override;
+
 protected:
 };
 
