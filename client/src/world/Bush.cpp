@@ -11,15 +11,7 @@ Bush::Bush(World& world, const sf::Vector2i& position)
 }
 
 void Bush::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
-	sprite.setPosition({static_cast<float>(position.x), -static_cast<float>(position.y - 0.2f)});
-	sprite.setScale({ 1.0f / sprite.getTexture()->getSize().x, 1.0f / sprite.getTexture()->getSize().y });
-	target.draw(sprite);
-
-	sprite.setPosition({static_cast<float>(position.x - 0.3f), -static_cast<float>(position.y - 0.4f)});
-	sprite.setScale({ 1.0f / sprite.getTexture()->getSize().x, 1.0f / sprite.getTexture()->getSize().y });
-	target.draw(sprite);
-
-	sprite.setPosition({static_cast<float>(position.x + 0.3f), -static_cast<float>(position.y - 0.4f)});
-	sprite.setScale({ 1.0f / sprite.getTexture()->getSize().x, 1.0f / sprite.getTexture()->getSize().y });
+	sprite.setPosition({static_cast<float>(position.x - 0.125f), -static_cast<float>(position.y + 0.25f)});
+	sprite.setScale({ 1.25f / sprite.getTexture()->getSize().x, 1.25f / sprite.getTexture()->getSize().y });
 	target.draw(sprite);
 }

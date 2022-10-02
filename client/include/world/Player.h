@@ -27,7 +27,7 @@ class Player : public Entity, public Alive<int>, public Solid {
     float actionProgress = 0;
 
     const float movingSpeed = 3.0;
-    const float rotationSpeed = 50.0;
+    const float rotationSpeed = 25.0;
 
 	mutable sf::Sprite sprite;
 	std::map<Direction, sf::Texture*> textureMap;
