@@ -4,6 +4,7 @@
 
 #include <world/TeddyBear.h>
 #include <random>
+#include <world/Bat.h>
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
 #include "util/SimplexNoise.h"
@@ -14,6 +15,7 @@
 #include "world/Tree.h"
 #include "world/EndGoal.h"
 #include "world/state/MonsterChargeState.h"
+#include "world/NPC.h"
 
 World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 		: assets(assets),
@@ -33,7 +35,7 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
     //int endGoalY = 5;
     //addEntity(new EndGoal(*this, sf::Vector2i(endGoalX, endGoalY)));
 
-    Entity* bat1 = new Monster(*this, sf::Vector2i(0, 3));
+    Entity* bat1 = new Bat(*this, sf::Vector2i(0, 3));
     addEntity(bat1);
 }
 
@@ -89,18 +91,39 @@ void World::generatePhase(GamePhase phase) {
 				}
 				else if(noise2 > 0.5) {
 					addEntity(new Bush(*this, {i, j}));
-				} else if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0) {
+				} else {
 					if(phase == GamePhase::INITIAL) {
-						int chunkX = i / 20;
-						int chunkY = j / 20;
+						if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0) {
+							int chunkX = i / 20;
+							int chunkY = j / 20;
 
-						int x = (int)abs(SimplexNoise::noise(chunkX / 100.0, chunkY / 100.0)) % 20;
-						int y = (int)abs(SimplexNoise::noise(chunkX / 100.0, chunkY / 100.0)) % 20;
+							int x = (int)abs(SimplexNoise::noise(chunkX / 100.0, chunkY / 100.0)) % 20;
+							int y = (int)abs(SimplexNoise::noise(chunkX / 100.0, chunkY / 100.0)) % 20;
 
-						if(i % 20 == x && y == j % 20) {
+							if(i % 20 == x && y == j % 20) {
 
-							Entity* teddy_bear = new TeddyBear(*this, sf::Vector2i(i, j));
-							addEntity(teddy_bear);
+								Entity* teddy_bear = new TeddyBear(*this, sf::Vector2i(i, j));
+								addEntity(teddy_bear);
+							}
+						}
+					} else if(phase == GamePhase::FIRST_ENCOUNTER) {
+						if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 2.0 * 2.0) {
+							int chunkX = i / 20;
+							int chunkY = j / 20;
+
+							int x = (int)abs(SimplexNoise::noise(chunkX / 100.0 - 200.0, chunkY / 100.0 - 200.0)) % 20;
+							int y = (int)abs(SimplexNoise::noise(chunkX / 100.0 - 200.0, chunkY / 100.0 - 200.0)) % 20;
+
+							if(i % 20 == x && y == j % 20) {
+
+								Entity* sir_dick = new NPC(*this,
+														   sf::Vector2i(i, j),
+														   { { NORTH, getAssets().get(GameAssets::PLAYER_BACK)},
+															 { SOUTH, getAssets().get(GameAssets::PLAYER_FRONT)},
+															 { WEST, getAssets().get(GameAssets::PLAYER_LEFT)},
+															 { EAST, getAssets().get(GameAssets::PLAYER_RIGHT)}});
+								addEntity(sir_dick);
+							}
 						}
 					}
 				}
@@ -199,9 +222,11 @@ void World::tick(float delta) {
 
 	if(tenSecAccumulator > 10000.0) {
 
-		if(changePhase && currentPhase < FINAL) {
-			generatePhase(static_cast<GamePhase>(currentPhase + 1));
-			changePhase = false;
+		if(countBlinkBeforePhaseChange != -1) {
+			countBlinkBeforePhaseChange--;
+			if(countBlinkBeforePhaseChange == -1 && currentPhase < FINAL) {
+				generatePhase(static_cast<GamePhase>(currentPhase + 1));
+			}
 		}
 
 		for(int i = 0; i < getEntities().size(); i++) {

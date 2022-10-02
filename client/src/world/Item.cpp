@@ -10,7 +10,7 @@ Item::Item(World& world, sf::Texture* texture, sf::Vector2i position): Entity(wo
 
 
 void Item::draw(sf::RenderTarget &target, const sf::RenderStates &states) const {
-	if(taken)
+	if(taken || world.isChangingPhase())
 		return;
 
     sprite.setPosition({static_cast<float>(position.x), static_cast<float>(-position.y)});
@@ -19,7 +19,7 @@ void Item::draw(sf::RenderTarget &target, const sf::RenderStates &states) const 
 }
 
 bool Item::isBlocking(sf::Vector2i vec) {
-    return !taken && vec == this->position;
+    return !taken && !world.isChangingPhase() && vec == this->position;
 }
 
 void Item::tick(float delta) {
