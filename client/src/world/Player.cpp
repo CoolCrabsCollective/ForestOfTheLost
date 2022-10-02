@@ -62,7 +62,7 @@ void Player::tick(float delta) {
     } else if (inputDir.has_value()) {
 		if(inputDir.value() == currentDir) {
             destination = position + directionToUnitVector(inputDir.value());
-            if (world.tileOccupied(destination, this)) {
+            if (world.tileOccupied(destination, this) || lockMovement) {
                 destination = position;
             }
         } else
@@ -77,12 +77,20 @@ void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) cons
 	target.draw(sprite);
 }
 
+void Player::setLockMovement(bool lockMovement) {
+    Player::lockMovement = lockMovement;
+}
+
 bool Player::isBlocking(sf::Vector2i vec) {
     return vec == position || vec == destination;
 }
 
 int Player::getZOrder() const {
 	return -1;
+}
+
+bool Player::isLockMovement() const {
+    return lockMovement;
 }
 
 
