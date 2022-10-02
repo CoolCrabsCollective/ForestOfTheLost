@@ -52,7 +52,7 @@ class World : public Tickable, public sf::Drawable {
 	float tenSecAccumulator = 0.0f;
 
 	GamePhase currentPhase = INITIAL;
-	bool changePhase = false;
+	int countBlinkBeforePhaseChange = -1;
 
 	DialogBox& dialogBox;
 
@@ -95,14 +95,17 @@ public:
 
     void checkEntitiesInRange(Entity* entityCheck, int solidRange);
 
-	inline void setChangePhase() {
-		changePhase = true;
+	inline void changePhaseIn(int countBlinks) {
+		countBlinkBeforePhaseChange = countBlinks - 1;
 	}
 
 	inline DialogBox& getDialogBox() {
 		return dialogBox;
 	}
 
+	inline bool isChangingPhase() const {
+		return countBlinkBeforePhaseChange != -1;
+	}
 private:
 	void generatePhase(GamePhase phase);
 };
