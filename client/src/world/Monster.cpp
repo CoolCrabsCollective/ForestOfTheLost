@@ -13,7 +13,6 @@ Monster::Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, s
     nightSprite(*nightTexture)
 {
     this->position = position;
-    this->movingStartPos = position;
     renderPosition = {static_cast<float>(position.x), static_cast<float>(-position.y)};
 
     state = std::make_shared<MonsterIdleState>(this);
@@ -21,24 +20,22 @@ Monster::Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, s
 }
 
 void Monster::tick(float delta) {
-    bool moving = movingStartPos != destination;
+    bool moving = position != destination;
     bool rotating = currentDir != destinationDir;
 
-    renderPosition = (sf::Vector2f) movingStartPos;
+    renderPosition = (sf::Vector2f) position;
     if (moving) {
         actionProgress += (delta / 1000) * movingSpeed;
 
         if (actionProgress > 1) {
-            sf::Vector2i oldPos = movingStartPos;
-            movingStartPos = destination;
+            sf::Vector2i oldPos = position;
             position = destination;
             world.moveEntity(oldPos, this);
             actionProgress = 0;
 
             state = std::make_shared<MonsterIdleState>(this);
         } else {
-            renderPosition = (sf::Vector2f) movingStartPos + sf::Vector2f(destination - movingStartPos) * actionProgress;
-            position = (sf::Vector2i) renderPosition;
+            renderPosition = (sf::Vector2f) position + sf::Vector2f(destination - position) * actionProgress;
         }
     } else if (rotating) {
         actionProgress += (delta / 1000) * rotationSpeed;
@@ -49,8 +46,14 @@ void Monster::tick(float delta) {
         }
     }
 
+    if (attackCoolDown > 0.0) {
+        timeSinceLastAttack += delta;
+    }
+
     if (position == world.getPlayer().getPosition() && dynamic_pointer_cast<MonsterAttackState>(state).get()) {
-       //getWorld().getDialogBox().startDialog({"Get fucked nerd.",});
+        attackCoolDown = 5000;
+        state = std::make_shared<MonsterIdleState>(this);
+        getWorld().getDialogBox().startDialog({"The bat bit you..",});
     }
 
     state->tick(delta);
@@ -88,6 +91,7 @@ void Monster::findNewSpot() {
             for (int k = 0 ; k < entitiesAt.size() ; k++) {
                 if(HidingSpot* spot = dynamic_cast<HidingSpot*>(entitiesAt.at(k))) {
                     destination = spot->getPosition();
+                    partDirection = position + vectorToUnitVector(destination);
                     return;
                 }
             }
@@ -121,5 +125,21 @@ const std::shared_ptr<EntityState> &Monster::getState() const {
 
 void Monster::setState(const std::shared_ptr<EntityState> &state) {
     Monster::state = state;
+}
+
+float Monster::getAttackCoolDown() const {
+    return attackCoolDown;
+}
+
+void Monster::setAttackCoolDown(float attackCoolDown) {
+    Monster::attackCoolDown = attackCoolDown;
+}
+
+float Monster::getTimeSinceLastAttack() const {
+    return timeSinceLastAttack;
+}
+
+void Monster::setTimeSinceLastAttack(float timeSinceLastAttack) {
+    Monster::timeSinceLastAttack = timeSinceLastAttack;
 }
 
