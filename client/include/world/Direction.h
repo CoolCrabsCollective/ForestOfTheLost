@@ -16,4 +16,6 @@ enum Direction {
 
 sf::Vector2i directionToUnitVector(Direction direction);
 
+sf::Vector2i vectorToUnitVector(sf::Vector2i vec);
+
 #endif //LD51_CLIENT_DIRECTION_H

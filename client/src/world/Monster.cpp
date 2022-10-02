@@ -5,10 +5,13 @@
 #include "world/Monster.h"
 #include "GameAssets.h"
 #include "world/state/MonsterChargeState.h"
+#include "world/state/MonsterAttackState.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 
 Monster::Monster(World &world, sf::Vector2i position, sf::Texture* texture) : Entity(world), sprite(*texture) {
     this->position = position;
+    this->movingStartPos = position;
+    this->sprite = sf::Sprite(*world.getAssets().get(GameAssets::BAT));
     renderPosition = {static_cast<float>(position.x), static_cast<float>(-position.y)};
 
     state = std::make_shared<MonsterIdleState>(this);
@@ -16,32 +19,24 @@ Monster::Monster(World &world, sf::Vector2i position, sf::Texture* texture) : En
 }
 
 void Monster::tick(float delta) {
-    bool moving = position != destination;
+    bool moving = movingStartPos != destination;
     bool rotating = currentDir != destinationDir;
 
-    renderPosition = (sf::Vector2f) position;
+    renderPosition = (sf::Vector2f) movingStartPos;
     if (moving) {
         actionProgress += (delta / 1000) * movingSpeed;
 
         if (actionProgress > 1) {
-            sf::Vector2i oldPos = position;
+            sf::Vector2i oldPos = movingStartPos;
+            movingStartPos = destination;
             position = destination;
             world.moveEntity(oldPos, this);
             actionProgress = 0;
 
-            if (dynamic_pointer_cast<MonsterChargeState>(state).get()) {
-                sf::Vector2i playerPos = world.getPlayer().getPosition();
-                sf::Vector2i posDiff = playerPos - position;
-
-                sf::Vector2i unitVec;
-
-                unitVec = {posDiff.x > 0 ? 1 : (posDiff.x < 0 ? -1 : 0),
-                           posDiff.y > 0 ? 1 : (posDiff.y < 0 ? -1 : 0)};
-
-                destination = position + unitVec;
-            }
+            state = std::make_shared<MonsterIdleState>(this);
         } else {
-            renderPosition = (sf::Vector2f) position + sf::Vector2f(destination - position) * actionProgress;
+            renderPosition = (sf::Vector2f) movingStartPos + sf::Vector2f(destination - movingStartPos) * actionProgress;
+            position = (sf::Vector2i) renderPosition;
         }
     } else if (rotating) {
         actionProgress += (delta / 1000) * rotationSpeed;
@@ -51,6 +46,8 @@ void Monster::tick(float delta) {
             actionProgress = 0;
         }
     }
+
+    state->tick(delta);
 }
 
 void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
@@ -84,9 +81,22 @@ void Monster::findNewSpot() {
             }
         }
     }
+}
 
+void Monster::moveTowardsPlayer() {
+    if (dynamic_pointer_cast<MonsterChargeState>(state).get()) {
+        sf::Vector2i playerPos = world.getPlayer().getPosition();
 
+        sf::Vector2i posDiff = playerPos - position;
 
+        sf::Vector2i unitVec = vectorToUnitVector(posDiff);
+
+        if (posDiff == unitVec) {
+            state = std::make_shared<MonsterAttackState>(this, &world.getPlayer());
+        }
+
+        destination = position + unitVec;
+    }
 }
 
 sf::Vector2f Monster::getRenderPosition() const {

@@ -3,6 +3,7 @@
 //
 
 #include "world/state/MonsterIdleState.h"
+#include "world/state/MonsterAttackState.h"
 
 MonsterIdleState::MonsterIdleState(Entity *monster) : EntityState(monster) {
 
