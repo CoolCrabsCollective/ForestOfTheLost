@@ -2,6 +2,7 @@
 // Created by Winter on 12/02/2022.
 //
 
+#include <GameAssets.h>
 #include "LoadingScreen.h"
 #include "TitleScreen.h"
 #include "TopDownScreen.h"
@@ -52,7 +53,7 @@ void LoadingScreen::show() {
 	message.setString("Deleting System32...");
 #endif
 #ifdef OS_UNIX
-	message.setString("sudo rm -rf /");
+	message.setString("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
 #endif
 #ifdef OS_MAC
 	message.setString("sudo rm -rf /");
