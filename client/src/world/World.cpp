@@ -5,6 +5,7 @@
 #include <world/TeddyBear.h>
 #include <random>
 #include <world/Bat.h>
+#include <world/Wraith.h>
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
 #include "util/SimplexNoise.h"
@@ -37,6 +38,9 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 
     Entity* bat1 = new Bat(*this, sf::Vector2i(0, 3));
     addEntity(bat1);
+
+    Entity* wraith1 = new Wraith(*this, sf::Vector2i(2, 1));
+    addEntity(wraith1);
 }
 
 void World::generatePhase(GamePhase phase) {

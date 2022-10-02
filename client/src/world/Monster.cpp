@@ -7,7 +7,10 @@
 #include "world/state/MonsterChargeState.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 
-Monster::Monster(World &world, sf::Vector2i position, sf::Texture* texture) : Entity(world), sprite(*texture) {
+Monster::Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, sf::Texture* nightTexture) : Entity(world),
+    daySprite(*dayTexture),
+    nightSprite(*nightTexture)
+{
     this->position = position;
     renderPosition = {static_cast<float>(position.x), static_cast<float>(-position.y)};
 
@@ -57,9 +60,16 @@ void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) con
     if (position == destination)
         return;
 
-    sprite.setPosition({renderPosition.x, -renderPosition.y});
-    sprite.setScale({ 1.0f / sprite.getTexture()->getSize().x, 1.0f / sprite.getTexture()->getSize().y });
-    target.draw(sprite);
+    daySprite.setPosition({renderPosition.x, -renderPosition.y});
+    daySprite.setScale({ 1.0f / daySprite.getTexture()->getSize().x, 1.0f / daySprite.getTexture()->getSize().y });
+    target.draw(daySprite);
+}
+
+
+void Monster::drawDarkness(sf::RenderTarget &target, sf::Shader* shader) const {
+    nightSprite.setPosition({renderPosition.x, -renderPosition.y});
+    nightSprite.setScale({ 1.0f / nightSprite.getTexture()->getSize().x, 1.0f / nightSprite.getTexture()->getSize().y });
+    target.draw(nightSprite, shader);
 }
 
 void Monster::findNewSpot() {
@@ -100,3 +110,4 @@ const std::shared_ptr<EntityState> &Monster::getState() const {
 void Monster::setState(const std::shared_ptr<EntityState> &state) {
     Monster::state = state;
 }
+
