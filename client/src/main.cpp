@@ -58,11 +58,11 @@ int main(int argc, char* argv[])
 	mode = sf::VideoMode(1280, 720, 32);
 #endif
 
-	std::shared_ptr<sf::RenderWindow> window = std::make_shared<sf::RenderWindow>(mode, "Spooky Forest");
+	std::shared_ptr<sf::RenderWindow> window = std::make_shared<sf::RenderWindow>(mode, "Sinister Sleuth");
 
 	SpookyGame game(window, logger, loader);
 
-	game.setScreen(std::shared_ptr<LoadingScreen>(new LoadingScreen(game)));
+	game.setScreen(std::make_shared<LoadingScreen>(game));
 
 	while (window->isOpen()) {
 		game.update();

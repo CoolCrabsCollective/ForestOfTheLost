@@ -18,15 +18,12 @@ protected:
     Direction currentDir = NORTH;
     Direction destinationDir = NORTH;
     float actionProgress = 0;
-    float movingSpeed = 0.5;
+    float movingSpeed = 2;
     float rotationSpeed = 5;
 
-    sf::Vector2i partDirection = {};
+    sf::Vector2i partDestination = {};
 
     float searchRadius = 7;
-
-    float attackCoolDown = 0.0;
-    float timeSinceLastAttack = 0.0;
 
     std::shared_ptr<EntityState> state;
 public:
@@ -37,18 +34,13 @@ public:
     sf::Vector2f getRenderPosition() const override;
     void findNewSpot();
     void moveTowardsPlayer();
+    void move(sf::Vector2i des);
+
+    void targetPlayerInRange();
 
     const std::shared_ptr<EntityState> &getState() const;
 
     void setState(const std::shared_ptr<EntityState> &state);
-
-    float getAttackCoolDown() const;
-
-    void setAttackCoolDown(float attackCoolDown);
-
-    float getTimeSinceLastAttack() const;
-
-    void setTimeSinceLastAttack(float timeSinceLastAttack);
 };
 
 
