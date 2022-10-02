@@ -23,7 +23,9 @@ namespace GameAssets {
 	ASSET(wiz::SoundAsset, COLLISION, ("sfx/collision.ogg"))
 	ASSET(wiz::SoundAsset, INTERACT, ("sfx/interact.ogg"))
 	ASSET(wiz::SoundAsset, NOINTERACT, ("sfx/nointeract.ogg"))
+
 	ASSET(wiz::FontAsset, SANS_TTF, ("font/sans.ttf"))
+	ASSET(wiz::FontAsset, VT323_TTF, ("font/VT323-Regular.ttf"))
 
 	ASSET(wiz::TextureAsset, PLAYER, ("gfx/player.png"))
 	ASSET(wiz::TextureAsset, BACKGROUND, ("gfx/background.jpg"))

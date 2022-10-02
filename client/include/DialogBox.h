@@ -24,8 +24,9 @@ public:
 
     bool isInProgress() const;
 
-    std::vector<std::string> dialog;
+    std::vector<std::vector<std::string>> dialog;
     float currentTextProgressTime = 0.0f;
+    float currentMaximumProgressTime = 0.0f;
 
     mutable sf::Sprite sprite;
     mutable sf::Text text;
@@ -38,10 +39,17 @@ protected:
     void draw(sf::RenderTarget &target, const sf::RenderStates &states) const override;
 
     int dialogIndex = 0;
-    float maximumTextProgressTime = 5.0f;
+    float maximumTextProgressTime = 4.0f;
+
+    static const int line_max_chars = 78;
+
+    static std::vector<std::vector<std::string>> processText(const std::vector<std::string>& text);
 
     void next();
     void complete();
+
+    void set_dialog_duration();
+
 };
 
 
