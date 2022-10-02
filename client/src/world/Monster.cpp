@@ -15,12 +15,16 @@ Monster::Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, s
     renderPosition = {static_cast<float>(position.x), static_cast<float>(-position.y)};
 
     state = std::make_shared<MonsterIdleState>(this);
-    findNewSpot();
-
     attackMessage = "A monster attacked you!"; // shitty default attack message
 }
 
 void Monster::tick(float delta) {
+    if(!hasLookedForSpot) {
+
+        findNewSpot();
+        hasLookedForSpot = true;
+    }
+
     bool moving = position != partDestination;
     bool rotating = currentDir != destinationDir;
 
@@ -122,7 +126,7 @@ void Monster::moveTowardsPlayer() {
 
         move(playerPos);
 
-//        world.setTimePaused(true);
+        world.setTimePaused(true);
 }
 
 sf::Vector2f Monster::getRenderPosition() const {

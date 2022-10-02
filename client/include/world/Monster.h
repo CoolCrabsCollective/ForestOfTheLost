@@ -26,6 +26,7 @@ protected:
     float searchRadius = 4;
 
     std::shared_ptr<EntityState> state;
+    bool hasLookedForSpot = false;
 
     std::string attackMessage;
 public:
