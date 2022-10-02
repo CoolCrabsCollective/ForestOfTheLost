@@ -96,7 +96,7 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 }
 
 void TopDownScreen::drawEyes(sf::RenderTarget &target) {
-    sf::Vector2f viewSize = {16.0f, 9.0f};
+    sf::Vector2f viewSize = {24.0f, 13.5f};
     target.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f, -world.getPlayer().getRenderPosition().y + 0.5f }, viewSize));
 
     eyesShader->setUniform("timeAccumulator", timeAccumulator);
