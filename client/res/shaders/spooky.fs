@@ -1,6 +1,7 @@
 uniform sampler2D texture;
 uniform float timeAccumulator;
 uniform float grayscaleness;
+uniform float spookyness;
 
 #define PI 3.141592654
 
@@ -23,7 +24,7 @@ void main()
     float normalized_sin = (sin(timeCounter) + 1.0) / 2.0;
     float periodic = 1.0 - ( normalized_sin / periodic_divider);
 
-    float distance = malformed_euclidean_distance(center, gl_TexCoord[0].xy, 16.0/9.0);
+    float distance = malformed_euclidean_distance(center, gl_TexCoord[0].xy, 16.0/9.0) * 0.75;
 
     float darkness_duration = 2.0;
 
@@ -38,6 +39,8 @@ void main()
         gl_FragColor = vec4(pixel.rgb, ambient_darkness * ten_second_darkness_multiplier);
     else
         gl_FragColor = vec4(pixel.rgb, ambient_darkness);
+
+	gl_FragColor.a = gl_FragColor.a * spookyness + (1.0 - spookyness);
 
 	float gray = 0.299 * gl_FragColor.r + 0.587 * gl_FragColor.g + 0.114 * gl_FragColor.b;
 

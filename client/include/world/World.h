@@ -106,6 +106,14 @@ public:
 	inline bool isChangingPhase() const {
 		return countBlinkBeforePhaseChange != -1;
 	}
+
+	inline bool isChangingPhaseNext() const {
+		return countBlinkBeforePhaseChange == 0;
+	}
+
+	inline GamePhase getPhase() const {
+		return currentPhase;
+	}
 private:
 	void generatePhase(GamePhase phase);
 };
