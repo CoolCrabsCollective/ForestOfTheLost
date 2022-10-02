@@ -90,7 +90,11 @@ public:
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
 
-    void updateInteractionInRangeOf(Entity* entity, int solidRange);
+    void checkEntitesInRange(Entity* entityCheck, int solidRange);
+
+	inline void setChangePhase() {
+		changePhase = true;
+	}
 
 private:
 	void generatePhase(GamePhase phase);

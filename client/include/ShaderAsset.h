@@ -10,11 +10,6 @@
 #include <utility>
 #include <WIZ/asset/Asset.h>
 
-namespace wiz {
-    class ShaderAsset;
-}
-
-
 class ShaderAsset : public wiz::Asset<sf::Shader> {
 protected:
     const std::string vsPath;

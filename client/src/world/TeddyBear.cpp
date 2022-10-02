@@ -5,6 +5,11 @@
 #include "world/TeddyBear.h"
 #include "GameAssets.h"
 
-TeddyBear::TeddyBear(World &world, sf::Vector2i position) : Item(world, world.getAssets().get(GameAssets::ITEM_TEDDY), position){
+TeddyBear::TeddyBear(World &world, sf::Vector2i position)
+	: Item(world, world.getAssets().get(GameAssets::ITEM_TEDDY), position) {
 
+}
+
+void TeddyBear::activate() {
+	world.setChangePhase();
 }

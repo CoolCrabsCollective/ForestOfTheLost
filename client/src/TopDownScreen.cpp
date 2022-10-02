@@ -11,12 +11,15 @@
 #include "WIZ/input/MappingDatabase.h"
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
-		: Screen(game), world(game.getAssets()) {
+		: Screen(game),
+		  world(game.getAssets()),
+		  mappingDatabase() {
     endGoalText.setFont(*getGame().getAssets().get(GameAssets::SANS_TTF));
     endGoalText.setCharacterSize(50);
     endGoalText.setString("Congrats you have reached the endpoint...");
     sf::FloatRect bounds = endGoalText.getLocalBounds();
     endGoalText.setPosition(sf::Vector2f(600 - bounds.getSize().x / 2, 450 - bounds.getSize().y / 2));
+	mappingDatabase.loadFromCSV(*getGame().getAssets().get(GameAssets::CONTROLLER_DB));
 }
 
 void TopDownScreen::tick(float delta) {
@@ -29,40 +32,45 @@ void TopDownScreen::tick(float delta) {
 }
 
 bool TopDownScreen::isInteractPressed() {
-//	if(sf::Joystick::isConnected(0)) {
-//
-//		const wiz::Mapping& mapping = wiz::MappingDatabase::getInstance().getMapping(sf::Joystick::getIdentification(0).name);
-//
-//		if(mapping.hasButton(wiz::MapButton::A) && sf::Joystick::isButtonPressed(0, mapping.getButton(wiz::MapButton::A))
-//			|| mapping.hasButton(wiz::MapButton::B) && sf::Joystick::isButtonPressed(0, mapping.getButton(wiz::MapButton::B)))
-//			return true;
-//	}
-//
-//	return sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)
-//		   || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)
-//		   || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::C)
-//		   || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::I);
+	if(sf::Joystick::isConnected(0)) {
 
-    return false;
+		std::string name = sf::Joystick::getIdentification(0).name;
+
+		if(mappingDatabase.hasMapping(name))
+		{
+			const wiz::Mapping& mapping = mappingDatabase.getMapping(name);
+
+			if(mapping.hasButton(wiz::MapButton::A) && sf::Joystick::isButtonPressed(0, mapping.getButton(wiz::MapButton::A))
+			   || mapping.hasButton(wiz::MapButton::B) && sf::Joystick::isButtonPressed(0, mapping.getButton(wiz::MapButton::B)))
+				return true;
+		}
+	}
+
+	return sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)
+		   || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter)
+		   || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::C)
+		   || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::I);
 }
 
 void TopDownScreen::processInput() {
 
+	bool connected = sf::Joystick::isConnected(0);
+
     bool eastPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)
-                        || sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) > 0;
+                        || connected && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) > 50;
 
     bool northPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)
-                        || sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y) < 0;
+                        || connected && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y) < -50;
 
     bool westPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)
-                        || sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) < 0;
+                        || connected && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X) < -50;
 
     bool southPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)
                         || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)
-                        || sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y) > 0;
+                        || connected && sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y) > 50;
 
 	bool interactPressed = isInteractPressed();
 
@@ -76,6 +84,9 @@ void TopDownScreen::processInput() {
         world.getPlayer().move(SOUTH);
     else
 		world.getPlayer().move({});
+
+	if(interactPressed)
+		world.getPlayer().interact();
 }
 
 
