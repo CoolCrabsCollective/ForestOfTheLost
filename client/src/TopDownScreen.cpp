@@ -102,15 +102,15 @@ void TopDownScreen::render(sf::RenderTarget& target) {
     sf::Vector2f viewSize = World::VIEW_SIZE;
 
     if(!frameBuffer.create(1280, 720))
-    {
         throw std::runtime_error("Failed to create FBO!");
-    }
 
     frameBuffer.clear();
-    frameBuffer.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f, -world.getPlayer().getRenderPosition().y + 0.5f }, viewSize));
+    frameBuffer.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f,
+								   -world.getPlayer().getRenderPosition().y + 0.5f }, viewSize));
 	drawWorld(frameBuffer);
 
 	spookyShader->setUniform("timeAccumulator", timeAccumulator);
+	spookyShader->setUniform("grayscaleness", world.getGrayscaleness());
 	frameBuffer.display(); // done drawing fbo
 	sf::Sprite fbo(frameBuffer.getTexture());
 	target.clear();

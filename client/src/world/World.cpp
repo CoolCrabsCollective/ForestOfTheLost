@@ -24,9 +24,31 @@ World::World(wiz::AssetLoader& assets)
 	terrain_textures[TerrainType::WATER] = assets.get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = assets.get(GameAssets::SAND_TERRAIN);
 
-    addEntity(&player);
-
 	srand(20221001);
+
+	generatePhase(GamePhase::INITIAL);
+
+    // Randomly place end goal
+    //int endGoalX = -5;
+    //int endGoalY = 5;
+    //addEntity(new EndGoal(*this, sf::Vector2i(endGoalX, endGoalY)));
+
+    Entity* bat1 = new Monster(*this, sf::Vector2i(0, 1));
+    Entity* teddy_bear = new TeddyBear(*this, sf::Vector2i(1, 1));
+    addEntity(bat1);
+    addEntity(teddy_bear);
+}
+
+void World::generatePhase(GamePhase phase) {
+
+	for(Entity* entity : entities)
+		if(entity != &player)
+			free(entity);
+
+	entities.clear();
+	entityMap.clear();
+	addEntity(&player);
+	terrainMap.clear();
 
 	double offsetX = rand() * 10.0 / RAND_MAX;
 	double offsetY = rand() * 10.0 / RAND_MAX;
@@ -54,8 +76,15 @@ World::World(wiz::AssetLoader& assets)
 
 				double noise2 = SimplexNoise::noise(nx2, ny2);
 
-				if(noise2 > 0.9)
-					addEntity(new Tree(*this, { i, j }));
+				if(noise2 > 0.9) {
+					TreeType type;
+					if(phase == GamePhase::INITIAL)
+						type = TreeType::ALIVE;
+					else if(phase == GamePhase::FIRST_ENCOUNTER)
+						type = TreeType::DEAD;
+
+					addEntity(new Tree(*this, { i, j }, type));
+				}
 				else if(noise2 > 0.5)
 					addEntity(new Bush(*this, { i, j }));
 			}
@@ -63,15 +92,12 @@ World::World(wiz::AssetLoader& assets)
 		}
 	}
 
-    // Randomly place end goal
-    int endGoalX = -5;
-    int endGoalY = 5;
-    addEntity(new EndGoal(*this, sf::Vector2i(endGoalX, endGoalY)));
-
-    Entity* bat1 = new Monster(*this, sf::Vector2i(0, 1));
-    Entity* teddy_bear = new TeddyBear(*this, sf::Vector2i(1, 1));
-    addEntity(bat1);
-    addEntity(teddy_bear);
+	if(phase == GamePhase::INITIAL)
+		grayscaleness = 0.0;
+	else if(phase == GamePhase::FIRST_ENCOUNTER)
+		grayscaleness = 0.5;
+	else
+		grayscaleness = 1.0;
 }
 
 TerrainType World::getTerrainType(sf::Vector2i position) const {
@@ -132,7 +158,7 @@ void World::tick(float delta) {
 }
 
 const std::vector<Entity *> &World::getEntitiesAt(sf::Vector2i position) const {
-    return entityMap.contains(position) ?  entityMap.at(position) : empty;
+    return entityMap.contains(position) ? entityMap.at(position) : empty;
 }
 
 void World::addEntity(Entity* entity) {

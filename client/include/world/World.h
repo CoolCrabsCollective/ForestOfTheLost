@@ -15,6 +15,14 @@
 class Entity;
 class Player;
 
+enum GamePhase {
+	INITIAL,
+	FIRST_ENCOUNTER,
+	GHOST,
+	MONSTER,
+	FINAL
+};
+
 struct VecCompare {
 	bool operator() (const sf::Vector2i& lhs, const sf::Vector2i& rhs) const {
 		return lhs.x < rhs.x || lhs.x == rhs.x && lhs.y < rhs.y;
@@ -36,6 +44,8 @@ class World : public Tickable, public sf::Drawable {
 	mutable std::vector<Entity*> entityDrawList = {};
 
     bool endPointReached = false;
+
+	float grayscaleness = 0.0f;
 
 public:
 	constexpr const static sf::Vector2f VIEW_SIZE = { 24.0f, 13.5f };
@@ -64,8 +74,14 @@ public:
 
     bool isEndPointReached() const;
 
-protected:
+	inline float getGrayscaleness() const {
+		return grayscaleness;
+	}
+
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
+
+private:
+	void generatePhase(GamePhase phase);
 };
 
 
