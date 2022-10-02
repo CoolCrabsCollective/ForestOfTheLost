@@ -8,6 +8,7 @@
 #include <world/Wraith.h>
 #include <world/GroundHog.h>
 #include <world/Ghoul.h>
+#include <iostream>
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
 #include "util/SimplexNoise.h"
@@ -27,30 +28,38 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 		  terrainMap(),
           entityMap(),
 		  terrain_textures(),
-		  dialogBox(dialogBox) {
+		  dialogBox(dialogBox),
+		  monsters() {
 	terrain_textures[TerrainType::GRASS] = assets.get(GameAssets::GRASS_TERRAIN);
 	terrain_textures[TerrainType::WATER] = assets.get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = assets.get(GameAssets::SAND_TERRAIN);
 
 	srand(20201002);
 	generatePhase(GamePhase::INITIAL);
+}
 
-    // Randomly place end goal
-    //int endGoalX = -5;
-    //int endGoalY = 5;
-    //addEntity(new EndGoal(*this, sf::Vector2i(endGoalX, endGoalY)));
+void World::spawnEnemy(GamePhase phase, sf::Vector2i position) {
 
-    Entity* bat1 = new Bat(*this, sf::Vector2i(0, 10));
-    addEntity(bat1);
+	double val = rand() * 1.0 / RAND_MAX;
 
-    Entity* wraith1 = new Wraith(*this, sf::Vector2i(2, 1));
-    addEntity(wraith1);
+	Monster* monster;
 
-    Entity* ground_hog1 = new GroundHog(*this, sf::Vector2i( -2, 2));
-    addEntity(ground_hog1);
+	if(phase == INITIAL) {
+		if(val < 0.5)
+			monster = new Bat(*this, position);
+		else
+			monster = new GroundHog(*this, position);
+	} else if(phase == FIRST_ENCOUNTER) {
+		if(val < 0.5)
+			monster = new Wraith(*this, position);
+		else
+			monster = new Ghoul(*this, position);
+	} else {
+		return;
+	}
 
-    Entity* ghoul1 = new Ghoul(*this, sf::Vector2i( -2, 0));
-    addEntity(ghoul1);
+	addEntity(monster);
+	monsters.push_back(monster);
 }
 
 void World::generatePhase(GamePhase phase) {
@@ -249,19 +258,41 @@ void World::tick(float delta) {
 			}
 
 			for(int i = 0; i < getEntities().size(); i++) {
-				if(Monster* monster = dynamic_cast<Monster*>(getEntities().at(i))) {
+				if(Monster* monster = dynamic_cast<Monster*>(getEntities().at(i)))
 					// Don't want to go to the same bush
 					monster->findNewSpot();
-				}
 			}
 
 			tenSecAccumulator = fmod(tenSecAccumulator, 10000.0f);
 		}
 	}
 
-    for (Entity *entity : entities) {
+	int len = monsters.size();
+	for(int i = 0; i < len; i++) {
+		Monster* monster = monsters[i];
+		if((monster->getPosition() - getPlayer().getPosition()).lengthSq() > 20.0 * 20.0) {
+			removeEntity(monster);
+			std::cout << "Despawning monster" << std::endl;
+			monsters[i] = monsters[len - 1];
+			monsters.erase(monsters.end() - 1);
+			len--;
+			i--;
+		}
+	}
+
+	if(last_monster_spawn < (std::chrono::system_clock::now() - std::chrono::milliseconds(500)) && monsters.size() < 10) {
+		sf::Vector2i position = { 0, 0 };
+
+		do {
+			position = getPlayer().getPosition() + sf::Vector2i {rand() % 20 - 10, rand() % 20 - 10 };
+		} while(tileOccupied(position, nullptr) || (position - getPlayer().getPosition()).lengthSq() < 5.0 * 5.0);
+
+		spawnEnemy(getPhase(), position);
+		last_monster_spawn = std::chrono::system_clock::now();
+	}
+
+    for(Entity *entity : entities)
         entity->tick(delta);
-    }
 }
 
 const std::vector<Entity *> &World::getEntitiesAt(sf::Vector2i position) const {
@@ -283,6 +314,11 @@ void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
 		entityMap[entity->getPosition()].push_back(entity);
 	else
 		entityMap[entity->getPosition()] = {entity};
+}
+
+void World::removeEntity(Entity* entity) {
+	std::remove(entityMap[entity->getPosition()].begin(), entityMap[entity->getPosition()].end(), entity);
+	std::remove(entities.begin(), entities.end(),entity);
 }
 
 void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
