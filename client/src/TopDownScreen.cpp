@@ -12,7 +12,7 @@
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
 		: Screen(game),
-	    dialogBox(game.getAssets().get(GameAssets::SANS_TTF), game.getAssets().get(GameAssets::DIALOG_BOX)),
+	    dialogBox(game.getAssets().get(GameAssets::VT323_TTF), game.getAssets().get(GameAssets::DIALOG_BOX)),
 		world(game.getAssets(), dialogBox),
         mappingDatabase()  {
 
@@ -23,14 +23,13 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
     sf::FloatRect bounds = endGoalText.getLocalBounds();
     endGoalText.setPosition(sf::Vector2f(600 - bounds.getSize().x / 2, 450 - bounds.getSize().y / 2));
 
-
     dialogBox.startDialog({
-        "Greetings gamers, this is an example dialog box.",
-        "A copypasta is a block of text that is copied and pasted across the Internet by individuals through online forums and social networking websites.",
-    });
+        "Greetings gamers, this is an example dialog box. I am looking for the end of this line.",
+        "A copypasta is a block of text that is copied and pasted across the Internet by individuals through online forums and social networking websites. The development of Final Forest 2 can be marked by BEANS.",
+        "beans...",
+        });
 
 	mappingDatabase.loadFromCSV(*getGame().getAssets().get(GameAssets::CONTROLLER_DB));
-
 }
 
 void TopDownScreen::tick(float delta) {
@@ -106,7 +105,6 @@ void TopDownScreen::processInput() {
 	    else
             world.getPlayer().interact();
     }
-
 }
 
 

@@ -3,6 +3,7 @@
 //
 
 #include <world/TeddyBear.h>
+#include <random>
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
 #include "util/SimplexNoise.h"
@@ -26,8 +27,6 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 	terrain_textures[TerrainType::WATER] = assets.get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = assets.get(GameAssets::SAND_TERRAIN);
 
-	srand(20221001);
-
 	generatePhase(GamePhase::INITIAL);
 
     // Randomly place end goal
@@ -41,6 +40,8 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 
 void World::generatePhase(GamePhase phase) {
 
+    std::mt19937 mt(20201002);
+
 	for(Entity* entity : entities)
 		if(entity != &player)
 			free(entity);
@@ -50,8 +51,8 @@ void World::generatePhase(GamePhase phase) {
 	addEntity(&player);
 	terrainMap.clear();
 
-	double offsetX = rand() * 10.0 / RAND_MAX;
-	double offsetY = rand() * 10.0 / RAND_MAX;
+	double offsetX = mt() * 10.0 / RAND_MAX;
+	double offsetY = mt() * 10.0 / RAND_MAX;
 
 	for(int i = -200; i <= 200; i++) {
 		for(int j = -200; j <= 200; j++) {
