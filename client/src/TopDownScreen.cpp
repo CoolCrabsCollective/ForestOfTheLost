@@ -25,7 +25,7 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
 
     dialogBox.startDialog({
         "Greetings gamers, this is an example dialog box. I am looking for the end of this line.",
-        "A copypasta is a block of text that is copied and pasted across the Internet by individuals through online forums and social networking websites. The development of Final Forest 2 can be marked by BEANS.",
+        "A copypasta is a sblock of text that is copied and pasted across the Internet by individuals through online forums and social networking websites. The development of Final Forest 2 can be marked by BEANS.",
         "beans...",
         });
 

@@ -11,24 +11,4 @@ MonsterAttackState::MonsterAttackState(Entity *monster, Entity* target) : Entity
 }
 
 void MonsterAttackState::tick(float delta) {
-    Monster* monster = dynamic_cast<Monster*>(getEntity());
-
-    Player* player = dynamic_cast<Player*>(target);
-
-    sf::Vector2i targetPos = player->getPosition();
-
-    sf::Vector2i posDiff = targetPos - monster->getPosition();
-
-    sf::Vector2i unitVec = vectorToUnitVector(posDiff);
-
-    if (posDiff != unitVec) {
-        monster->setState(std::make_shared<MonsterIdleState>(monster));
-        return;
-    }
-
-    timeSinceLastAttack += delta;
-    if (timeSinceLastAttack >= attackInterval) {
-        player->damage(1);
-        timeSinceLastAttack = 0;
-    }
 }
