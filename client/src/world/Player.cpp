@@ -26,6 +26,12 @@ Player::Player(World& world)
 	interactSound.setBuffer(*world.getAssets().get(GameAssets::INTERACT));
 	noInteractSound.setBuffer(*world.getAssets().get(GameAssets::NOINTERACT));
 	collisionSound.setBuffer(*world.getAssets().get(GameAssets::COLLISION));
+
+    insertFrame(world.getAssets().get(GameAssets::PLAYER_FRONT_WALK_1));
+    insertFrame(world.getAssets().get(GameAssets::PLAYER_FRONT_WALK_2));
+    insertFrame(world.getAssets().get(GameAssets::PLAYER_FRONT_WALK_3));
+    insertFrame(world.getAssets().get(GameAssets::PLAYER_FRONT_WALK_4));
+    msBetweenFrames = 100.0f;
 }
 
 sf::Vector2f Player::getRenderPosition() const {
@@ -37,7 +43,6 @@ void Player::move(std::optional<Direction> direction) {
 }
 
 void Player::tick(float delta) {
-
 	if(lastCollision > std::chrono::system_clock::now() - std::chrono::milliseconds(500))
 		return;
 
@@ -46,6 +51,8 @@ void Player::tick(float delta) {
 
     renderPosition = (sf::Vector2f) position;
     if (moving) {
+        runAnimation(delta);
+
         actionProgress += (delta / 1000) * movingSpeed;
 
         if (actionProgress > 1) {
@@ -71,6 +78,8 @@ void Player::tick(float delta) {
 			}
 		}
     } else if (inputDir.has_value()) {
+        setStateSprite(&sprite);
+        startAnimation();
 		if(inputDir.value() == currentDir) {
             destination = position + directionToUnitVector(inputDir.value());
             if (world.tileOccupied(destination, this) || lockMovement) {
@@ -88,6 +97,11 @@ void Player::tick(float delta) {
 }
 
 void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
+    if (position != destination) {
+        target.draw(*animationSprite);
+        return;
+    }
+
 	sprite.setTexture(*textureMap.at(destinationDir), true);
 	sprite.setPosition({renderPosition.x - 0.5f, -renderPosition.y - 1.0f});
 	sprite.setScale({ 2.0f / sprite.getTexture()->getSize().x, 2.0f / sprite.getTexture()->getSize().y });

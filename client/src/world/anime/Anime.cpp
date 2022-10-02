@@ -9,7 +9,7 @@ void Anime::insertFrame(sf::Texture* Texture) {
 }
 
 void Anime::setStateSprite(sf::Sprite* sprite) {
-    this->sprite = sprite;
+    this->animationSprite = sprite;
 }
 
 void Anime::tickAnimation() {
@@ -20,7 +20,7 @@ void Anime::tickAnimation() {
         currentFrame = 0;
     }
 
-    sprite->setTexture(*frames.at(currentFrame));
+    animationSprite->setTexture(*frames.at(currentFrame));
 
     currentFrame++;
 }
@@ -48,7 +48,7 @@ void Anime::runAnimation(float delta) {
 void Anime::resetAnimation() {
     if(frames.empty())
         return;
-    sprite->setTexture(*frames.at(0));
+    animationSprite->setTexture(*frames.at(0));
     currentFrame = 1;
     timeSinceLastFrame = 0;
     isAnimating = false;
