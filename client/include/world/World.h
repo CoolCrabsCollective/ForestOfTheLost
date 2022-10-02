@@ -36,6 +36,8 @@ class World : public Tickable, public sf::Drawable {
 	mutable std::vector<Entity*> entityDrawList = {};
 
 public:
+	constexpr const static sf::Vector2f VIEW_SIZE = { 24.0f, 13.5f };
+
 	World(wiz::AssetLoader& assets);
 
 	TerrainType getTerrainType(sf::Vector2i position) const;
@@ -57,7 +59,6 @@ public:
     void addEntity(Entity* entity);
 
     void moveEntity(sf::Vector2i oldPosition, Entity* entity);
-
 protected:
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
 };

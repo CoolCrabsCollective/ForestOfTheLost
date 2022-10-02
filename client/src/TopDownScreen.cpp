@@ -75,7 +75,7 @@ void TopDownScreen::drawWorld(sf::RenderTarget &target) {
 }
 
 void TopDownScreen::render(sf::RenderTarget& target) {
-    sf::Vector2f viewSize = {24.0f, 13.5f};
+    sf::Vector2f viewSize = World::VIEW_SIZE;
 
     if(!frameBuffer.create(1280, 720))
     {
@@ -96,7 +96,7 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 }
 
 void TopDownScreen::drawEyes(sf::RenderTarget &target) {
-    sf::Vector2f viewSize = {16.0f, 9.0f};
+    sf::Vector2f viewSize = World::VIEW_SIZE;
     target.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f, -world.getPlayer().getRenderPosition().y + 0.5f }, viewSize));
 
     eyesShader->setUniform("timeAccumulator", timeAccumulator);
