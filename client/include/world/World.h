@@ -11,6 +11,7 @@
 #include "SFML/System/Vector2.hpp"
 #include "Player.h"
 #include "WIZ/asset/AssetLoader.h"
+#include "DialogBox.h"
 
 class Entity;
 class Player;
@@ -53,10 +54,12 @@ class World : public Tickable, public sf::Drawable {
 	GamePhase currentPhase = INITIAL;
 	bool changePhase = false;
 
+	DialogBox& dialogBox;
+
 public:
 	constexpr const static sf::Vector2f VIEW_SIZE = { 24.0f, 13.5f };
 
-	World(wiz::AssetLoader& assets);
+	World(wiz::AssetLoader& assets, DialogBox& dialogBox);
 
 	TerrainType getTerrainType(sf::Vector2i position) const;
 
@@ -90,10 +93,14 @@ public:
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
 
-    void checkEntitesInRange(Entity* entityCheck, int solidRange);
+    void checkEntitiesInRange(Entity* entityCheck, int solidRange);
 
 	inline void setChangePhase() {
 		changePhase = true;
+	}
+
+	inline DialogBox& getDialogBox() {
+		return dialogBox;
 	}
 
 private:

@@ -43,7 +43,7 @@ class Player : public Entity, public Alive<int>, public Solid {
 public:
 	Player(World& world);
 
-    sf::Vector2f getRenderPosition() const;
+    sf::Vector2f getRenderPosition() const override;
 
 	void move(std::optional<Direction> direction);
 	void interact();

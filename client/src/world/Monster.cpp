@@ -4,6 +4,7 @@
 
 #include "world/Monster.h"
 #include "GameAssets.h"
+#include "world/state/MonsterChargeState.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 
 Monster::Monster(World &world, sf::Vector2i position) : Entity(world) {
@@ -28,6 +29,18 @@ void Monster::tick(float delta) {
             position = destination;
             world.moveEntity(oldPos, this);
             actionProgress = 0;
+
+            if (dynamic_pointer_cast<MonsterChargeState>(state).get()) {
+                sf::Vector2i playerPos = world.getPlayer().getPosition();
+                sf::Vector2i posDiff = playerPos - position;
+
+                sf::Vector2i unitVec;
+
+                unitVec = {posDiff.x > 0 ? 1 : (posDiff.x < 0 ? -1 : 0),
+                           posDiff.y > 0 ? 1 : (posDiff.y < 0 ? -1 : 0)};
+
+                destination = position + unitVec;
+            }
         } else {
             renderPosition = (sf::Vector2f) position + sf::Vector2f(destination - position) * actionProgress;
         }
@@ -77,7 +90,7 @@ void Monster::findNewSpot() {
 
 }
 
-const sf::Vector2f &Monster::getRenderPosition() const {
+sf::Vector2f Monster::getRenderPosition() const {
     return renderPosition;
 }
 

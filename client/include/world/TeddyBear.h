@@ -12,7 +12,7 @@ class TeddyBear : public Item {
 public:
     explicit TeddyBear(World& world, sf::Vector2i position);
 
-	void activate() override;
+	bool activate() override;
 };
 
 

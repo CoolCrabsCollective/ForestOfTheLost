@@ -2,7 +2,6 @@
 // Created by Winter on 01/10/2022.
 //
 
-#include <world/Item.h>
 #include <world/TeddyBear.h>
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
@@ -15,12 +14,13 @@
 #include "world/EndGoal.h"
 #include "world/state/MonsterChargeState.h"
 
-World::World(wiz::AssetLoader& assets)
+World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 		: assets(assets),
 		  player(*this),
 		  terrainMap(),
           entityMap(),
-		  terrain_textures() {
+		  terrain_textures(),
+		  dialogBox(dialogBox) {
 	terrain_textures[TerrainType::GRASS] = assets.get(GameAssets::GRASS_TERRAIN);
 	terrain_textures[TerrainType::WATER] = assets.get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = assets.get(GameAssets::SAND_TERRAIN);
@@ -34,10 +34,8 @@ World::World(wiz::AssetLoader& assets)
     //int endGoalY = 5;
     //addEntity(new EndGoal(*this, sf::Vector2i(endGoalX, endGoalY)));
 
-    Entity* bat1 = new Monster(*this, sf::Vector2i(0, 1));
-    Entity* teddy_bear = new TeddyBear(*this, sf::Vector2i(1, 1));
+    Entity* bat1 = new Monster(*this, sf::Vector2i(0, 3));
     addEntity(bat1);
-    addEntity(teddy_bear);
 }
 
 void World::generatePhase(GamePhase phase) {
@@ -88,8 +86,23 @@ void World::generatePhase(GamePhase phase) {
 
 					addEntity(new Tree(*this, { i, j }, type));
 				}
-				else if(noise2 > 0.5)
-					addEntity(new Bush(*this, { i, j }));
+				else if(noise2 > 0.5) {
+					addEntity(new Bush(*this, {i, j}));
+				} else if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0) {
+					if(phase == GamePhase::INITIAL) {
+						int chunkX = i / 20;
+						int chunkY = j / 20;
+
+						int x = (int)abs(SimplexNoise::noise(chunkX / 100.0, chunkY / 100.0)) % 20;
+						int y = (int)abs(SimplexNoise::noise(chunkX / 100.0, chunkY / 100.0)) % 20;
+
+						if(i % 20 == x && y == j % 20) {
+
+							Entity* teddy_bear = new TeddyBear(*this, sf::Vector2i(i, j));
+							addEntity(teddy_bear);
+						}
+					}
+				}
 			}
 
 		}
@@ -155,7 +168,7 @@ bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
 	return false;
 }
 
-void World::checkEntitesInRange(Entity* entityCheck, int solidRange) {
+void World::checkEntitiesInRange(Entity* entityCheck, int solidRange) {
     for(int i = -solidRange; i <= solidRange; i++) {
         for(int j = -solidRange; j <= solidRange; j++) {
             for(Entity* entity : entityMap[entityCheck->getPosition() + sf::Vector2i{i, j}]) {
@@ -218,7 +231,7 @@ void World::addEntity(Entity* entity) {
 }
 
 void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
-    std::remove(entityMap[oldPosition].begin(), entityMap[oldPosition].end(),entity);
+    std::remove(entityMap[oldPosition].begin(), entityMap[oldPosition].end(), entity);
 
 	if (entityMap.contains(entity->getPosition()))
 		entityMap[entity->getPosition()].push_back(entity);
@@ -253,11 +266,11 @@ void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
 			entityDrawList.push_back(entity);
 
 	std::sort(entityDrawList.begin(), entityDrawList.end(), [](Entity* a, Entity* b) {
-		return a->getPosition().y > b->getPosition().y
-			|| a->getPosition().y == b->getPosition().y
+		return a->getRenderPosition().y > b->getRenderPosition().y
+			|| a->getRenderPosition().y == b->getRenderPosition().y
 			&& (a->getZOrder() < b->getZOrder()
 			|| a->getZOrder() == b->getZOrder()
-			&& a->getPosition().x > b->getPosition().x);
+			&& a->getRenderPosition().x > b->getRenderPosition().x);
 	});
 
 	for(sf::Drawable* drawable : entityDrawList)

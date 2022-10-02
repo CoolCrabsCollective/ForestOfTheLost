@@ -11,6 +11,7 @@
 #include <world/Entity.h>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <functional>
 
 class DialogBox : public sf::Drawable, public Tickable {
 public:
@@ -19,7 +20,7 @@ public:
 
     void tick(float delta) override;
 
-    void startDialog(const std::vector<std::string>& dialog);
+    void startDialog(const std::vector<std::string>& dialog, std::function<void()> callback = [](){});
 
     bool isInProgress() const;
 
@@ -30,6 +31,9 @@ public:
     mutable sf::Sprite sprite;
     mutable sf::Text text;
     sf::Font* font = nullptr;
+
+	std::function<void()> callback = [](){};
+	bool wasInProgress = false;
 
 protected:
     void draw(sf::RenderTarget &target, const sf::RenderStates &states) const override;

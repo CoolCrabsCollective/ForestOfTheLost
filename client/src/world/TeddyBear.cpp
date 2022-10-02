@@ -10,6 +10,13 @@ TeddyBear::TeddyBear(World &world, sf::Vector2i position)
 
 }
 
-void TeddyBear::activate() {
-	world.setChangePhase();
+bool TeddyBear::activate() {
+	if(taken)
+		return false;
+
+	world.getDialogBox().startDialog({ "You found an old dirty teddy bear." }, [&]() {
+		taken = true;
+		world.setChangePhase();
+	});
+	return true;
 }
