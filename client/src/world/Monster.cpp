@@ -16,6 +16,8 @@ Monster::Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, s
 
     state = std::make_shared<MonsterIdleState>(this);
     findNewSpot();
+
+    attackMessage = "A monster attacked you!"; // shitty default attack message
 }
 
 void Monster::tick(float delta) {
@@ -133,5 +135,9 @@ const std::shared_ptr<EntityState> &Monster::getState() const {
 
 void Monster::setState(const std::shared_ptr<EntityState> &state) {
     Monster::state = state;
+}
+
+std::string Monster::getAttackMessage() {
+    return attackMessage;
 }
 

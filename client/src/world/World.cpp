@@ -357,7 +357,7 @@ void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
 }
 
 void World::handleMonsterAttack(Monster& monster) {
-    dialogBox.startDialog({"Get fucked nerd",}, [&]{
+    dialogBox.startDialog({monster.getAttackMessage(),}, [&]{
         if (currentPhase != GamePhase::INITIAL)
             loadCheckPoint = true;
         else
