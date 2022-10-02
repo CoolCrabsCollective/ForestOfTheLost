@@ -34,6 +34,10 @@ public:
 		return position;
 	}
 
+	virtual inline sf::Vector2f getRenderPosition() const {
+		return sf::Vector2f(position);
+	}
+
     inline sf::Vector2i getDestination() const {
         return destination;
     }

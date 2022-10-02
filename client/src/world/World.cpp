@@ -2,7 +2,6 @@
 // Created by Winter on 01/10/2022.
 //
 
-#include <world/Item.h>
 #include <world/TeddyBear.h>
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
@@ -15,12 +14,13 @@
 #include "world/EndGoal.h"
 #include "world/state/MonsterChargeState.h"
 
-World::World(wiz::AssetLoader& assets)
+World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 		: assets(assets),
 		  player(*this),
 		  terrainMap(),
           entityMap(),
-		  terrain_textures() {
+		  terrain_textures(),
+		  dialogBox(dialogBox) {
 	terrain_textures[TerrainType::GRASS] = assets.get(GameAssets::GRASS_TERRAIN);
 	terrain_textures[TerrainType::WATER] = assets.get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = assets.get(GameAssets::SAND_TERRAIN);
@@ -266,11 +266,11 @@ void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
 			entityDrawList.push_back(entity);
 
 	std::sort(entityDrawList.begin(), entityDrawList.end(), [](Entity* a, Entity* b) {
-		return a->getPosition().y > b->getPosition().y
-			|| a->getPosition().y == b->getPosition().y
+		return a->getRenderPosition().y > b->getRenderPosition().y
+			|| a->getRenderPosition().y == b->getRenderPosition().y
 			&& (a->getZOrder() < b->getZOrder()
 			|| a->getZOrder() == b->getZOrder()
-			&& a->getPosition().x > b->getPosition().x);
+			&& a->getRenderPosition().x > b->getRenderPosition().x);
 	});
 
 	for(sf::Drawable* drawable : entityDrawList)

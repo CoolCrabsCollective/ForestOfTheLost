@@ -89,8 +89,8 @@ void Player::tick(float delta) {
 
 void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
 	sprite.setTexture(*textureMap.at(destinationDir), true);
-	sprite.setPosition({renderPosition.x - 0.25f, -renderPosition.y - 0.5f});
-	sprite.setScale({ 1.5f / sprite.getTexture()->getSize().x, 1.5f / sprite.getTexture()->getSize().y });
+	sprite.setPosition({renderPosition.x - 0.5f, -renderPosition.y - 1.0f});
+	sprite.setScale({ 2.0f / sprite.getTexture()->getSize().x, 2.0f / sprite.getTexture()->getSize().y });
 	target.draw(sprite);
 }
 
