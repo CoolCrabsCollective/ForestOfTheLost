@@ -22,7 +22,6 @@ protected:
 	DialogBox dialogBox;
 
 	World world;
-	sf::Sprite eye_sprite;
 	sf::RenderTexture frameBuffer;
     sf::Shader* spookyShader = nullptr;
     sf::Shader* eyesShader = nullptr;
@@ -38,6 +37,10 @@ protected:
     bool was_interact_pressed = false;
 
 	float fps = 0.0f;
+
+    sf::Sprite lily;
+    bool drawLily = true;
+
 public:
 	explicit TopDownScreen(wiz::Game& game);
 
