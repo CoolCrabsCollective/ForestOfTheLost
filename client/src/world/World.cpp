@@ -320,7 +320,11 @@ void World::addEntity(Entity* entity) {
 }
 
 void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
-    std::remove(entityMap[oldPosition].begin(), entityMap[oldPosition].end(), entity);
+
+    if(std::remove(entityMap[oldPosition].begin(), entityMap[oldPosition].end(), entity) == entityMap[oldPosition].end())
+    {
+        throw std::runtime_error("Tried to moving an entity not in entity map (IQ issue)");
+    }
 
 	if (entityMap.contains(entity->getPosition()))
 		entityMap[entity->getPosition()].push_back(entity);
