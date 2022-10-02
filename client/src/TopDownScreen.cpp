@@ -14,6 +14,8 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
 		: Screen(game),
 	    dialogBox(game.getAssets().get(GameAssets::VT323_TTF), game.getAssets().get(GameAssets::DIALOG_BOX)),
 		world(game.getAssets(), dialogBox),
+        mappingDatabase(),
+        lily(*game.getAssets().get(GameAssets::LILY)),
         mappingDatabase() {
 
 	game.getAssets().get(GameAssets::SUSPICIOUS_FOREST_MUSIC)->play();
@@ -25,12 +27,19 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
     endGoalText.setPosition(sf::Vector2f(600 - bounds.getSize().x / 2, 450 - bounds.getSize().y / 2));
 
     dialogBox.startDialog({
-        "Greetings gamers, this is an example dialog box. I am looking for the end of this line.",
-        "A copypasta is a sblock of text that is copied and pasted across the Internet by individuals through online forums and social networking websites. The development of Final Forest 2 can be marked by BEANS.",
-        "beans...",
+        "Another kid....",
+        "Why is is always the kids...",
+        "I need to find her...",
         });
 
 	mappingDatabase.loadFromCSV(*getGame().getAssets().get(GameAssets::CONTROLLER_DB));
+
+    lily.setPosition({static_cast<float>((1280 / 2) - (lily.getTexture()->getSize().x * 10 / 2)), 100});
+    lily.setScale({10, 10});
+
+    dialogBox.callback = [&]() {
+        drawLily = false;
+    };
 }
 
 void TopDownScreen::tick(float delta) {
@@ -165,14 +174,14 @@ void TopDownScreen::drawUI(sf::RenderTarget &target) {
     target.draw(dialogBox);
 	fpsText.setString("FPS: " + std::to_string(fps));
 	target.draw(fpsText);
+
+    if (drawLily)
+        target.draw(lily);
 }
 
 void TopDownScreen::show() {
 	getGame().addWindowListener(this);
 	getGame().addInputListener(this);
-
-    eye_sprite.setTexture(*getAssets().get(GameAssets::SPOOKY_EYES));
-    eye_sprite.setScale({ 1.0f / eye_sprite.getTexture()->getSize().x, 1.0f / eye_sprite.getTexture()->getSize().y });
 
     spookyShader = getAssets().get(GameAssets::SPOOKY_SHADER);
     eyesShader = getAssets().get(GameAssets::EYES_SHADER);

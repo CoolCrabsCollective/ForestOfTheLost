@@ -102,6 +102,8 @@ namespace GameAssets {
 	ASSET(wiz::TextureAsset, TEDDY_KID_LEFT, ("gfx/npcs/teddy_kid/left.png"))
 	ASSET(wiz::TextureAsset, TEDDY_KID_RIGHT, ("gfx/npcs/teddy_kid/right.png"))
 
+    ASSET(wiz::TextureAsset, LILY, ("gfx/npcs/crying_girl/polaroid.png"))
+
     // EndGoal
     ASSET(wiz::TextureAsset, END_GOAL, ("gfx/end_goal.png"))
 }

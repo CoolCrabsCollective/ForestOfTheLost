@@ -117,16 +117,13 @@ void Player::tick(float delta) {
         startAnimation();
     }
 
-    world.checkEntitiesInRange(this, 3);
+    world.checkEntitiesInRange(this, 2);
 }
 
 void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
-    if (position != destination) {
-        target.draw(*animationSprite);
-        return;
-    }
+    if (position == destination)
+        sprite.setTexture(*textureMap.at(destinationDir), true);
 
-	sprite.setTexture(*textureMap.at(destinationDir), true);
 	sprite.setPosition({renderPosition.x - 0.5f, -renderPosition.y - 1.0f});
 	sprite.setScale({ 2.0f / sprite.getTexture()->getSize().x, 2.0f / sprite.getTexture()->getSize().y });
 	target.draw(sprite);
