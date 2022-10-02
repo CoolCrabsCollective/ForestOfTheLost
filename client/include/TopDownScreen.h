@@ -14,6 +14,7 @@
 #include "SFML/Graphics/Text.hpp"
 #include "DialogBox.h"
 #include "WIZ/input/MappingDatabase.h"
+#include "SFML/Audio/Music.hpp"
 
 class TopDownScreen : public wiz::Screen, public wiz::WindowListener, public wiz::InputListener {
 protected:

@@ -19,7 +19,10 @@
 namespace GameAssets {
 	extern std::vector<const wiz::AssetBase*> ALL;
 
-	ASSET(wiz::MusicAsset, GREENLIFE, ("music/greenlife.ogg"))
+	// Music
+	ASSET(wiz::MusicAsset, SUSPICIOUS_FOREST_MUSIC, ("music/suspicious_forest.ogg"))
+
+	// Sounds
 	ASSET(wiz::SoundAsset, COLLISION, ("sfx/collision.ogg"))
 	ASSET(wiz::SoundAsset, INTERACT, ("sfx/interact.ogg"))
 	ASSET(wiz::SoundAsset, NOINTERACT, ("sfx/nointeract.ogg"))
@@ -63,6 +66,7 @@ namespace GameAssets {
     ASSET(wiz::TextureAsset, BAT, ("gfx/bat2.png"))
     ASSET(wiz::TextureAsset, GROUND_HOG, ("gfx/marmotte.png"))
     ASSET(wiz::TextureAsset, WRAITH, ("gfx/wraith.png"))
+    ASSET(wiz::TextureAsset, GHOUL, ("gfx/ghoul.png"))
 
     // Misc
     ASSET(wiz::TextureAsset, INVISIBLE, ("gfx/invisible.png"))
@@ -99,7 +103,7 @@ namespace GameAssets {
 	ASSET(wiz::TextureAsset, TEDDY_KID_LEFT, ("gfx/npcs/teddy_kid/left.png"))
 	ASSET(wiz::TextureAsset, TEDDY_KID_RIGHT, ("gfx/npcs/teddy_kid/right.png"))
 
-    ASSET(wiz::TextureAsset, LILY, ("gfx/lily.png"))
+    ASSET(wiz::TextureAsset, LILY, ("gfx/npcs/crying_girl/polaroid.png"))
 
     // EndGoal
     ASSET(wiz::TextureAsset, END_GOAL, ("gfx/end_goal.png"))
