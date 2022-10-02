@@ -71,3 +71,7 @@ void Monster::findNewSpot() {
 
 
 }
+
+const sf::Vector2f &Monster::getRenderPosition() const {
+    return renderPosition;
+}
