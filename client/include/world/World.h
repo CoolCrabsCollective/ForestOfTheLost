@@ -15,6 +15,7 @@
 
 class Entity;
 class Player;
+class Monster;
 
 enum GamePhase {
 	INITIAL,
@@ -33,6 +34,7 @@ struct VecCompare {
 class World : public Tickable, public sf::Drawable {
 	wiz::AssetLoader& assets;
 	std::vector<Entity*> entities;
+	std::vector<Monster*> monsters;
 	Player player;
 
 	std::unordered_map<TerrainType, sf::Texture*> terrain_textures;
@@ -57,6 +59,13 @@ class World : public Tickable, public sf::Drawable {
 
 	DialogBox& dialogBox;
 
+    bool setCheckPoint = false;
+    bool loadCheckPoint = false;
+    sf::Vector2i playerCheckpointPos = {};
+
+	void spawnEnemy(GamePhase phase, sf::Vector2i position);
+
+	std::chrono::system_clock::time_point last_monster_spawn = std::chrono::system_clock::now();
 public:
 	constexpr const static sf::Vector2f VIEW_SIZE = { 24.0f, 13.5f };
 
@@ -81,6 +90,8 @@ public:
     void addEntity(Entity* entity);
 
     void moveEntity(sf::Vector2i oldPosition, Entity* entity);
+
+	void removeEntity(Entity* entity);
 
     bool isEndPointReached() const;
 
@@ -114,11 +125,15 @@ public:
 		return currentPhase;
 	}
 
-    void handleMonsterAttack(Entity* monster);
+    void handleMonsterAttack();
 
     bool isTimePaused() const;
 
     void setTimePaused(bool timePaused);
+
+    bool isSetCheckPoint() const;
+
+    void setSetCheckPoint(bool setCheckPoint);
 
     void resetAccumulator();
 

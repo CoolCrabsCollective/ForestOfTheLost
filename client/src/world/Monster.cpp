@@ -45,13 +45,15 @@ void Monster::tick(float delta) {
         }
     }
 
-    if (position == world.getPlayer().getPosition()) {
-//        world.getDialogBox().startDialog({"Get fucked nerd",}, [&](){world.handleMonsterAttack(this);});
+    if (world.getPhase() != INITIAL) {
+        targetPlayerInRange();
+
+        if (position == world.getPlayer().getPosition()) {
+            world.handleMonsterAttack();
+        }
     }
 
     state->tick(delta);
-
-    //targetPlayerInRange();
 }
 
 void Monster::targetPlayerInRange() {
@@ -72,10 +74,8 @@ void Monster::move(sf::Vector2i des) {
 }
 
 void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
-    /*
     if (position == destination)
         return;
-        */
 
     daySprite.setPosition({renderPosition.x, -renderPosition.y});
     daySprite.setScale({ 1.0f / daySprite.getTexture()->getSize().x, 1.0f / daySprite.getTexture()->getSize().y });
@@ -92,6 +92,8 @@ void Monster::drawDarkness(sf::RenderTarget &target, sf::Shader* shader) const {
 }
 
 void Monster::findNewSpot() {
+    std::vector<sf::Vector2i> potentialSpots;
+
     // Find the closest hiding spot
     for (int searchX = position.x  - searchRadius ; searchX <= position.x + searchRadius ; searchX++) {
         for (int searchY = position.y  - searchRadius ; searchY <= position.y + searchRadius ; searchY++) {
@@ -99,17 +101,20 @@ void Monster::findNewSpot() {
                 continue;
 
             // TODO: check no one else is going there
+            // Update: this is kind of impossible fuck it
 
             auto entitiesAt = world.getEntitiesAt({searchX, searchY});
 
             for (int k = 0 ; k < entitiesAt.size() ; k++) {
                 if(HidingSpot* spot = dynamic_cast<HidingSpot*>(entitiesAt.at(k))) {
-                    move(spot->getPosition());
-                    return;
+                    potentialSpots.push_back(spot->getPosition());
                 }
             }
         }
     }
+
+    if (potentialSpots.size() != 0)
+        move(potentialSpots.at(std::rand() % (potentialSpots.size())));
 }
 
 void Monster::moveTowardsPlayer() {
