@@ -5,6 +5,8 @@
 #include <world/TeddyBear.h>
 #include <random>
 #include <world/Bat.h>
+#include <world/Wraith.h>
+#include <world/GroundHog.h>
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
 #include "util/SimplexNoise.h"
@@ -16,6 +18,7 @@
 #include "world/EndGoal.h"
 #include "world/state/MonsterChargeState.h"
 #include "world/NPC.h"
+#include "world/TeddyKid.h"
 
 World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 		: assets(assets),
@@ -28,6 +31,7 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 	terrain_textures[TerrainType::WATER] = assets.get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = assets.get(GameAssets::SAND_TERRAIN);
 
+	srand(20201002);
 	generatePhase(GamePhase::INITIAL);
 
     // Randomly place end goal
@@ -35,13 +39,22 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
     //int endGoalY = 5;
     //addEntity(new EndGoal(*this, sf::Vector2i(endGoalX, endGoalY)));
 
-    Entity* bat1 = new Bat(*this, sf::Vector2i(0, 3));
+    Entity* bat1 = new Bat(*this, sf::Vector2i(0, 10));
     addEntity(bat1);
+
+    Entity* wraith1 = new Wraith(*this, sf::Vector2i(2, 1));
+    addEntity(wraith1);
+
+    Entity* ground_hog1 = new GroundHog(*this, sf::Vector2i( -2, 2));
+    addEntity(ground_hog1);
 }
 
 void World::generatePhase(GamePhase phase) {
 
-    std::mt19937 mt(20201002);
+	if(phase == GHOST) {
+		// spawn crying kids
+		return;
+	}
 
 	for(Entity* entity : entities)
 		if(entity != &player)
@@ -52,8 +65,8 @@ void World::generatePhase(GamePhase phase) {
 	addEntity(&player);
 	terrainMap.clear();
 
-	double offsetX = mt() * 10.0 / RAND_MAX;
-	double offsetY = mt() * 10.0 / RAND_MAX;
+	double offsetX = rand() * 10.0 / RAND_MAX;
+	double offsetY = rand() * 10.0 / RAND_MAX;
 
 	for(int i = -200; i <= 200; i++) {
 		for(int j = -200; j <= 200; j++) {
@@ -116,12 +129,7 @@ void World::generatePhase(GamePhase phase) {
 
 							if(i % 20 == x && y == j % 20) {
 
-								Entity* sir_dick = new NPC(*this,
-														   sf::Vector2i(i, j),
-														   { { NORTH, getAssets().get(GameAssets::PLAYER_BACK)},
-															 { SOUTH, getAssets().get(GameAssets::PLAYER_FRONT)},
-															 { WEST, getAssets().get(GameAssets::PLAYER_LEFT)},
-															 { EAST, getAssets().get(GameAssets::PLAYER_RIGHT)}});
+								Entity* sir_dick = new TeddyKid(*this, sf::Vector2i(i, j));
 								addEntity(sir_dick);
 							}
 						}
@@ -202,8 +210,9 @@ void World::checkEntitiesInRange(Entity* entityCheck, int solidRange) {
                 Player* player = dynamic_cast<Player*>(entityCheck);
                 Monster* monster = dynamic_cast<Monster*>(entity);
 
-                if (player && monster) {
+                if (player && monster && !dynamic_pointer_cast<MonsterAttackState>(monster->getState()).get()) {
                     monster->setState(std::make_shared<MonsterChargeState>(monster));
+					monster->moveTowardsPlayer();
                 }
             }
         }

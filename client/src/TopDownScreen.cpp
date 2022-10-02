@@ -25,7 +25,7 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
 
     dialogBox.startDialog({
         "Greetings gamers, this is an example dialog box. I am looking for the end of this line.",
-        "A copypasta is a block of text that is copied and pasted across the Internet by individuals through online forums and social networking websites. The development of Final Forest 2 can be marked by BEANS.",
+        "A copypasta is a sblock of text that is copied and pasted across the Internet by individuals through online forums and social networking websites. The development of Final Forest 2 can be marked by BEANS.",
         "beans...",
         });
 
@@ -41,6 +41,7 @@ void TopDownScreen::tick(float delta) {
         return;
 
     world.tick(delta);
+	fps = 1.0f / delta * 1000.0f;
 }
 
 bool TopDownScreen::isInteractPressed() {
@@ -133,53 +134,43 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 	sf::Sprite fbo(frameBuffer.getTexture());
 	target.clear();
 	target.draw(fbo, spookyShader);
-	drawEyes(target);
+    drawNight(target);
 	drawUI(target);
 }
 
-void TopDownScreen::drawEyes(sf::RenderTarget &target) {
+void TopDownScreen::drawNight(sf::RenderTarget &target) {
     sf::Vector2f viewSize = World::VIEW_SIZE;
     target.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f, -world.getPlayer().getRenderPosition().y + 0.5f }, viewSize));
 
     eyesShader->setUniform("timeAccumulator", world.getTimeAccumulator());
     for(auto entity : world.getEntities())
-    {
         if(Monster* monster = dynamic_cast<Monster*>(entity))
-        {
-            sf::Glsl::Vec2 monster_screen { monster->getRenderPosition().x - world.getPlayer().getRenderPosition().x / 1080.0f, monster->getRenderPosition().y - world.getPlayer().getRenderPosition().y / 720.0f };
-
-            //eyesShader->setUniform("monster_screen_coords", monster_screen);
-            eye_sprite.setPosition(sf::Vector2f {static_cast<float>(monster->getRenderPosition().x), -static_cast<float>(monster->getRenderPosition().y)});
-            target.draw(eye_sprite, eyesShader);
-        }
-    }
+           monster->drawDarkness(target, eyesShader);
 }
 
 void TopDownScreen::drawUI(sf::RenderTarget &target) {
     sf::Vector2f viewSize = {1280, 720};
     target.setView(sf::View({viewSize.x / 2.0f, viewSize.y / 2.0f}, viewSize ));
-    for (int i = 0; i < world.getPlayer().get_health(); i++)
-    {
-        heart_sprite.setPosition({static_cast<float>(50 + 50* i), 50});
-        target.draw(heart_sprite);
-    }
 
     target.draw(dialogBox);
+	fpsText.setString("FPS: " + std::to_string(fps));
+	target.draw(fpsText);
 }
 
 void TopDownScreen::show() {
 	getGame().addWindowListener(this);
 	getGame().addInputListener(this);
 
-    heart_sprite.setTexture(*getAssets().get(GameAssets::HEART));
-    heart_sprite.setScale({ 50.0f * 7.0f / 8.0f / heart_sprite.getTexture()->getSize().x,
-                            50.0f * 7.0f / 8.0f / heart_sprite.getTexture()->getSize().y });
-
     eye_sprite.setTexture(*getAssets().get(GameAssets::SPOOKY_EYES));
     eye_sprite.setScale({ 1.0f / eye_sprite.getTexture()->getSize().x, 1.0f / eye_sprite.getTexture()->getSize().y });
 
     spookyShader = getAssets().get(GameAssets::SPOOKY_SHADER);
     eyesShader = getAssets().get(GameAssets::EYES_SHADER);
+
+	fpsText.setString("FPS: ");
+	fpsText.setPosition(sf::Vector2f(50, 650));
+	fpsText.setCharacterSize(20);
+	fpsText.setFont(*getGame().getAssets().get(GameAssets::SANS_TTF));
 }
 
 void TopDownScreen::hide() {
