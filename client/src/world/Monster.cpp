@@ -7,9 +7,8 @@
 #include "world/state/MonsterChargeState.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 
-Monster::Monster(World &world, sf::Vector2i position) : Entity(world) {
+Monster::Monster(World &world, sf::Vector2i position, sf::Texture* texture) : Entity(world), sprite(*texture) {
     this->position = position;
-    this->sprite = sf::Sprite(*world.getAssets().get(GameAssets::BAT));
     renderPosition = {static_cast<float>(position.x), static_cast<float>(-position.y)};
 
     state = std::make_shared<MonsterIdleState>(this);

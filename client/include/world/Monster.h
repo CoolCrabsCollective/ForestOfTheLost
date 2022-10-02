@@ -23,7 +23,7 @@ class Monster : public Entity {
 
     std::shared_ptr<EntityState> state;
 public:
-    Monster(World &world, sf::Vector2i position);
+    Monster(World &world, sf::Vector2i position, sf::Texture* texture);
     void tick(float delta) override;
     void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
     sf::Vector2f getRenderPosition() const override;

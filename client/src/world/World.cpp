@@ -4,6 +4,7 @@
 
 #include <world/TeddyBear.h>
 #include <random>
+#include <world/Bat.h>
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
 #include "util/SimplexNoise.h"
@@ -33,7 +34,7 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
     //int endGoalY = 5;
     //addEntity(new EndGoal(*this, sf::Vector2i(endGoalX, endGoalY)));
 
-    Entity* bat1 = new Monster(*this, sf::Vector2i(0, 3));
+    Entity* bat1 = new Bat(*this, sf::Vector2i(0, 3));
     addEntity(bat1);
 }
 
