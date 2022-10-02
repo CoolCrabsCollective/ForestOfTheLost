@@ -45,12 +45,10 @@ void Monster::tick(float delta) {
         }
     }
 
-    if (world.getPhase() != INITIAL) {
-        targetPlayerInRange();
+    targetPlayerInRange();
 
-        if (position == world.getPlayer().getPosition()) {
-            world.handleMonsterAttack();
-        }
+    if (position == world.getPlayer().getPosition()) {
+        world.handleMonsterAttack(*this);
     }
 
     state->tick(delta);

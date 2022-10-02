@@ -125,7 +125,7 @@ public:
 		return currentPhase;
 	}
 
-    void handleMonsterAttack();
+    void handleMonsterAttack(Monster& monster);
 
     bool isTimePaused() const;
 

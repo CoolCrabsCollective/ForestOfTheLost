@@ -362,9 +362,12 @@ void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
 	entityDrawList.clear();
 }
 
-void World::handleMonsterAttack() {
+void World::handleMonsterAttack(Monster& monster) {
     dialogBox.startDialog({"Get fucked nerd",}, [&]{
-        loadCheckPoint = true;
+        if (currentPhase != GamePhase::INITIAL)
+            loadCheckPoint = true;
+        else
+            removeEntity(&monster);
     });
 }
 
