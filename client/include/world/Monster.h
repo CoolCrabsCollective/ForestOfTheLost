@@ -28,11 +28,11 @@ protected:
     std::shared_ptr<EntityState> state;
     bool hasLookedForSpot = false;
 
+    bool attacking = false;
+
     std::string attackMessage;
 
     float nextAttackCountdown = 0;
-
-    sf::Sound bushSound;
 public:
     mutable sf::Sprite daySprite;
     mutable sf::Sprite nightSprite;

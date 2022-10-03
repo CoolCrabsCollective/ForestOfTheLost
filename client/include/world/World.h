@@ -42,7 +42,6 @@ class World : public Tickable, public sf::Drawable {
 	std::vector<Monster*> monsters;
     std::vector<TeddyKid*> teddyKids;
     std::vector<CryingGirl*> cryingGirls;
-    std::vector<HotGhostMom*> hotGhostMoms;
 	std::vector<Ball*> balls;
 	Player player;
 
@@ -71,15 +70,14 @@ class World : public Tickable, public sf::Drawable {
 
     bool setCheckPoint = false;
     bool loadCheckPoint = false;
+	bool hotGhostMomsCanSpawn = false;
     sf::Vector2i playerCheckpointPos = {};
-
-    const int HOT_GHOST_MOM_MIN_SPAWN_RADIUS = 15;
-    const int HOT_GHOST_MOM_MAX_SPAWN_RADIUS = 30;
-    const int HOT_GHOST_MOM_SPAWN_COUNT = 20;
 
 	void spawnEnemy(GamePhase phase, sf::Vector2i position);
 
 	std::chrono::system_clock::time_point last_monster_spawn = std::chrono::system_clock::now();
+
+	sf::Sound AHHH_SOUND;
 public:
 	constexpr const static sf::Vector2f VIEW_SIZE = { 24.0f, 13.5f };
 
@@ -163,15 +161,15 @@ public:
 
     const std::vector<CryingGirl *> &getCryingGirls() const;
 
-    const std::vector<HotGhostMom *> &getHotGhostMoms() const;
-
     void shake(sf::Vector2i vec);
 
     void generatePhase(GamePhase phase);
 
-    void spawnHotGhostMoms(CryingGirl* cryingGirl);
-
     void hotGhostMomInteraction(CryingGirl* cryingGirl, HotGhostMom* hotGhostMom);
+
+	inline void setHotGhostMomsCanSpawn() {
+		hotGhostMomsCanSpawn = true;
+	}
 };
 
 

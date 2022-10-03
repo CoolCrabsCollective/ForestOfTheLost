@@ -19,10 +19,6 @@ Monster::Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, s
 
     state = std::make_shared<MonsterIdleState>(this);
     attackMessage = "A monster attacked you!"; // shitty default attack message
-
-    bushSound.setBuffer(*world.getAssets().get(GameAssets::BUSH_SOUND));
-    bushSound.setPitch(0.5);
-    bushSound.setVolume(20);
 }
 
 void Monster::tick(float delta) {
@@ -36,13 +32,22 @@ void Monster::tick(float delta) {
 
     tickMovement(delta);
 
-    if (nextAttackCountdown <= 0)
+    if (world.getPhase() == INITIAL && attacking && nextAttackCountdown < 1250) {
+        world.setTimePaused(false);
+        attacking = false;
+    }
+
+    if (nextAttackCountdown <= 0) {
         targetPlayerInRange();
+        attacking = false;
+    }
 
     if (position == world.getPlayer().getPosition() && nextAttackCountdown <= 0) {
         world.handleMonsterAttack(*this);
         nextAttackCountdown = 2000; // 2 seconds
         findNewSpot();
+
+        attacking = true;
     }
 
     state->tick(delta);

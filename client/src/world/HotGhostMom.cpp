@@ -40,16 +40,6 @@ void HotGhostMom::targetPlayerInRange() {
 
     if (!maxRangeToPlayer) {
         moveTowardsPlayer();
-
-        if (!removedOtherHotGhostMoms) {
-            for (HotGhostMom* hotGhostMom : world.getHotGhostMoms()) {
-                if (hotGhostMom != this) {
-                    world.removeEntity(hotGhostMom);
-                }
-            }
-
-            removedOtherHotGhostMoms = true;
-        }
     }
 }
 
