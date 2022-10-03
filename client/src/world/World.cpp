@@ -308,7 +308,7 @@ void World::spawnHotGhostMoms(CryingGirl* cryingGirl) {
         randDir = rand() % 360;
         randRadius = rand() % HOT_GHOST_MOM_MAX_SPAWN_RADIUS + HOT_GHOST_MOM_MIN_SPAWN_RADIUS;
 
-        HotGhostMom* sir_dick = new HotGhostMom(*this, sf::Vector2i(ceil(cos(randDir)*randRadius), ceil(sin(randDir)*randRadius)));
+        HotGhostMom* sir_dick = new HotGhostMom(*this, sf::Vector2i(ceil(cryingGirl->getPosition().x + cos(randDir)*randRadius), ceil(cryingGirl->getPosition().y + sin(randDir)*randRadius)));
         addEntity(sir_dick);
         hotGhostMoms.push_back(sir_dick);
     }

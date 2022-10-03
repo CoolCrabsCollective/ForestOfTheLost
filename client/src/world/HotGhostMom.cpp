@@ -31,25 +31,39 @@ void HotGhostMom::targetPlayerInRange() {
 
     if (!minRangeToPlayer && !maxRangeToPlayer) {
         moveTowardsPlayer();
-    }
 
-    if (!removedOtherHotGhostMoms) {
-        for (HotGhostMom* hotGhostMom : world.getHotGhostMoms()) {
-            if (hotGhostMom != this) {
-                world.removeEntity(hotGhostMom);
+        if (!removedOtherHotGhostMoms) {
+            for (HotGhostMom* hotGhostMom : world.getHotGhostMoms()) {
+                if (hotGhostMom != this) {
+                    world.removeEntity(hotGhostMom);
+                }
             }
-        }
 
-        removedOtherHotGhostMoms = true;
+            removedOtherHotGhostMoms = true;
+        }
     }
 }
 
 void HotGhostMom::moveTowardsPlayer() {
     sf::Vector2i playerPos = world.getPlayer().getPosition();
 
-    move(playerPos);
+    sf::Vector2i moveTo = playerPos - 3*vectorToUnitVector(playerPos);
+
+    move(moveTo);
 }
 
 void HotGhostMom::findNewSpot() {
 
+}
+
+void HotGhostMom::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
+    daySprite.setPosition({renderPosition.x, -renderPosition.y});
+    daySprite.setScale({ scale / daySprite.getTexture()->getSize().x, scale / daySprite.getTexture()->getSize().y });
+    target.draw(daySprite);
+}
+
+void HotGhostMom::drawDarkness(sf::RenderTarget &target, sf::Shader* shader) const {
+    daySprite.setPosition({renderPosition.x, -renderPosition.y});
+    daySprite.setScale({ scale / daySprite.getTexture()->getSize().x, scale / daySprite.getTexture()->getSize().y });
+    target.draw(daySprite);
 }

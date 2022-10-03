@@ -18,11 +18,15 @@ public:
 
     void tick(float delta);
 
-    void targetPlayerInRange();
+    void targetPlayerInRange() override;
 
-    void moveTowardsPlayer();
+    void moveTowardsPlayer() override;
 
-    void findNewSpot();
+    void findNewSpot() override;
+
+    void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
+
+    void drawDarkness(sf::RenderTarget& target, sf::Shader* shader) const override;
 };
 
 #endif //LD51_CLIENT_HOTGHOSTMOM_H
