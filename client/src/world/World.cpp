@@ -491,3 +491,13 @@ const std::vector<Monster*>& World::get_monsters() const {
 const std::vector<CryingGirl *> &World::getCryingGirls() const {
     return cryingGirls;
 }
+
+void World::shake(sf::Vector2i vec) {
+    for(auto entity : entityMap[vec])
+    {
+        if(auto* hidingSpot = dynamic_cast<HidingSpot*>(entity))
+        {
+            hidingSpot->shake();
+        }
+    }
+}

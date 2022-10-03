@@ -17,6 +17,7 @@ protected:
 public:
     void tick(float delta) override;
     void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
+    virtual void shake() = 0;
     HidingSpot(World &world, sf::Vector2i position);
 };
 

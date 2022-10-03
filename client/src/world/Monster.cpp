@@ -44,6 +44,8 @@ void Monster::tick(float delta) {
             if (partDestination != destination) {
                 partDestination = position + vectorToUnitVector(destination - position);
             }
+
+            world.shake(position);
         } else {
             renderPosition = (sf::Vector2f) position + sf::Vector2f(partDestination - position) * actionProgress;
         }
@@ -80,6 +82,7 @@ void Monster::targetPlayerInRange() {
 void Monster::move(sf::Vector2i des) {
     destination = des;
     partDestination = position + vectorToUnitVector(destination - position);
+    world.shake(position);
 }
 
 void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
