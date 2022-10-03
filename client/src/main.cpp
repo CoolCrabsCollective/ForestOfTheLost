@@ -1,5 +1,6 @@
 //#define DEBUG
 
+#define ENTITY_DEBUG 1
 
 #include <SFML/Graphics.hpp>
 #include <memory>
@@ -17,6 +18,7 @@
 #ifdef OS_SWITCH
 	#include <switch.h>
 #endif
+
 
 int main(int argc, char* argv[])
 {
