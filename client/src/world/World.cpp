@@ -327,6 +327,8 @@ void World::generatePhase(GamePhase phase) {
 								balls.push_back(ball);
 							}
 						}
+
+                        setCheckPoint = true;
 					}
                 }
             }
@@ -660,7 +662,6 @@ void World::handleMonsterAttack(Monster& monster) {
 
     getPlayer().animateHit();
     dialogBox.startDialog({monster.getAttackMessage(),}, [&]{
-        timePaused = false;
         if (currentPhase != GamePhase::INITIAL)
             loadCheckPoint = true;
 
