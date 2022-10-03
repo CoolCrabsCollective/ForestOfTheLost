@@ -50,6 +50,7 @@ namespace GameAssets {
 	ASSET(TextAsset, CONTROLLER_DB, ("gamecontrollerdb.txt"))
 
     // Terrain
+	ASSET(wiz::TextureAsset, SHORT_GRASS_TERRAIN, ("gfx/terrain/short_grass.png"))
 	ASSET(wiz::TextureAsset, GRASS_TERRAIN, ("gfx/terrain/grass.png"))
 	ASSET(wiz::TextureAsset, WATER_TERRAIN, ("gfx/terrain/water.png"))
 	ASSET(wiz::TextureAsset, SAND_TERRAIN, ("gfx/terrain/sand.png"))

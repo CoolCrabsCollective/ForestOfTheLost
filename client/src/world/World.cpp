@@ -31,6 +31,7 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 		  terrain_textures(),
 		  dialogBox(dialogBox),
 		  monsters() {
+	terrain_textures[TerrainType::SHORT_GRASS] = assets.get(GameAssets::SHORT_GRASS_TERRAIN);
 	terrain_textures[TerrainType::GRASS] = assets.get(GameAssets::GRASS_TERRAIN);
 	terrain_textures[TerrainType::WATER] = assets.get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = assets.get(GameAssets::SAND_TERRAIN);
@@ -159,6 +160,8 @@ void World::generatePhase(GamePhase phase) {
 				terrainMap[sf::Vector2i(i, j)] = TerrainType::WATER;
 			else if(noise < -0.7)
 				terrainMap[sf::Vector2i(i, j)] = TerrainType::SAND;
+			else if(noise > 1.5f)
+				terrainMap[sf::Vector2i(i, j)] = TerrainType::GRASS;
 
 			if(i == 0 && j == 0)
 				continue;
@@ -205,6 +208,10 @@ void World::generatePhase(GamePhase phase) {
 									goto notree;
 
 					addEntity(new Tree(*this, { i, j }, type));
+					for(int o = -1; o <= 1; o++)
+						for(int p = -1; p <= 1; p++)
+							if(!terrainMap.contains(sf::Vector2i(i + o, j + p)))
+								terrainMap[sf::Vector2i(i + o, j + p)] = TerrainType::GRASS;
 					notree:;
 				}
 				else if(noise2 > 0.7) {
@@ -241,6 +248,10 @@ void World::generatePhase(GamePhase phase) {
 									goto nobush;
 
 					addEntity(new Bush(*this, {i, j}, type));
+					for(int o = -1; o <= 1; o++)
+						for(int p = -1; p <= 1; p++)
+							if(!terrainMap.contains(sf::Vector2i(i + o, j + p)))
+								terrainMap[sf::Vector2i(i + o, j + p)] = TerrainType::GRASS;
 					nobush:;
 				} else {
 					if(phase == GamePhase::INITIAL) {
@@ -290,7 +301,7 @@ void World::generatePhase(GamePhase phase) {
 TerrainType World::getTerrainType(sf::Vector2i position) const {
 	if(terrainMap.contains(position))
 		return terrainMap.at(position);
-	return TerrainType::GRASS;
+	return TerrainType::SHORT_GRASS;
 }
 
 const std::vector<Entity*>& World::getEntities() const {
