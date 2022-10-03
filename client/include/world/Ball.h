@@ -13,6 +13,8 @@ public:
 	explicit Ball(World& world, sf::Vector2i position);
 
 	bool activate() override;
+
+	void draw(sf::RenderTarget &target, const sf::RenderStates &states) const;
 };
 
 

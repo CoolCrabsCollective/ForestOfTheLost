@@ -56,10 +56,12 @@ void World::spawnEnemy(GamePhase phase, sf::Vector2i position) {
 		else
 			monster = new GroundHog(*this, position);
 	} else if(phase == FIRST_ENCOUNTER) {
-		if(val < 0.5)
+		if (val < 0.5)
 			monster = new Wraith(*this, position);
 		else
 			monster = new Ghoul(*this, position);
+	} else if(phase == MONSTER) {
+		return;
 	} else {
 		return;
 	}
@@ -434,6 +436,22 @@ bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
 	return false;
 }
 
+int enemyCountForPhase(GamePhase phase) {
+	switch (phase) {
+
+		case INITIAL:
+			return 5;
+		case FIRST_ENCOUNTER:
+			return 10;
+		case GHOST:
+			return 10;
+		case MONSTER:
+			return 15;
+		case FINAL:
+			return 15;
+	}
+}
+
 void World::tick(float delta) {
     getPlayer().setLockMovement(isTimePaused());
 
@@ -485,7 +503,7 @@ void World::tick(float delta) {
 	int len = monsters.size();
 	for(int i = 0; i < len; i++) {
 		Monster* monster = monsters[i];
-		if((monster->getPosition() - getPlayer().getPosition()).lengthSq() > 20.0 * 20.0) {
+		if((monster->getPosition() - getPlayer().getPosition()).lengthSq() > 30.0 * 30.0) {
 			removeEntity(monster);
 			std::cout << "Despawning monster" << std::endl;
 			monsters[i] = monsters[len - 1];
@@ -496,15 +514,29 @@ void World::tick(float delta) {
 		}
 	}
 
-	if(last_monster_spawn < (std::chrono::system_clock::now() - std::chrono::milliseconds(500)) && monsters.size() < 10) {
+	int monstersVisible = 0;
+
+	for(Monster* monster : monsters) {
+		sf::Vector2i diff = monster->getPosition() - getPlayer().getPosition();
+		if(diff.x > -VIEW_SIZE.x / 2.0
+		&& diff.x < VIEW_SIZE.x / 2.0
+		&& diff.y > -VIEW_SIZE.y / 2.0
+		&& diff.y < VIEW_SIZE.y / 2.0) {
+			monstersVisible++;
+		}
+	}
+
+
+	while(monstersVisible < enemyCountForPhase(currentPhase) && (tenSecAccumulator > 9250.0 || tenSecAccumulator < 500.0)) {
 		sf::Vector2i position = { 0, 0 };
 
 		do {
 			position = getPlayer().getPosition() + sf::Vector2i {rand() % 20 - 10, rand() % 20 - 10 };
-		} while(tileOccupied(position, nullptr) || (position - getPlayer().getPosition()).lengthSq() < 5.0 * 5.0);
+		} while(tileOccupied(position, nullptr) || (position - getPlayer().getPosition()).lengthSq() < 6.0 * 6.0);
 
 		spawnEnemy(getPhase(), position);
 		last_monster_spawn = std::chrono::system_clock::now();
+		monstersVisible++;
 	}
 
 
