@@ -14,6 +14,7 @@ class HotGhostMom : public Monster {
     float searchGirlRadius = 7;
 
     bool removedOtherHotGhostMoms = false;
+    bool ghostMomReachCryingGirl = false;
 
     CryingGirl* cryingGirl = nullptr;
 

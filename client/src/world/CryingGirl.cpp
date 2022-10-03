@@ -26,6 +26,8 @@ bool CryingGirl::activate() {
 
             world.spawnHotGhostMoms(this);
 
+            world.setSetCheckPoint(true);
+
             removedOtherGirls = true;
         }
     });

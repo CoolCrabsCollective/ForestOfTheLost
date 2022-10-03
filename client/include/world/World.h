@@ -170,6 +170,8 @@ public:
     void generatePhase(GamePhase phase);
 
     void spawnHotGhostMoms(CryingGirl* cryingGirl);
+
+    void hotGhostMomInteraction(CryingGirl* cryingGirl, HotGhostMom* hotGhostMom);
 };
 
 

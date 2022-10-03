@@ -19,6 +19,10 @@ Monster::Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, s
 
     state = std::make_shared<MonsterIdleState>(this);
     attackMessage = "A monster attacked you!"; // shitty default attack message
+
+    bushSound.setBuffer(*world.getAssets().get(GameAssets::BUSH_SOUND));
+    bushSound.setPitch(0.5);
+    bushSound.setVolume(20);
 }
 
 void Monster::tick(float delta) {
@@ -64,6 +68,9 @@ void Monster::tickMovement(float delta) {
             }
 
             world.shake(position);
+
+            // Commented out: the bush sound is annoying AF
+//            bushSound.play();
         } else {
             renderPosition = (sf::Vector2f) position + sf::Vector2f(partDestination - position) * actionProgress;
         }

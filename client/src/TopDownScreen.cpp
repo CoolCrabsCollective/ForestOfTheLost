@@ -16,7 +16,7 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
 		  world(game.getAssets(), dialogBox),
           mappingDatabase(),
           lily(*game.getAssets().get(GameAssets::LILY)),
-          inspector_thinking(*game.getAssets().get(GameAssets::PLAYER_LEFT)){
+          inspector_thinking(*game.getAssets().get(GameAssets::PLAYER_DETECTIVE)){
 
 	game.getAssets().get(GameAssets::SUSPICIOUS_FOREST_MUSIC)->play();
 
@@ -37,8 +37,8 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
     lily.setPosition({static_cast<float>((1280 / 2) - (lily.getTexture()->getSize().x * 16 / 2)) - 100, 30});
     lily.setScale({16, 16});
 
-    inspector_thinking.setPosition({static_cast<float>(1280 / 2) + 200, 50});
-    inspector_thinking.setScale({16, 16});
+    inspector_thinking.setPosition({static_cast<float>(1280 / 2) + 200, -15});
+    inspector_thinking.setScale({12, 12});
 
     dialogBox.callback = [&]() {
         drawLily = false;
@@ -154,7 +154,7 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 	else {
 		float spookyness = (float)fmod(world.getTimeAccumulator(), 10000.0f) / 10000.0f;
 		spookyShader->setUniform("spookyness",
-								 world.isChangingPhaseNext()
+                                 world.getPhase() == INITIAL && world.isChangingPhaseNext()
 								 ? spookyness
 								 : 1.0f);
 

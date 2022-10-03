@@ -87,6 +87,8 @@ namespace GameAssets {
 	ASSET(wiz::TextureAsset, PLAYER_FRONT, ("gfx/player/front.png"))
 	ASSET(wiz::TextureAsset, PLAYER_LEFT, ("gfx/player/left.png"))
 	ASSET(wiz::TextureAsset, PLAYER_RIGHT, ("gfx/player/right.png"))
+	ASSET(wiz::TextureAsset, PLAYER_DETECTIVE, ("gfx/player/magnifying_glass.png"))
+
     // Player Forward Walk Animation
     ASSET(wiz::TextureAsset, PLAYER_FRONT_WALK_1, ("gfx/player/animation/front/walk_front_1.png"))
     ASSET(wiz::TextureAsset, PLAYER_FRONT_WALK_2, ("gfx/player/animation/front/walk_front_2.png"))
