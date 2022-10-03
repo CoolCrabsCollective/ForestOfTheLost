@@ -63,6 +63,8 @@ public:
 	const std::string& getName() const override;
 
 	void windowClosed() override;
+
+	void keyReleased(const sf::Event::KeyEvent& keyEvent) override;
 };
 
 

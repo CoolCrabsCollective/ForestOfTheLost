@@ -31,6 +31,7 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 		  terrain_textures(),
 		  dialogBox(dialogBox),
 		  monsters() {
+	terrain_textures[TerrainType::SHORT_GRASS] = assets.get(GameAssets::SHORT_GRASS_TERRAIN);
 	terrain_textures[TerrainType::GRASS] = assets.get(GameAssets::GRASS_TERRAIN);
 	terrain_textures[TerrainType::WATER] = assets.get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = assets.get(GameAssets::SAND_TERRAIN);
@@ -78,6 +79,9 @@ void World::generatePhase(GamePhase phase) {
 
         for(int i = -200; i <= 200; i++) {
             for (int j = -200; j <= 200; j++) {
+				if(i == 0 && j == 0)
+					continue;
+
                 double nx = i / 400.0 - 0.5 + offsetX;
                 double ny = j / 400.0 - 0.5 + offsetY;
 
@@ -86,7 +90,7 @@ void World::generatePhase(GamePhase phase) {
 
                 double noise = SimplexNoise::noise(nx, ny);
 
-                if (noise > -0.75) {
+                if (noise > -0.75 && (player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0 && sf::Vector2i(i, j).lengthSq() > 10.0 * 10.0) {
                     double nx2 = i / 400.0 - 0.5 + offsetX * 9.0;
                     double ny2 = j / 400.0 - 0.5 + offsetY * 9.0;
 
@@ -156,6 +160,11 @@ void World::generatePhase(GamePhase phase) {
 				terrainMap[sf::Vector2i(i, j)] = TerrainType::WATER;
 			else if(noise < -0.7)
 				terrainMap[sf::Vector2i(i, j)] = TerrainType::SAND;
+			else if(noise > 1.5f)
+				terrainMap[sf::Vector2i(i, j)] = TerrainType::GRASS;
+
+			if(i == 0 && j == 0)
+				continue;
 
 			if(noise > -0.75) {
 				double nx2 = i / 400.0 - 0.5 + offsetX * 9.0;
@@ -166,22 +175,87 @@ void World::generatePhase(GamePhase phase) {
 
 				double noise2 = SimplexNoise::noise(nx2, ny2);
 
+				double prob = rand() * 1.0 / RAND_MAX;
+
 				if(noise2 > 0.9) {
 					TreeType type;
 					if(phase == GamePhase::INITIAL)
-						type = TreeType::ALIVE;
-					else if(phase == GamePhase::FIRST_ENCOUNTER)
-						type = TreeType::DEAD;
-                    else
-                        type = TreeType::THICK_DEAD;
+					{
+						if(prob < 0.95)
+							type = TreeType::ALIVE;
+						else
+							type = TreeType::SQUIRREL;
+					} else if(phase == GamePhase::FIRST_ENCOUNTER) {
+						if(prob < 0.4) {
+							type = TreeType::ALIVE;
+						} else if(prob < 0.9) {
+							type = TreeType::DEAD;
+						} else {
+							type = TreeType::THICK_DEAD;
+						}
+					} else {
+						if(prob < 0.9) {
+							type = TreeType::DEAD;
+						} else {
+							type = TreeType::THICK_DEAD;
+						}
+					}
+
+					for(int o = -1; o <= 1; o++)
+						for(int p = -1; p <= 1; p++)
+							for(Entity* entity : getEntitiesAt({i + o, j + p}))
+								if(dynamic_cast<Tree*>(entity))
+									goto notree;
 
 					addEntity(new Tree(*this, { i, j }, type));
+					for(int o = -1; o <= 1; o++)
+						for(int p = -1; p <= 1; p++)
+							if(!terrainMap.contains(sf::Vector2i(i + o, j + p)))
+								terrainMap[sf::Vector2i(i + o, j + p)] = TerrainType::GRASS;
+					notree:;
 				}
-				else if(noise2 > 0.5) {
-					addEntity(new Bush(*this, {i, j}, static_cast<BushType>(std::abs(i + j) % 2)));
+				else if(noise2 > 0.7) {
+
+					BushType type;
+					if(phase == GamePhase::INITIAL)
+					{
+						if(prob < 0.5)
+							type = BushType::BUSH;
+						else
+							type = BushType::BUSH2;
+					} else if(phase == GamePhase::FIRST_ENCOUNTER) {
+						if(prob < 0.25) {
+							type = BushType::BUSH;
+						} else if(prob < 0.5) {
+							type = BushType::BUSH2;
+						} else if(prob < 0.75) {
+							type = BushType::WITHERED_BUSH;
+						} else {
+							type = BushType::WITHERED_BUSH2;
+						}
+					} else {
+						if(prob < 0.5)
+							type = BushType::WITHERED_BUSH;
+						else
+							type = BushType::WITHERED_BUSH2;
+					}
+
+
+					for(int o = -1; o <= 1; o++)
+						for(int p = -1; p <= 1; p++)
+							for(Entity* entity : getEntitiesAt({i + o, j + p}))
+								if(dynamic_cast<Bush*>(entity))
+									goto nobush;
+
+					addEntity(new Bush(*this, {i, j}, type));
+					for(int o = -1; o <= 1; o++)
+						for(int p = -1; p <= 1; p++)
+							if(!terrainMap.contains(sf::Vector2i(i + o, j + p)))
+								terrainMap[sf::Vector2i(i + o, j + p)] = TerrainType::GRASS;
+					nobush:;
 				} else {
 					if(phase == GamePhase::INITIAL) {
-						if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0) {
+						if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0 && sf::Vector2i(i, j).lengthSq() > 10.0 * 10.0) {
 							int chunkX = i / 20;
 							int chunkY = j / 20;
 
@@ -195,7 +269,7 @@ void World::generatePhase(GamePhase phase) {
 							}
 						}
 					} else if(phase == GamePhase::FIRST_ENCOUNTER) {
-						if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 2.0 * 2.0) {
+						if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0 && sf::Vector2i(i, j).lengthSq() > 10.0 * 10.0) {
 							int chunkX = i / 20;
 							int chunkY = j / 20;
 
@@ -227,7 +301,7 @@ void World::generatePhase(GamePhase phase) {
 TerrainType World::getTerrainType(sf::Vector2i position) const {
 	if(terrainMap.contains(position))
 		return terrainMap.at(position);
-	return TerrainType::GRASS;
+	return TerrainType::SHORT_GRASS;
 }
 
 const std::vector<Entity*>& World::getEntities() const {

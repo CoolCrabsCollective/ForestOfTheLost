@@ -50,6 +50,7 @@ namespace GameAssets {
 	ASSET(TextAsset, CONTROLLER_DB, ("gamecontrollerdb.txt"))
 
     // Terrain
+	ASSET(wiz::TextureAsset, SHORT_GRASS_TERRAIN, ("gfx/terrain/short_grass.png"))
 	ASSET(wiz::TextureAsset, GRASS_TERRAIN, ("gfx/terrain/grass.png"))
 	ASSET(wiz::TextureAsset, WATER_TERRAIN, ("gfx/terrain/water.png"))
 	ASSET(wiz::TextureAsset, SAND_TERRAIN, ("gfx/terrain/sand.png"))
@@ -63,6 +64,7 @@ namespace GameAssets {
 
 	// Tree
     ASSET(wiz::TextureAsset, ALIVE_TREE, ("gfx/tree/alive.png"))
+	ASSET(wiz::TextureAsset, SQUIRREL_TREE, ("gfx/tree/squirrel_tree.png"))
 	ASSET(wiz::TextureAsset, DEAD_TREE, ("gfx/tree/dead.png"))
 	ASSET(wiz::TextureAsset, THICK_DEAD_TREE, ("gfx/tree/thick_dead.png"))
 
@@ -72,6 +74,7 @@ namespace GameAssets {
     ASSET(wiz::TextureAsset, GROUND_HOG, ("gfx/marmotte.png"))
     ASSET(wiz::TextureAsset, WRAITH, ("gfx/wraith.png"))
     ASSET(wiz::TextureAsset, GHOUL, ("gfx/ghoul.png"))
+    ASSET(wiz::TextureAsset, HOT_GHOST_MOM, ("gfx/ghost_mom.png"))
 
     // Misc
     ASSET(wiz::TextureAsset, INVISIBLE, ("gfx/invisible.png"))
