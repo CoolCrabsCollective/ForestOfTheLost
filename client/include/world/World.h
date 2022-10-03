@@ -15,10 +15,12 @@
 #include "TeddyKid.h"
 #include "CryingGirl.h"
 
+
 class Entity;
 class Player;
 class Monster;
 class HotGhostMom;
+class Ball;
 
 enum GamePhase {
 	INITIAL,
@@ -41,6 +43,7 @@ class World : public Tickable, public sf::Drawable {
     std::vector<TeddyKid*> teddyKids;
     std::vector<CryingGirl*> cryingGirls;
     std::vector<HotGhostMom*> hotGhostMoms;
+	std::vector<Ball*> balls;
 	Player player;
 
 	std::unordered_map<TerrainType, sf::Texture*> terrain_textures;
@@ -105,6 +108,8 @@ public:
 	void removeEntity(Entity* entity);
 
     bool isEndPointReached() const;
+
+	void removeBalls();
 
 	inline float getGrayscaleness() const {
 		return grayscaleness;
