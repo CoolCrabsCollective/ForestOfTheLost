@@ -16,7 +16,9 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
 		  world(game.getAssets(), dialogBox),
           mappingDatabase(),
           lily(*game.getAssets().get(GameAssets::LILY)),
-          inspector_thinking(*game.getAssets().get(GameAssets::PLAYER_DETECTIVE)){
+          inspector_thinking(*game.getAssets().get(GameAssets::PLAYER_DETECTIVE)),
+          background(*game.getAssets().get(GameAssets::OFFICE))
+          {
 
 	game.getAssets().get(GameAssets::SUSPICIOUS_FOREST_MUSIC)->play();
 
@@ -39,6 +41,9 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
 
     inspector_thinking.setPosition({static_cast<float>(1280 / 2) + 200, -15});
     inspector_thinking.setScale({12, 12});
+
+  background.setPosition({0, 0});
+  background.setScale({16, 16});
 
     dialogBox.callback = [&]() {
         drawLily = false;
@@ -188,7 +193,7 @@ void TopDownScreen::drawUI(sf::RenderTarget &target) {
 
     if (drawLily)
     {
-        target.clear(sf::Color(38, 92, 66));
+        target.draw(background);
         target.draw(lily);
         target.draw(inspector_thinking);
     }
