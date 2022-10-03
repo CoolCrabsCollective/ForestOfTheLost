@@ -216,3 +216,8 @@ const std::string& TopDownScreen::getName() const {
 void TopDownScreen::windowClosed() {
 	getGame().getWindow().close();
 }
+
+void TopDownScreen::keyReleased(const sf::Event::KeyEvent& keyEvent) {
+	if(keyEvent.code == sf::Keyboard::Escape)
+		world.generatePhase(static_cast<GamePhase>(world.getPhase() + 1));
+}
