@@ -473,6 +473,7 @@ void World::tick(float delta) {
 				countBlinkBeforePhaseChange--;
 				if(countBlinkBeforePhaseChange == -1 && currentPhase < FINAL) {
 					generatePhase(static_cast<GamePhase>(currentPhase + 1));
+                    player.setHeartBeatDelay(player.getHeartBeatDelay() / 2);
 				}
 			}
 
@@ -498,7 +499,6 @@ void World::tick(float delta) {
         moveEntity(oldPos, &player);
         loadCheckPoint = false;
     }
-
 
 	int len = monsters.size();
 	for(int i = 0; i < len; i++) {

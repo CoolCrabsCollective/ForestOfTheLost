@@ -217,6 +217,10 @@ void Player::setHeartBeatDelay(float delay) {
     heartBeatDelay = delay;
 }
 
+float Player::getHeartBeatDelay() {
+    return heartBeatDelay;
+}
+
 void Player::animateHit() {
     hit_animation_is_playing = true;
     hit_animation_current = 0.0f;
