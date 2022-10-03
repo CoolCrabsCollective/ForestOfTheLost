@@ -499,7 +499,11 @@ void World::tick(float delta) {
                         case FINAL:
                             dialogBox.startDialog({
                                   "The illusion is broken...",
-                                  "Now I see the true face of these monsters..."
+                                  "Now I see the true face of these monsters...",
+                                  "These entities...",
+                                  "Am I stuck here forever?",
+                                  "[The mystery is solved but you are trapped in this ethereal plane forever]",
+                                  "[Thank you for playing!]"
                             });
                             break;
                     };
