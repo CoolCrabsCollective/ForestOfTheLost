@@ -29,6 +29,7 @@ namespace GameAssets {
     ASSET(wiz::SoundAsset, WALK_SOUND, ("sfx/walk.ogg"))
     ASSET(wiz::SoundAsset, BUSH_SOUND, ("sfx/bush.ogg"))
     ASSET(wiz::SoundAsset, HEART_BEAT_SOUND, ("sfx/heart_beat.ogg"))
+	ASSET(wiz::SoundAsset, AHHH_SOUND, ("sfx/ahhh.ogg"))
 
 	ASSET(wiz::FontAsset, SANS_TTF, ("font/sans.ttf"))
 	ASSET(wiz::FontAsset, VT323_TTF, ("font/VT323-Regular.ttf"))
