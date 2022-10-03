@@ -32,6 +32,15 @@ Player::Player(World& world)
     heartBeatSound.setBuffer(*world.getAssets().get(GameAssets::HEART_BEAT_SOUND));
     heartBeatSound.setVolume(25);
     heartBeatSound.setPitch(1.2);
+	fastHeartBeatSound.setBuffer(*world.getAssets().get(GameAssets::FAST_HEART_BEAT_SOUND));
+	fastHeartBeatSound.setVolume(25);
+	fastHeartBeatSound.setPitch(1.2);
+	fasterHeartBeatSound.setBuffer(*world.getAssets().get(GameAssets::FASTER_HEART_BEAT_SOUND));
+	fasterHeartBeatSound.setVolume(25);
+	fasterHeartBeatSound.setPitch(1.2);
+	slowHeartBeatSound.setBuffer(*world.getAssets().get(GameAssets::SLOW_HEART_BEAT_SOUND));
+	slowHeartBeatSound.setVolume(25);
+	slowHeartBeatSound.setPitch(1.2);
 
     playerShader = world.getAssets().get(GameAssets::PLAYER_SHADER);
 
@@ -50,7 +59,23 @@ void Player::move(std::optional<Direction> direction) {
 void Player::tick(float delta) {
     timeSinceLastHeartBeat += delta;
     if (timeSinceLastHeartBeat >= heartBeatDelay) {
-        heartBeatSound.play();
+		switch(world.getPhase()) {
+			case INITIAL:
+				break;
+
+			case FIRST_ENCOUNTER:
+				slowHeartBeatSound.play();
+				break;
+			case GHOST:
+				heartBeatSound.play();
+				break;
+			case MONSTER:
+				fastHeartBeatSound.play();
+				break;
+			case FINAL:
+				fasterHeartBeatSound.play();
+				break;
+		}
         timeSinceLastHeartBeat = 0;
     }
 
