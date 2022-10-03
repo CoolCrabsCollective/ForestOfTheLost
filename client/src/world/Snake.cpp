@@ -9,7 +9,7 @@
 Snake::Snake(World &world, sf::Vector2i position) : Monster(world, position,
                                                         world.getAssets().get(GameAssets::SNAKE),
                                                         world.getAssets().get(GameAssets::PACIFIC_EYES)){
-    attackMessage = {"Hissssss! A slithering snake just bit you. Thankfully, it is not venomous!"};
+    attackMessage = {"Hissssss! A slithering snake just bit you. Thankfully, it's not venomous!"};
 }
 
 void Snake::draw(sf::RenderTarget &target, const sf::RenderStates &states) const {

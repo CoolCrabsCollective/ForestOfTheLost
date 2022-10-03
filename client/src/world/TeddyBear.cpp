@@ -14,7 +14,7 @@ bool TeddyBear::activate() {
 	if(taken || world.isChangingPhase())
 		return false;
 
-	world.getDialogBox().startDialog({ "You found an old dirty teddy bear." }, [&]() {
+	world.getDialogBox().startDialog({ "You found an old dirty teddy bear" }, [&]() {
 		taken = true;
 		world.changePhaseIn(2);
         world.resetAccumulator();

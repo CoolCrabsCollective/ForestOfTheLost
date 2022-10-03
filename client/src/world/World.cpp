@@ -44,7 +44,7 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 	terrain_textures[TerrainType::SAND] = assets.get(GameAssets::SAND_TERRAIN);
 
 	AHHH_SOUND.setBuffer(*assets.get(GameAssets::AHHH_SOUND));
-    AHHH_SOUND.setVolume(25);
+    AHHH_SOUND.setVolume(50);
 	gameOverSound.setBuffer(*assets.get(GameAssets::GAMEOVER));
 
 	// srand(20201002);

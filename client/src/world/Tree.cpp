@@ -43,11 +43,11 @@ bool Tree::activate() {
 	if(tree_type == ALIVE)
 		world.getDialogBox().startDialog({ "This tree looks normal." });
 	else if(tree_type == SQUIRREL)
-		world.getDialogBox().startDialog({ "This tree has a squirrel family living in it!" });
+		world.getDialogBox().startDialog({ "This tree has a family of squirrels living in it!" });
 	else if(tree_type == DEAD)
 		world.getDialogBox().startDialog({ "This tree looks creepy." });
 	else
-		world.getDialogBox().startDialog({ "Rats and spiders escape from this large dead tree." });
+		world.getDialogBox().startDialog({ "Rats and spiders pour out of this large decrepit tree. Ew!" });
 	return true;
 }
 
