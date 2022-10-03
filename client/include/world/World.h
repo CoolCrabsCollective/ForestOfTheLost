@@ -69,9 +69,9 @@ class World : public Tickable, public sf::Drawable {
     bool loadCheckPoint = false;
     sf::Vector2i playerCheckpointPos = {};
 
-    const int HOT_GHOST_MOM_MIN_SPAWN_RADIUS = 5;
-    const int HOT_GHOST_MOM_MAX_SPAWN_RADIUS = 5;
-    const int HOT_GHOST_MOM_SPAWN_COUNT = 1;
+    const int HOT_GHOST_MOM_MIN_SPAWN_RADIUS = 15;
+    const int HOT_GHOST_MOM_MAX_SPAWN_RADIUS = 30;
+    const int HOT_GHOST_MOM_SPAWN_COUNT = 20;
 
 	void spawnEnemy(GamePhase phase, sf::Vector2i position);
 
