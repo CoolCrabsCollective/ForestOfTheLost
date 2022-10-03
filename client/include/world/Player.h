@@ -32,7 +32,14 @@ class Player : public Entity, public Alive<int>, public Solid, public Anime {
     const float movingSpeed = 3.0;
     const float rotationSpeed = 25.0;
 
+    float last_delta = 0.0f;
+
     bool lockMovement = false;
+
+    sf::Shader* playerShader = nullptr;
+    mutable float hit_animation_current = 0.0f;
+    mutable bool hit_animation_is_playing = false;
+    static constexpr float hit_animation_max = 3.1415926f / 2.0f;
 
 	mutable sf::Sprite sprite;
 	std::map<Direction, sf::Texture*> textureMap;
@@ -66,6 +73,8 @@ public:
 	void teleport(sf::Vector2i position);
 
     void setHeartBeatDelay(float delay);
+
+	void animateHit();
 };
 
 

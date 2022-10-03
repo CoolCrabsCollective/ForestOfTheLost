@@ -20,3 +20,12 @@ bool Ball::activate() {
 	});
 	return true;
 }
+
+void Ball::draw(sf::RenderTarget &target, const sf::RenderStates &states) const {
+	if(taken)
+		return;
+
+	sprite.setPosition({static_cast<float>(position.x), static_cast<float>(-position.y)});
+	sprite.setScale({ 0.5f / sprite.getTexture()->getSize().x, 0.5f / sprite.getTexture()->getSize().y });
+	target.draw(sprite);
+}

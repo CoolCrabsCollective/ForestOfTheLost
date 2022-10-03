@@ -4,6 +4,7 @@
 
 #include "world/Player.h"
 #include <optional>
+#include <iostream>
 #include "world/World.h"
 #include "GameAssets.h"
 #include "world/Direction.h"
@@ -17,7 +18,7 @@ Player::Player(World& world)
 	  currentDir(NORTH),
 	  destinationDir(NORTH),
 	  interactSound(),
-	  noInteractSound() {
+	  noInteractSound(){
 	textureMap[Direction::NORTH] = world.getAssets().get(GameAssets::PLAYER_BACK);
 	textureMap[Direction::SOUTH] = world.getAssets().get(GameAssets::PLAYER_FRONT);
 	textureMap[Direction::EAST] = world.getAssets().get(GameAssets::PLAYER_RIGHT);
@@ -31,6 +32,8 @@ Player::Player(World& world)
     heartBeatSound.setBuffer(*world.getAssets().get(GameAssets::HEART_BEAT_SOUND));
     heartBeatSound.setVolume(25);
     heartBeatSound.setPitch(1.2);
+
+    playerShader = world.getAssets().get(GameAssets::PLAYER_SHADER);
 
     setAnimationSprite(&sprite);
     msBetweenFrames = 100.0f;
@@ -51,10 +54,12 @@ void Player::tick(float delta) {
         timeSinceLastHeartBeat = 0;
     }
 
-    if(lastCollision > std::chrono::system_clock::now() - std::chrono::milliseconds(500))
+    last_delta = delta;
+
+	if(lastCollision > std::chrono::system_clock::now() - std::chrono::milliseconds(500))
 		return;
 
-    bool moving = position != destination;
+	bool moving = position != destination;
     bool rotating = currentDir != destinationDir;
 
     renderPosition = (sf::Vector2f) position;
@@ -137,9 +142,30 @@ void Player::draw(sf::RenderTarget& target, const sf::RenderStates& states) cons
     if (position == destination)
         sprite.setTexture(*textureMap.at(destinationDir), true);
 
+    if(hit_animation_is_playing)
+    {
+        this->hit_animation_current += last_delta / 1000.f;
+
+        if(hit_animation_max < this->hit_animation_current)
+        {
+            hit_animation_is_playing = false;
+            hit_animation_current = 0.0f;
+        }
+    }
+
+    if(hit_animation_is_playing)
+    {
+        float player_hit = std::min(1.0f, std::exp(-hit_animation_current) * (5.0f / 10.f) * ( 1.0f + std::cos(10.0f * hit_animation_current))/ hit_animation_current);
+        playerShader->setUniform("hit_multiplier", player_hit);
+    }
+    else
+    {
+        playerShader->setUniform("hit_multiplier", 0.0f);
+    }
+
 	sprite.setPosition({renderPosition.x - 0.5f, -renderPosition.y - 1.0f});
 	sprite.setScale({ 2.0f / sprite.getTexture()->getSize().x, 2.0f / sprite.getTexture()->getSize().y });
-	target.draw(sprite);
+	target.draw(sprite, playerShader);
 }
 
 void Player::setLockMovement(bool lockMovement) {
@@ -189,4 +215,9 @@ void Player::teleport(sf::Vector2i newPos) {
 
 void Player::setHeartBeatDelay(float delay) {
     heartBeatDelay = delay;
+}
+
+void Player::animateHit() {
+    hit_animation_is_playing = true;
+    hit_animation_current = 0.0f;
 }
