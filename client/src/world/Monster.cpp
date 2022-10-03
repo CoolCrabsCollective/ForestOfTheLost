@@ -95,7 +95,7 @@ void Monster::drawDarkness(sf::RenderTarget &target, sf::Shader* shader) const {
     if(this->getWorld().getPhase() > GamePhase::INITIAL)
     {
         nightSprite.setPosition({renderPosition.x, -renderPosition.y});
-        nightSprite.setScale({ scale / nightSprite.getTexture()->getSize().x, scale / nightSprite.getTexture()->getSize().y });
+        nightSprite.setScale({ scaleDark / nightSprite.getTexture()->getSize().x, scaleDark / nightSprite.getTexture()->getSize().y });
         target.draw(nightSprite, shader);
     }
 }

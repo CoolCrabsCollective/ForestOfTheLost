@@ -13,6 +13,7 @@
 #include "WIZ/asset/AssetLoader.h"
 #include "DialogBox.h"
 #include "TeddyKid.h"
+#include "CryingGirl.h"
 
 class Entity;
 class Player;
@@ -37,6 +38,7 @@ class World : public Tickable, public sf::Drawable {
 	std::vector<Entity*> entities;
 	std::vector<Monster*> monsters;
     std::vector<TeddyKid*> teddyKids;
+    std::vector<CryingGirl*> cryingGirls;
 	Player player;
 
 	std::unordered_map<TerrainType, sf::Texture*> terrain_textures;
@@ -143,7 +145,9 @@ public:
 
     const std::vector<TeddyKid *> &getTeddyKids() const;
 
-	void generatePhase(GamePhase phase);
+    const std::vector<CryingGirl *> &getCryingGirls() const;
+
+    void generatePhase(GamePhase phase);
 };
 
 

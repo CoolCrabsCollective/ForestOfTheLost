@@ -21,6 +21,7 @@ protected:
     float movingSpeed = 2;
     float rotationSpeed = 5;
     float scale = 1;
+    float scaleDark = 1;
 
     sf::Vector2i partDestination = {};
 

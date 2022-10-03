@@ -66,9 +66,51 @@ void World::spawnEnemy(GamePhase phase, sf::Vector2i position) {
 }
 
 void World::generatePhase(GamePhase phase) {
+    currentPhase = phase;
+
+    double offsetX = rand() * 10.0 / RAND_MAX;
+    double offsetY = rand() * 10.0 / RAND_MAX;
 
 	if(phase == GHOST) {
-		// spawn crying kids
+        for (TeddyKid* teddyKid : teddyKids) {
+            removeEntity(teddyKid);
+        }
+
+        for(int i = -200; i <= 200; i++) {
+            for (int j = -200; j <= 200; j++) {
+                double nx = i / 400.0 - 0.5 + offsetX;
+                double ny = j / 400.0 - 0.5 + offsetY;
+
+                nx *= 5.0;
+                ny *= 5.0;
+
+                double noise = SimplexNoise::noise(nx, ny);
+
+                if (noise > -0.75) {
+                    double nx2 = i / 400.0 - 0.5 + offsetX * 9.0;
+                    double ny2 = j / 400.0 - 0.5 + offsetY * 9.0;
+
+                    nx2 *= 5000.0;
+                    ny2 *= 5000.0;
+
+                    double noise2 = SimplexNoise::noise(nx2, ny2);
+
+                    int chunkX = i / 20;
+                    int chunkY = j / 20;
+
+                    int x = (int) abs(SimplexNoise::noise(chunkX / 100.0 - 400.0, chunkY / 100.0 - 400.0)) % 20;
+                    int y = (int) abs(SimplexNoise::noise(chunkX / 100.0 - 400.0, chunkY / 100.0 - 400.0)) % 20;
+
+                    if (i % 20 == x && y == j % 20) {
+
+                        CryingGirl *sir_dick = new CryingGirl(*this, sf::Vector2i(i, j));
+                        addEntity(sir_dick);
+                        cryingGirls.push_back(sir_dick);
+                    }
+                }
+            }
+        }
+
 		return;
 	}
 
@@ -87,6 +129,7 @@ void World::generatePhase(GamePhase phase) {
 	entityMap.clear();
 	monsters.clear();
     teddyKids.clear();
+    cryingGirls.clear();
 
 	for(Entity* entity : copy)
 		if(entity != &player)
@@ -95,9 +138,6 @@ void World::generatePhase(GamePhase phase) {
 	addEntity(&player);
 	player.teleport({0, 0});
 	terrainMap.clear();
-
-	double offsetX = rand() * 10.0 / RAND_MAX;
-	double offsetY = rand() * 10.0 / RAND_MAX;
 
 	for(int i = -200; i <= 200; i++) {
 		for(int j = -200; j <= 200; j++) {
@@ -169,23 +209,7 @@ void World::generatePhase(GamePhase phase) {
                                 teddyKids.push_back(sir_dick);
 							}
 						}
-					} else if(phase == GamePhase::GHOST) {
-                        if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 2.0 * 2.0) {
-                            // TODO: Update world gen, it was copied from above lmao
-                            int chunkX = i / 20;
-                            int chunkY = j / 20;
-
-                            int x = (int)abs(SimplexNoise::noise(chunkX / 100.0 - 200.0, chunkY / 100.0 - 200.0)) % 20;
-                            int y = (int)abs(SimplexNoise::noise(chunkX / 100.0 - 200.0, chunkY / 100.0 - 200.0)) % 20;
-
-                            if(i % 20 == x && y == j % 20) {
-
-                                TeddyKid* sir_dick = new TeddyKid(*this, sf::Vector2i(i, j));
-                                addEntity(sir_dick);
-                                teddyKids.push_back(sir_dick);
-                            }
-                        }
-                    }
+					}
 				}
 			}
 
@@ -198,7 +222,6 @@ void World::generatePhase(GamePhase phase) {
 		grayscaleness = 0.5;
 	else
 		grayscaleness = 1.0;
-	currentPhase = phase;
 }
 
 TerrainType World::getTerrainType(sf::Vector2i position) const {
@@ -463,4 +486,8 @@ const std::vector<TeddyKid *> &World::getTeddyKids() const {
 
 const std::vector<Monster*>& World::get_monsters() const {
 	return monsters;
+}
+
+const std::vector<CryingGirl *> &World::getCryingGirls() const {
+    return cryingGirls;
 }
