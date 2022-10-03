@@ -29,6 +29,8 @@ elseif(UNIX)
     add_compile_definitions(OS_UNIX) # applies C++ macro
 endif()
 
+# add_compile_definitions(ENTITY_DEBUG)
+
 
 #
 # Set C++ version

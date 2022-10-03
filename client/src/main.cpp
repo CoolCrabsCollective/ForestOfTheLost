@@ -1,7 +1,3 @@
-//#define DEBUG
-
-#define ENTITY_DEBUG 1
-
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <WIZ/logging/MultiLogger.h>

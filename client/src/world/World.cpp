@@ -447,6 +447,15 @@ int enemyCountForPhase(GamePhase phase) {
 }
 
 void World::tick(float delta) {
+#ifdef ENTITY_DEBUG
+	for(Entity* entity : entities) {
+		if(!entityMap.contains(entity->getPosition()))
+			throw std::runtime_error("CANCER entity found not to be correct in map (NO VECTOR) (moved without moveEntity)?");
+		if(std::find(entityMap[entity->getPosition()].begin(), entityMap[entity->getPosition()].end(), entity) == entityMap[entity->getPosition()].end())
+			throw std::runtime_error("CANCER entity found not to be correct in map (moved without moveEntity)?");
+	}
+#endif
+
     getPlayer().setLockMovement(isTimePaused());
 
 	if(!isTimePaused()) {
@@ -472,7 +481,8 @@ void World::tick(float delta) {
 				countBlinkBeforePhaseChange--;
 				if(countBlinkBeforePhaseChange == -1 && currentPhase < FINAL) {
 					generatePhase(static_cast<GamePhase>(currentPhase + 1));
-                    // player.setHeartBeatDelay(player.getHeartBeatDelay() / 2);
+					if(currentPhase != FIRST_ENCOUNTER)
+                    	player.setHeartBeatDelay(player.getHeartBeatDelay() / 2);
                     switch (currentPhase) {
                         case FIRST_ENCOUNTER:
                             dialogBox.startDialog({
