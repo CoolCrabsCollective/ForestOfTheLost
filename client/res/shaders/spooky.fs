@@ -1,3 +1,5 @@
+#version 120
+
 uniform sampler2D texture;
 uniform float timeAccumulator;
 uniform float grayscaleness;
@@ -13,9 +15,10 @@ float malformed_euclidean_distance(vec2 v1, vec2 v2, float xStretch) {
 	return sqrt(d.x * d.x + d.y * d.y);
 }
 
-float opacityScanline = .1;
-float opacityNoise = .2;
-float flickering = 0.01;
+float opacityScanline = .2;
+float opacityNoise = .4;
+float flickering = 0.1;
+float scan_count = 600.0;
 
 float random (vec2 st) {
     return fract(sin(dot(st.xy, vec2(12.9898,78.233)))*43758.5453123);
@@ -67,8 +70,8 @@ void main()
 
 	vec3 grayscale_color = vec3(gray) * grayscaleness + pixelColor.rgb * (1.0 - grayscaleness);
 
-	float count = 600.0;
-    vec2 sl = vec2(sin(gl_TexCoord[0].y * count), cos(gl_TexCoord[0].y * count));
+
+    vec2 sl = vec2(sin(gl_TexCoord[0].y * scan_count), cos(gl_TexCoord[0].y * scan_count));
     vec3 scanlines = vec3(sl.x, sl.y, sl.x);
     grayscale_color += grayscale_color * scanlines * opacityScanline * scan_effect;
     grayscale_color += grayscale_color * vec3(random(gl_TexCoord[0].xy*timeAccumulator)) * opacityNoise * scan_effect;
