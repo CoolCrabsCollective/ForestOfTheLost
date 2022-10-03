@@ -35,7 +35,7 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 	terrain_textures[TerrainType::WATER] = assets.get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = assets.get(GameAssets::SAND_TERRAIN);
 
-	srand(20201002);
+	// srand(20201002);
 	generatePhase(GamePhase::INITIAL);
 }
 
@@ -93,6 +93,7 @@ void World::generatePhase(GamePhase phase) {
 			delete entity;
 
 	addEntity(&player);
+	player.teleport({0, 0});
 	terrainMap.clear();
 
 	double offsetX = rand() * 10.0 / RAND_MAX;
@@ -107,6 +108,10 @@ void World::generatePhase(GamePhase phase) {
 			ny *= 5.0;
 
 			double noise = SimplexNoise::noise(nx, ny);
+
+			if(sf::Vector2i { i, j }.lengthSq() <= 10.0 * 10.0)
+				noise += (100 - sf::Vector2i { i, j }.lengthSq()) / 50.0;
+
 			if(noise < -0.75)
 				terrainMap[sf::Vector2i(i, j)] = TerrainType::WATER;
 			else if(noise < -0.7)
@@ -343,7 +348,12 @@ void World::addEntity(Entity* entity) {
 }
 
 void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
-    std::remove(entityMap[oldPosition].begin(), entityMap[oldPosition].end(), entity);
+    auto removePos = std::find(entityMap[oldPosition].begin(), entityMap[oldPosition].end(), entity);
+
+	if(removePos == entityMap[entity->getPosition()].end())
+		throw std::runtime_error("Tried to move an entity not in entity map (may pain permeates into your suffering)");
+
+	entityMap[entity->getPosition()].erase(removePos);
 
 	if (entityMap.contains(entity->getPosition()))
 		entityMap[entity->getPosition()].push_back(entity);
