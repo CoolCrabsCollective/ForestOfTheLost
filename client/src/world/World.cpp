@@ -78,6 +78,9 @@ void World::generatePhase(GamePhase phase) {
 
         for(int i = -200; i <= 200; i++) {
             for (int j = -200; j <= 200; j++) {
+				if(i == 0 && j == 0)
+					continue;
+
                 double nx = i / 400.0 - 0.5 + offsetX;
                 double ny = j / 400.0 - 0.5 + offsetY;
 
@@ -86,7 +89,7 @@ void World::generatePhase(GamePhase phase) {
 
                 double noise = SimplexNoise::noise(nx, ny);
 
-                if (noise > -0.75) {
+                if (noise > -0.75 && (player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0) {
                     double nx2 = i / 400.0 - 0.5 + offsetX * 9.0;
                     double ny2 = j / 400.0 - 0.5 + offsetY * 9.0;
 
@@ -156,6 +159,9 @@ void World::generatePhase(GamePhase phase) {
 				terrainMap[sf::Vector2i(i, j)] = TerrainType::WATER;
 			else if(noise < -0.7)
 				terrainMap[sf::Vector2i(i, j)] = TerrainType::SAND;
+
+			if(i == 0 && j == 0)
+				continue;
 
 			if(noise > -0.75) {
 				double nx2 = i / 400.0 - 0.5 + offsetX * 9.0;
