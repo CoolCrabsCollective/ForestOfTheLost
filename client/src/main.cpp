@@ -1,3 +1,6 @@
+//#define DEBUG
+
+
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <WIZ/logging/MultiLogger.h>
