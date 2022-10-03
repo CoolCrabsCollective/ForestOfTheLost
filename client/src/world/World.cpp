@@ -471,7 +471,7 @@ void World::tick(float delta) {
 				countBlinkBeforePhaseChange--;
 				if(countBlinkBeforePhaseChange == -1 && currentPhase < FINAL) {
 					generatePhase(static_cast<GamePhase>(currentPhase + 1));
-                    player.setHeartBeatDelay(player.getHeartBeatDelay() / 2);
+                    // player.setHeartBeatDelay(player.getHeartBeatDelay() / 2);
                     switch (currentPhase) {
                         case FIRST_ENCOUNTER:
                             dialogBox.startDialog({
