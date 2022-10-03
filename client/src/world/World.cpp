@@ -568,6 +568,7 @@ void World::handleMonsterAttack(Monster& monster) {
     if (monster.daySprite.getTexture() == getAssets().get(GameAssets::INVISIBLE))
         monster.daySprite.setTexture(*monster.nightSprite.getTexture());
 
+    getPlayer().animateHit();
     dialogBox.startDialog({monster.getAttackMessage(),}, [&]{
         timePaused = false;
         if (currentPhase != GamePhase::INITIAL)
