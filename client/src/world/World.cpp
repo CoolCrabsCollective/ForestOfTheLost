@@ -642,7 +642,6 @@ void World::handleMonsterAttack(Monster& monster) {
         if (currentPhase != GamePhase::INITIAL) {
             loadCheckPoint = true;
             timePaused = false;
-        }
 
 			for(Monster* monster : monsters) {
 				removeEntity(monster);
