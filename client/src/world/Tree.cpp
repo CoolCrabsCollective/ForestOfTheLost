@@ -47,7 +47,7 @@ bool Tree::activate() {
 	else if(tree_type == DEAD)
 		world.getDialogBox().startDialog({ "This tree looks creepy." });
 	else
-		world.getDialogBox().startDialog({ "This tree IS THICC BOI" });
+		world.getDialogBox().startDialog({ "Rats and spiders escape from this large dead tree." });
 	return true;
 }
 

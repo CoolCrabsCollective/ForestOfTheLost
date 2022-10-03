@@ -8,7 +8,6 @@
 
 #include "World.h"
 #include "HidingSpot.h"
-#include "state/MonsterIdleState.h"
 
 class Monster : public Entity {
 protected:
@@ -25,7 +24,6 @@ protected:
 
     float searchRadius = 4;
 
-    std::shared_ptr<EntityState> state;
     bool hasLookedForSpot = false;
 
     bool attacking = false;
@@ -46,8 +44,6 @@ public:
     void move(sf::Vector2i des);
     void tickMovement(float delta);
     virtual void targetPlayerInRange();
-    const std::shared_ptr<EntityState> &getState() const;
-    void setState(const std::shared_ptr<EntityState> &state);
     std::string getAttackMessage();
 };
 

@@ -20,7 +20,6 @@
 #include "world/Solid.h"
 #include "world/Tree.h"
 #include "world/EndGoal.h"
-#include "world/state/MonsterChargeState.h"
 #include "world/NPC.h"
 #include "world/TeddyKid.h"
 #include "world/Snake.h"
@@ -428,7 +427,6 @@ bool World::tileOccupied(sf::Vector2i tile, Entity* exclude) {
 
 int enemyCountForPhase(GamePhase phase) {
 	switch (phase) {
-
 		case INITIAL:
 			return 4;
 		case FIRST_ENCOUNTER:
@@ -440,6 +438,7 @@ int enemyCountForPhase(GamePhase phase) {
 		case FINAL:
 			return 10;
 	}
+	throw std::runtime_error("UNKNOWN PHASE");
 }
 
 void World::tick(float delta) {
@@ -456,6 +455,15 @@ void World::tick(float delta) {
 				getPlayer().setLockMovement(false);
 		}
 
+		if(tenSecAccumulator > 9250.0 && !entitiesStartMoving) {
+			for(int i = 0; i < getEntities().size(); i++) {
+				if(Monster* monster = dynamic_cast<Monster*>(getEntities().at(i)))
+					// Don't want to go to the same bush
+					monster->findNewSpot();
+			}
+			entitiesStartMoving = true;
+		}
+
 		if(tenSecAccumulator > 10000.0) {
             std::cout << "10 seconds passed!" << std::endl;
 
@@ -469,13 +477,8 @@ void World::tick(float delta) {
 				}
 			}
 
-			for(int i = 0; i < getEntities().size(); i++) {
-				if(Monster* monster = dynamic_cast<Monster*>(getEntities().at(i)))
-					// Don't want to go to the same bush
-					monster->findNewSpot();
-			}
-
 			tenSecAccumulator = fmod(tenSecAccumulator, 10000.0f);
+			entitiesStartMoving = false;
 		}
 	}
 
