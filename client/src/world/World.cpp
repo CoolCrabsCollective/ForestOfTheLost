@@ -502,7 +502,7 @@ void World::tick(float delta) {
                                   "Now I see the true face of these monsters...",
                                   "These entities...",
                                   "Am I stuck here forever?",
-                                  "[The mystery is solved but you are trapped in this ethereal plane forever]",
+                                  "[The mystery is solved but you are trapped in this ethereal plane for eternity]",
                                   "[Thank you for playing!]"
                             });
                             break;
