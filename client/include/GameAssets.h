@@ -49,6 +49,7 @@ namespace GameAssets {
 
 	ASSET(ShaderAsset, SPOOKY_SHADER, ("shaders/spooky.vs", "shaders/spooky.fs"))
 	ASSET(ShaderAsset, EYES_SHADER, ("shaders/eyes.vs", "shaders/eyes.fs"))
+	ASSET(ShaderAsset, PLAYER_SHADER, ("shaders/player.vs", "shaders/player.fs"))
 
 	ASSET(TextAsset, CONTROLLER_DB, ("gamecontrollerdb.txt"))
 
