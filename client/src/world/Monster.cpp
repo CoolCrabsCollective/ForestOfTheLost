@@ -12,6 +12,9 @@ Monster::Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, s
     nightSprite(*nightTexture)
 {
     this->position = position;
+    this->destination = position;
+    this->partDestination = position;
+
     renderPosition = {static_cast<float>(position.x), static_cast<float>(-position.y)};
 
     state = std::make_shared<MonsterIdleState>(this);

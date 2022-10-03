@@ -55,6 +55,7 @@ void Player::tick(float delta) {
         actionProgress += (delta / 1000) * movingSpeed;
 
         if (actionProgress > 1) {
+            walkSound.stop();
             sf::Vector2i oldPos = position;
             position = destination;
 			renderPosition = (sf::Vector2f) position;
@@ -86,6 +87,7 @@ void Player::tick(float delta) {
 					lastCollision = std::chrono::system_clock::now();
 				}
             } else {
+                walkSound.setPitch(1.5 + ((rand() % 11) / 10));
                 walkSound.play();
             }
         } else
@@ -160,7 +162,6 @@ void Player::interact() {
 			interactSound.play();
 			return;
 		}
-
 
 	lastInteract = std::chrono::system_clock::now();
 	noInteractSound.play();
