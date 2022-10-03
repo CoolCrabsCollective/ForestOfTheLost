@@ -55,7 +55,7 @@ void Player::tick(float delta) {
         actionProgress += (delta / 1000) * movingSpeed;
 
         if (actionProgress > 1) {
-            walkSound.stoss();
+            walkSound.stop();
             sf::Vector2i oldPos = position;
             position = destination;
 			renderPosition = (sf::Vector2f) position;
