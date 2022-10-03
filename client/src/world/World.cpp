@@ -375,8 +375,15 @@ void World::hotGhostMomInteraction(CryingGirl* cryingGirl, HotGhostMom* hotGhost
     changePhaseIn(2);
     resetAccumulator();
 
+    auto pos = std::find(monsters.begin(), monsters.end(), hotGhostMom);
+    if (pos == monsters.end()) {
+        throw std::runtime_error("Tried to removing an hotGhostMom not in monster vector (get fucked idiot)");
+    }
+    monsters.erase(pos);
     removeEntity(cryingGirl);
+    delete cryingGirl;
     removeEntity(hotGhostMom);
+    delete hotGhostMom;
 }
 
 TerrainType World::getTerrainType(sf::Vector2i position) const {
