@@ -50,16 +50,16 @@ void LoadingScreen::show() {
 	sprite.setTexture(*getGame().getAssets().get(GameAssets::WHITE_PIXEL));
 
 #ifdef OS_WINDOWS
-	message.setString("Deleting System32...");
+	message.setString("Children of the Lost...");
 #endif
 #ifdef OS_UNIX
-	message.setString("Sinister Sleuth");
+	message.setString("Children of the Lost");
 #endif
 #ifdef OS_MAC
-	message.setString("sudo rm -rf /");
+	message.setString("Children of the Lost");
 #endif
 #ifdef OS_SWITCH
-	message.setString("Formatting SD card...");
+	message.setString("Children of the Lost");
 #endif
 
 	message.setFont(*getGame().getAssets().get(GameAssets::SANS_TTF));
