@@ -58,7 +58,7 @@ void Monster::tick(float delta) {
 
     if (position == world.getPlayer().getPosition() && nextAttackCountdown <= 0) {
         world.handleMonsterAttack(*this);
-        nextAttackCountdown = 1000;
+        nextAttackCountdown = 2000; // 2 seconds
         findNewSpot();
     }
 
@@ -87,7 +87,7 @@ void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) con
         return;
 
     daySprite.setPosition({renderPosition.x, -renderPosition.y});
-    daySprite.setScale({ 1.0f / daySprite.getTexture()->getSize().x, 1.0f / daySprite.getTexture()->getSize().y });
+    daySprite.setScale({ scale / daySprite.getTexture()->getSize().x, scale / daySprite.getTexture()->getSize().y });
     target.draw(daySprite);
 }
 
@@ -95,7 +95,7 @@ void Monster::drawDarkness(sf::RenderTarget &target, sf::Shader* shader) const {
     if(this->getWorld().getPhase() > GamePhase::INITIAL)
     {
         nightSprite.setPosition({renderPosition.x, -renderPosition.y});
-        nightSprite.setScale({ 1.0f / nightSprite.getTexture()->getSize().x, 1.0f / nightSprite.getTexture()->getSize().y });
+        nightSprite.setScale({ scale / nightSprite.getTexture()->getSize().x, scale / nightSprite.getTexture()->getSize().y });
         target.draw(nightSprite, shader);
     }
 }

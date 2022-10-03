@@ -20,6 +20,7 @@ protected:
     float actionProgress = 0;
     float movingSpeed = 2;
     float rotationSpeed = 5;
+    float scale = 1;
 
     sf::Vector2i partDestination = {};
 
