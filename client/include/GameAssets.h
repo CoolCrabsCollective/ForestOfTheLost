@@ -138,6 +138,8 @@ namespace GameAssets {
 
     // EndGoal
     ASSET(wiz::TextureAsset, END_GOAL, ("gfx/end_goal.png"))
+
+    ASSET(wiz::TextureAsset, OFFICE, ("gfx/background.png"))
 }
 
 

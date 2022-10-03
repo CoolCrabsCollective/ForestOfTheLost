@@ -41,6 +41,7 @@ protected:
 
     sf::Sprite lily;
     sf::Sprite inspector_thinking;
+    sf::Sprite background;
     bool drawLily = true;
 	sf::Sprite fbo_sprite;
 
