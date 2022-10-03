@@ -27,6 +27,7 @@
 #include "world/HotGhostMom.h"
 #include "world/Ball.h"
 #include "world/monster_kid/MonsterKidMonster.h"
+#include "world/Orb.h"
 
 World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 		: assets(assets),
@@ -94,7 +95,9 @@ void World::spawnEnemy(GamePhase phase, sf::Vector2i position) {
 			else
 				monster = new Beholder(*this, position);
 		}
-	} else {
+	} else if(phase == FINAL) {
+        monster = new Orb(*this, position);
+    } else {
 		return;
 	}
 
