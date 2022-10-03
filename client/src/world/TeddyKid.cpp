@@ -16,7 +16,7 @@ bool TeddyKid::activate() {
 	getWorld().getDialogBox().startDialog({"Kid: Thank you for bringing Teddie here with me.",
 										   "You: What are you doing here? Are you alone in this forest?",
 										   "Kid: I have never been in better company..."}, [&](){
-        world.setSetCheckPoint(true);
+        world.generatePhase(GHOST);
 	});
 	return NPC::activate();
 }

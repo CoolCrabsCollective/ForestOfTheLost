@@ -86,6 +86,7 @@ void World::generatePhase(GamePhase phase) {
 	entities.clear();
 	entityMap.clear();
 	monsters.clear();
+    teddyKids.clear();
 
 	for(Entity* entity : copy)
 		if(entity != &player)
@@ -158,11 +159,28 @@ void World::generatePhase(GamePhase phase) {
 
 							if(i % 20 == x && y == j % 20) {
 
-								Entity* sir_dick = new TeddyKid(*this, sf::Vector2i(i, j));
+								TeddyKid* sir_dick = new TeddyKid(*this, sf::Vector2i(i, j));
 								addEntity(sir_dick);
+                                teddyKids.push_back(sir_dick);
 							}
 						}
-					}
+					} else if(phase == GamePhase::GHOST) {
+                        if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 2.0 * 2.0) {
+                            // TODO: Update world gen, it was copied from above lmao
+                            int chunkX = i / 20;
+                            int chunkY = j / 20;
+
+                            int x = (int)abs(SimplexNoise::noise(chunkX / 100.0 - 200.0, chunkY / 100.0 - 200.0)) % 20;
+                            int y = (int)abs(SimplexNoise::noise(chunkX / 100.0 - 200.0, chunkY / 100.0 - 200.0)) % 20;
+
+                            if(i % 20 == x && y == j % 20) {
+
+                                TeddyKid* sir_dick = new TeddyKid(*this, sf::Vector2i(i, j));
+                                addEntity(sir_dick);
+                                teddyKids.push_back(sir_dick);
+                            }
+                        }
+                    }
 				}
 			}
 
@@ -325,14 +343,7 @@ void World::addEntity(Entity* entity) {
 }
 
 void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
-
-	auto toRemove = std::find(entityMap[oldPosition].begin(), entityMap[oldPosition].end(), entity);
-
-    if(toRemove == entityMap[oldPosition].end()) {
-        throw std::runtime_error("Tried to moving an entity not in entity map (IQ issue)");
-    }
-
-	entityMap[oldPosition].erase(toRemove);
+    std::remove(entityMap[oldPosition].begin(), entityMap[oldPosition].end(), entity);
 
 	if (entityMap.contains(entity->getPosition()))
 		entityMap[entity->getPosition()].push_back(entity);
@@ -436,6 +447,10 @@ bool World::isSetCheckPoint() const {
 
 void World::setSetCheckPoint(bool setCheckPoint) {
     World::setCheckPoint = setCheckPoint;
+}
+
+const std::vector<TeddyKid *> &World::getTeddyKids() const {
+    return teddyKids;
 }
 
 const std::vector<Monster*>& World::get_monsters() const {
