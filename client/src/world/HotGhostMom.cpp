@@ -54,7 +54,7 @@ void HotGhostMom::targetPlayerInRange() {
 void HotGhostMom::moveTowardsPlayer() {
     sf::Vector2i playerPos = world.getPlayer().getPosition();
 
-    sf::Vector2i moveTo = playerPos - MIN_RANGE_TO_PLAYER*vectorToUnitVector(playerPos);
+    sf::Vector2i moveTo = playerPos + MIN_RANGE_TO_PLAYER*vectorToUnitVector(playerPos);
 
     move(moveTo);
 }
