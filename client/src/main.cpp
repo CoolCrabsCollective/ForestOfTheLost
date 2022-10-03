@@ -1,6 +1,6 @@
 //#define DEBUG
 
-#define ENTITY_DEBUG 1
+//#define ENTITY_DEBUG 1
 
 #include <SFML/Graphics.hpp>
 #include <memory>

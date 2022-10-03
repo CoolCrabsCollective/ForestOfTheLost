@@ -124,10 +124,17 @@ void Monster::findNewSpot() {
             if (searchX == position.x && searchY == position.y)
                 continue;
 
-            // TODO: check no one else is going there
-            // Update: this is kind of impossible fuck it
 
-            auto entitiesAt = world.getEntitiesAt({searchX, searchY});
+			// TODO: check no one else is going there
+			// Update: this is kind of impossible fuck it
+
+			sf::Vector2i dest = {searchX, searchY};
+
+			for(Monster* monster : world.get_monsters())
+				if(monster->getDestination() == dest)
+					continue;
+
+            auto entitiesAt = world.getEntitiesAt(dest);
 
             for (int k = 0 ; k < entitiesAt.size() ; k++) {
                 if(HidingSpot* spot = dynamic_cast<HidingSpot*>(entitiesAt.at(k))) {

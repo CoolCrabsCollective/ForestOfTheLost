@@ -447,12 +447,10 @@ void World::tick(float delta) {
 		timeAccumulator += delta;
 		tenSecAccumulator += delta;
 
-		if(getPhase() != INITIAL) {
-			if(tenSecAccumulator > 9250.0 || tenSecAccumulator < 500.0)
-				getPlayer().setLockMovement(true);
-			else
-				getPlayer().setLockMovement(false);
-		}
+		if(tenSecAccumulator > 9250.0 || tenSecAccumulator < 500.0)
+			getPlayer().setLockMovement(true);
+		else
+			getPlayer().setLockMovement(false);
 
 		if(tenSecAccumulator > 9250.0 && !entitiesStartMoving) {
 			for(int i = 0; i < getEntities().size(); i++) {
