@@ -56,6 +56,7 @@ class World : public Tickable, public sf::Drawable {
 
     bool endPointReached = false;
     bool timePaused = false;
+	bool entitiesStartMoving = false;
 
 	float grayscaleness = 0.0f;
 	float scan_effect = 0.0f;
