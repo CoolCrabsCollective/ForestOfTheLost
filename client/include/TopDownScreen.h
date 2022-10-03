@@ -42,6 +42,7 @@ protected:
     sf::Sprite lily;
     sf::Sprite inspector_thinking;
     bool drawLily = true;
+	sf::Sprite fbo_sprite;
 
 public:
 	explicit TopDownScreen(wiz::Game& game);

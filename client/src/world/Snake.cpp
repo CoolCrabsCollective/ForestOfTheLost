@@ -25,7 +25,7 @@ void Snake::draw(sf::RenderTarget &target, const sf::RenderStates &states) const
     Monster::draw(target, states);
 }
 
-void Snake::drawDarkness(sf::RenderTarget &target, sf::Shader *shader) const {
+void Snake::drawDarkness(sf::RenderTarget &target) const {
     if(this->getRenderPosition().x < this->world.getPlayer().getRenderPosition().x)
     {
         nightSprite.setScale(sf::Vector2f{1.0f, 1.0f});
@@ -34,6 +34,6 @@ void Snake::drawDarkness(sf::RenderTarget &target, sf::Shader *shader) const {
     {
         nightSprite.setScale(sf::Vector2f{-1.0f, 1.0f});
     }
-    Monster::drawDarkness(target, shader);
+    Monster::drawDarkness(target);
 }
 

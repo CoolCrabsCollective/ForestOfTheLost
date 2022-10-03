@@ -13,7 +13,7 @@ public:
 
     void draw(sf::RenderTarget &target, const sf::RenderStates &states) const override;
 
-    void drawDarkness(sf::RenderTarget &target, sf::Shader *shader) const override;
+    void drawDarkness(sf::RenderTarget &target) const override;
 
 protected:
 };

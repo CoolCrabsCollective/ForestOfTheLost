@@ -129,13 +129,12 @@ void TopDownScreen::drawWorld(sf::RenderTarget &target) {
 }
 
 void TopDownScreen::render(sf::RenderTarget& target) {
-    if (world.isEndPointReached()) {
+
+    if(world.isEndPointReached()) {
+		target.clear();
         target.draw(endGoalText);
         return;
     }
-
-    if(!frameBuffer.create(1280, 720))
-        throw std::runtime_error("Failed to create FBO!");
 
     frameBuffer.clear();
     frameBuffer.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f,
@@ -145,11 +144,12 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 	spookyShader->setUniform("timeAccumulator",  world.getTimeAccumulator());
 	spookyShader->setUniform("grayscaleness", world.getGrayscaleness());
 	frameBuffer.display(); // done drawing fbo
-	sf::Sprite fbo(frameBuffer.getTexture());
+	fbo_sprite.setTexture(frameBuffer.getTexture());
 	target.clear();
+
 	if(world.getPhase() == INITIAL && !world.isChangingPhaseNext()) {
         spookyShader->setUniform("scan_effect", 0.0f);
-        target.draw(fbo);
+        target.draw(fbo_sprite);
     }
 	else {
 		float spookyness = (float)fmod(world.getTimeAccumulator(), 10000.0f) / 10000.0f;
@@ -159,9 +159,18 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 								 : 1.0f);
 
         spookyShader->setUniform("scan_effect", std::max(std::min(1.0f, (world.getTimeAccumulator() - 20000.f)/ 10000.f), 0.0f));
-		target.draw(fbo, spookyShader);
+		target.draw(fbo_sprite, spookyShader);
 	}
-    drawNight(target);
+
+	frameBuffer.clear(sf::Color(0, 0, 0, 0));
+    drawNight(frameBuffer);
+
+	frameBuffer.display();
+	fbo_sprite.setTexture(frameBuffer.getTexture());
+
+	eyesShader->setUniform("timeAccumulator", world.getTimeAccumulator());
+	target.draw(fbo_sprite, eyesShader);
+
 	drawUI(target);
 }
 
@@ -169,10 +178,9 @@ void TopDownScreen::drawNight(sf::RenderTarget &target) {
     sf::Vector2f viewSize = World::VIEW_SIZE;
     target.setView(sf::View({ world.getPlayer().getRenderPosition().x + 0.5f, -world.getPlayer().getRenderPosition().y + 0.5f }, viewSize));
 
-    eyesShader->setUniform("timeAccumulator", world.getTimeAccumulator());
     for(auto entity : world.getEntities())
         if(Monster* monster = dynamic_cast<Monster*>(entity))
-           monster->drawDarkness(target, eyesShader);
+           monster->drawDarkness(target);
 }
 
 void TopDownScreen::drawUI(sf::RenderTarget &target) {
@@ -194,6 +202,10 @@ void TopDownScreen::drawUI(sf::RenderTarget &target) {
 void TopDownScreen::show() {
 	getGame().addWindowListener(this);
 	getGame().addInputListener(this);
+
+
+	if(!frameBuffer.create(1280, 720))
+		throw std::runtime_error("Failed to create FBO!");
 
     spookyShader = getAssets().get(GameAssets::SPOOKY_SHADER);
     eyesShader = getAssets().get(GameAssets::EYES_SHADER);
