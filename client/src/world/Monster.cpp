@@ -4,7 +4,7 @@
 
 #include "world/Monster.h"
 #include "GameAssets.h"
-#include "world/state/MonsterChargeState.h"
+#include "world/World.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 
 Monster::Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, sf::Texture* nightTexture) : Entity(world),
@@ -17,7 +17,6 @@ Monster::Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, s
 
     renderPosition = {static_cast<float>(position.x), static_cast<float>(-position.y)};
 
-    state = std::make_shared<MonsterIdleState>(this);
     attackMessage = "A monster attacked you!"; // shitty default attack message
 }
 
@@ -32,13 +31,14 @@ void Monster::tick(float delta) {
 
     tickMovement(delta);
 
-    if (attacking && nextAttackCountdown < 1250) {
+    if (world.getPhase() == INITIAL && attacking && nextAttackCountdown < 1250) {
         world.setTimePaused(false);
         attacking = false;
     }
 
     if (nextAttackCountdown <= 0) {
         targetPlayerInRange();
+        attacking = false;
     }
 
     if (position == world.getPlayer().getPosition() && nextAttackCountdown <= 0) {
@@ -48,8 +48,6 @@ void Monster::tick(float delta) {
 
         attacking = true;
     }
-
-    state->tick(delta);
 }
 
 void Monster::tickMovement(float delta) {
@@ -58,7 +56,7 @@ void Monster::tickMovement(float delta) {
 
     renderPosition = (sf::Vector2f) position;
     if (moving) {
-        actionProgress += (delta / 1000) * movingSpeed;
+        actionProgress += (delta / 1000) / 0.25;
 
         if (actionProgress > 1) {
             sf::Vector2i oldPos = position;
@@ -90,9 +88,10 @@ void Monster::targetPlayerInRange() {
 
     sf::Vector2i diff = position - playerPos;
 
-    bool nextToPlayer = diff == vectorToUnitVector(diff);
+    bool nextToPlayer = diff.lengthSq() < 1.1;
 
     if (nextToPlayer) {
+		world.setTimePaused(true);
         moveTowardsPlayer();
     }
 }
@@ -152,19 +151,10 @@ void Monster::moveTowardsPlayer() {
 
         move(playerPos);
 
-        world.setTimePaused(true);
 }
 
 sf::Vector2f Monster::getRenderPosition() const {
     return renderPosition;
-}
-
-const std::shared_ptr<EntityState> &Monster::getState() const {
-    return state;
-}
-
-void Monster::setState(const std::shared_ptr<EntityState> &state) {
-    Monster::state = state;
 }
 
 std::string Monster::getAttackMessage() {
