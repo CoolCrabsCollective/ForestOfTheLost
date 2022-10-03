@@ -13,9 +13,9 @@ CryingGirl::CryingGirl(World& world, const sf::Vector2i& position)
                                 {WEST, world.getAssets().get(GameAssets::CRYING_GIRL_LEFT)}}) {}
 
 bool CryingGirl::activate() {
-    getWorld().getDialogBox().startDialog({"Crying girl: I'm vewy sad wah.",
+    getWorld().getDialogBox().startDialog({"Lily: *crying*",
                                            "You: What's wrong?",
-                                           "Crying girl: My fwiend do be dead 0w0"}, [&](){
+                                           "Lily: I lost my mother when I was young. I saw my mother's ghostly silhouette at the edge of this forest. I entered and then became lost. Can you help me find my mother and bring her back here?"}, [&](){
 
         if (!removedOtherGirls) {
             for (CryingGirl* cryingGirl : world.getCryingGirls()) {
