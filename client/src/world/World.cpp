@@ -209,13 +209,38 @@ void World::generatePhase(GamePhase phase) {
 				}
 				else if(noise2 > 0.7) {
 
+					BushType type;
+					if(phase == GamePhase::INITIAL)
+					{
+						if(prob < 0.5)
+							type = BushType::BUSH;
+						else
+							type = BushType::BUSH2;
+					} else if(phase == GamePhase::FIRST_ENCOUNTER) {
+						if(prob < 0.25) {
+							type = BushType::BUSH;
+						} else if(prob < 0.5) {
+							type = BushType::BUSH2;
+						} else if(prob < 0.75) {
+							type = BushType::WITHERED_BUSH;
+						} else {
+							type = BushType::WITHERED_BUSH2;
+						}
+					} else {
+						if(prob < 0.5)
+							type = BushType::WITHERED_BUSH;
+						else
+							type = BushType::WITHERED_BUSH2;
+					}
+
+
 					for(int o = -1; o <= 1; o++)
 						for(int p = -1; p <= 1; p++)
 							for(Entity* entity : getEntitiesAt({i + o, j + p}))
 								if(dynamic_cast<Bush*>(entity))
 									goto nobush;
 
-					addEntity(new Bush(*this, {i, j}, static_cast<BushType>(std::abs(i + j) % 2)));
+					addEntity(new Bush(*this, {i, j}, type));
 					nobush:;
 				} else {
 					if(phase == GamePhase::INITIAL) {
