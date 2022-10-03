@@ -21,6 +21,7 @@ namespace GameAssets {
 
 	// Music
 	ASSET(wiz::MusicAsset, SUSPICIOUS_FOREST_MUSIC, ("music/suspicious_forest.ogg"))
+    ASSET(wiz::MusicAsset, LILYS_THEME_MUSIC, ("music/lilys_theme.ogg"))
 
 	// Sounds
 	ASSET(wiz::SoundAsset, COLLISION, ("sfx/collision.ogg"))

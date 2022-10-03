@@ -21,6 +21,7 @@ void HotGhostMom::tick(float delta) {
     } else if (position == destination && !ghostMomReachCryingGirl && playerTargeted) {
         // reached crying girl, start cutscene
 
+        world.getAssets().get(GameAssets::LILYS_THEME_MUSIC)->play();
         world.getDialogBox().startDialog({"Ghost Mom: Lily... I'm so happy to see you!", "Ghost Mom: Sir, thank you so much for bringing me back to Lily! This place is dangerous, be careful. There are many lost children in this forest. Some have been transformed into evil beings but they are simply children. Perhaps, bringing them toys could heal them."}, [&](){
             world.hotGhostMomInteraction(cryingGirl, this);
         });
