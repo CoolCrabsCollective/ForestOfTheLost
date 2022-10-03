@@ -17,10 +17,13 @@ bool CryingGirl::activate() {
                                            "You: What's wrong?",
                                            "Crying girl: My fwiend do be dead 0w0"}, [&](){
 
-        for (CryingGirl* cryingGirl : world.getCryingGirls()) {
-            if (cryingGirl != this) {
-                world.removeEntity(cryingGirl);
+        if (!removedOtherGirls) {
+            for (CryingGirl* cryingGirl : world.getCryingGirls()) {
+                if (cryingGirl != this) {
+                    world.removeEntity(cryingGirl);
+                }
             }
+            removedOtherGirls = true;
         }
     });
     return NPC::activate();

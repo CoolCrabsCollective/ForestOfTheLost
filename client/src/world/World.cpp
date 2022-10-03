@@ -98,8 +98,8 @@ void World::generatePhase(GamePhase phase) {
                     int chunkX = i / 20;
                     int chunkY = j / 20;
 
-                    int x = (int) abs(SimplexNoise::noise(chunkX / 100.0 - 200.0, chunkY / 100.0 - 200.0)) % 20;
-                    int y = (int) abs(SimplexNoise::noise(chunkX / 100.0 - 200.0, chunkY / 100.0 - 200.0)) % 20;
+                    int x = (int) abs(SimplexNoise::noise(chunkX / 100.0 - 400.0, chunkY / 100.0 - 400.0)) % 20;
+                    int y = (int) abs(SimplexNoise::noise(chunkX / 100.0 - 400.0, chunkY / 100.0 - 400.0)) % 20;
 
                     if (i % 20 == x && y == j % 20) {
 
