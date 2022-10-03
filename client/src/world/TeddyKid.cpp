@@ -13,9 +13,9 @@ TeddyKid::TeddyKid(World& world, const sf::Vector2i& position)
 								{WEST, world.getAssets().get(GameAssets::TEDDY_KID_LEFT)}}) {}
 
 bool TeddyKid::activate() {
-	getWorld().getDialogBox().startDialog({"Kid: Thank you for bringing Teddie here with me.",
-										   "You: What are you doing here? Are you alone in this forest?",
-										   "Kid: I don't know..."}, [&](){
+	getWorld().getDialogBox().startDialog({"Kid: Thank you for bringing Teddy here with me.",
+										   "You: What are you doing here? Are you alone?",
+										   "Kid: ..."}, [&](){
         world.generatePhase(GHOST);
 	});
 	return NPC::activate();

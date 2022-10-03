@@ -29,9 +29,9 @@ TopDownScreen::TopDownScreen(wiz::Game& game)
     endGoalText.setPosition(sf::Vector2f(600 - bounds.getSize().x / 2, 450 - bounds.getSize().y / 2));
 
     dialogBox.startDialog({
-        "Another kid lost in this forest...",
-        "Why is is always the kids...",
+        "Another one...",
         "I need to find her...",
+        "Why is is always the kids?...",
         });
 
 	mappingDatabase.loadFromCSV(*getGame().getAssets().get(GameAssets::CONTROLLER_DB));
