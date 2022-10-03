@@ -21,6 +21,7 @@ class Player;
 class Monster;
 class HotGhostMom;
 class Ball;
+class MonsterKidHealed;
 
 enum GamePhase {
 	INITIAL,
@@ -65,6 +66,8 @@ class World : public Tickable, public sf::Drawable {
 	float tenSecAccumulator = 0.0f;
 
 	bool got_balls = false;
+
+    MonsterKidHealed* healedKid = nullptr;
 public:
     bool isGotBalls() const;
 

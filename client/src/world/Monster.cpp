@@ -5,7 +5,9 @@
 #include "world/Monster.h"
 #include "GameAssets.h"
 #include "world/World.h"
+#include "world/monster_kid/MonsterKidHealed.h"
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <condition_variable>
 
 Monster::Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, sf::Texture* nightTexture) : Entity(world),
     daySprite(*dayTexture),

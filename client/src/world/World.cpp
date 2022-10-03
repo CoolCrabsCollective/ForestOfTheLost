@@ -447,6 +447,14 @@ int enemyCountForPhase(GamePhase phase) {
 }
 
 void World::tick(float delta) {
+    if (healedKid) {
+        removeEntity(healedKid);
+        delete healedKid;
+        healedKid = nullptr;
+        changePhaseIn(2);
+        timePaused = false;
+    }
+
     getPlayer().setLockMovement(isTimePaused());
 
 	if(!isTimePaused()) {
@@ -491,7 +499,11 @@ void World::tick(float delta) {
                         case FINAL:
                             dialogBox.startDialog({
                                   "The illusion is broken...",
-                                  "Now I see the true face of these monsters..."
+                                  "Now I see the true face of these monsters...",
+                                  "These entities...",
+                                  "Am I stuck here forever?",
+                                  "[The mystery is solved but you are trapped in this ethereal plane forever]",
+                                  "[Thank you for playing!]"
                             });
                             break;
                     };
@@ -663,7 +675,7 @@ void World::handleMonsterAttack(Monster& monster) {
         if(isGotBalls())
         {
             dialogBox.startDialog({"Monster Kid: Oh you have a ball! Let's play!"}, [&, monsterKid]{
-                MonsterKidHealed* healedKid = new MonsterKidHealed(*this, monsterKid->getPosition());
+                healedKid = new MonsterKidHealed(*this, monsterKid->getPosition());
                 addEntity(healedKid);
 
                 auto pos = std::find(monsters.begin(), monsters.end(), monsterKid);
@@ -676,12 +688,7 @@ void World::handleMonsterAttack(Monster& monster) {
 
                 dialogBox.startDialog({
                     "Kid: I'm healed... Thanks for playing ball with me."
-                }, [&]{
-
-                    removeEntity(healedKid);
-                    delete healedKid;
-                    changePhaseIn(2);
-                });
+                }, [](){}); // Don't use this callback! It doesn't execute
             });
             return;
         }
