@@ -146,8 +146,8 @@ void World::generatePhase(GamePhase phase) {
     player.teleport({0, 0});
     terrainMap.clear();
 
-    for (int i = -200; i <= 200; i++) {
-        for (int j = -200; j <= 200; j++) {
+    for (int i = -210; i <= 210; i++) {
+        for (int j = -210; j <= 210; j++) {
             double nx = i / 400.0 - 0.5 + offsetX;
             double ny = j / 400.0 - 0.5 + offsetY;
 
@@ -159,9 +159,17 @@ void World::generatePhase(GamePhase phase) {
             if (sf::Vector2i{i, j}.lengthSq() <= 10.0 * 10.0)
                 noise += (100 - sf::Vector2i{i, j}.lengthSq()) / 50.0;
 
-            if (noise < -0.75 || ((i == -200 || i == 200) && (j == -200 || j == 200)))
+			if((i <= -200 || i >= 200) || (j <= -200 || j >= 200)) {
+				terrainMap[sf::Vector2i(i, j)] = TerrainType::WATER;
+				continue;
+			} else if((i <= -195 || i >= 195) || (j <= -195 || j >= 195)) {
+				terrainMap[sf::Vector2i(i, j)] = TerrainType::SAND;
+				continue;
+			}
+
+            if (noise < -0.75)
                 terrainMap[sf::Vector2i(i, j)] = TerrainType::WATER;
-            else if (noise < -0.7 || ((i == -199 || i == 199) && (j == -199 || j == 199)))
+            else if (noise < -0.7)
                 terrainMap[sf::Vector2i(i, j)] = TerrainType::SAND;
             else if (noise > 1.5f)
                 terrainMap[sf::Vector2i(i, j)] = TerrainType::GRASS;
