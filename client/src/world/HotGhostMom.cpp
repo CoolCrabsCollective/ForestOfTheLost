@@ -48,7 +48,11 @@ void HotGhostMom::moveTowardsPlayer() {
 
     sf::Vector2i moveTo = playerPos + MIN_RANGE_TO_PLAYER*vectorToUnitVector(playerPos);
 
+    sf::Vector2i oldPos = position;
+
     move(moveTo);
+
+    world.moveEntity(oldPos, cryingGirl);
 }
 
 void HotGhostMom::findNewSpot() {
@@ -79,7 +83,9 @@ void HotGhostMom::checkForCryingGirl() {
                 cryingGirl = dynamic_cast<CryingGirl *>(entity);
 
                 if (cryingGirl) {
+                    sf::Vector2i oldPos = position;
                     move(cryingGirl->getPosition() - vectorToUnitVector(cryingGirl->getPosition()));
+                    world.moveEntity(oldPos, cryingGirl);
                     return;
                 }
             }
