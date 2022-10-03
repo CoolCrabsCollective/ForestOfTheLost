@@ -26,6 +26,8 @@ Player::Player(World& world)
 	interactSound.setBuffer(*world.getAssets().get(GameAssets::INTERACT));
 	noInteractSound.setBuffer(*world.getAssets().get(GameAssets::NOINTERACT));
 	collisionSound.setBuffer(*world.getAssets().get(GameAssets::COLLISION));
+    walkSound.setBuffer(*world.getAssets().get(GameAssets::WALK_SOUND));
+    walkSound.setVolume(50);
 
     setAnimationSprite(&sprite);
     msBetweenFrames = 100.0f;
@@ -83,6 +85,8 @@ void Player::tick(float delta) {
 					collisionSound.play();
 					lastCollision = std::chrono::system_clock::now();
 				}
+            } else {
+                walkSound.play();
             }
         } else
 			destinationDir = inputDir.value();

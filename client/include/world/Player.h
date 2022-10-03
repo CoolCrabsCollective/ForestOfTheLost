@@ -39,7 +39,7 @@ class Player : public Entity, public Alive<int>, public Solid, public Anime {
 
 	std::chrono::system_clock::time_point lastInteract = std::chrono::system_clock::now() - std::chrono::milliseconds(1000),
 		lastCollision = std::chrono::system_clock::now() - std::chrono::milliseconds(1000);
-	sf::Sound interactSound, noInteractSound, collisionSound;
+	sf::Sound interactSound, noInteractSound, collisionSound, walkSound;
 public:
 	Player(World& world);
 
