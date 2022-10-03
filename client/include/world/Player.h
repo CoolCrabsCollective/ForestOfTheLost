@@ -46,7 +46,10 @@ class Player : public Entity, public Alive<int>, public Solid, public Anime {
 
 	std::chrono::system_clock::time_point lastInteract = std::chrono::system_clock::now() - std::chrono::milliseconds(1000),
 		lastCollision = std::chrono::system_clock::now() - std::chrono::milliseconds(1000);
-	sf::Sound interactSound, noInteractSound, collisionSound, walkSound;
+	sf::Sound interactSound, noInteractSound, collisionSound, walkSound, heartBeatSound;
+
+    float heartBeatDelay = 2000.0f;
+    float timeSinceLastHeartBeat = 0;
 public:
 	Player(World& world);
 
@@ -68,6 +71,8 @@ public:
     void setLockMovement(bool lockMovement);
 
 	void teleport(sf::Vector2i position);
+
+    void setHeartBeatDelay(float delay);
 
 	void animateHit();
 };
