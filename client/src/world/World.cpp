@@ -331,6 +331,14 @@ void World::spawnHotGhostMoms(CryingGirl* cryingGirl) {
     }
 }
 
+void World::hotGhostMomInteraction(CryingGirl* cryingGirl, HotGhostMom* hotGhostMom) {
+    changePhaseIn(2);
+    resetAccumulator();
+
+    removeEntity(cryingGirl);
+    removeEntity(hotGhostMom);
+}
+
 TerrainType World::getTerrainType(sf::Vector2i position) const {
 	if(terrainMap.contains(position))
 		return terrainMap.at(position);

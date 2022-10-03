@@ -18,12 +18,14 @@ void HotGhostMom::tick(float delta) {
     if (!cryingGirl) {
         targetPlayerInRange();
         checkForCryingGirl();
-    } else {
-        if (position == destination) {
-            // reached crying girl, start cutscene
+    } else if (position == destination && !ghostMomReachCryingGirl) {
+        // reached crying girl, start cutscene
 
-            // TODO: write cutscene for crying girl and ghost mom interaction
-        }
+        world.getDialogBox().startDialog({"Ghost Mom: I finally found you bitch!",}, [&](){
+            world.hotGhostMomInteraction(cryingGirl, this);
+        });
+
+        ghostMomReachCryingGirl = true;
     }
 }
 
@@ -64,6 +66,9 @@ void HotGhostMom::findNewSpot() {
 }
 
 void HotGhostMom::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
+    if (cryingGirl && position == destination) {
+        drawDarkness(target);
+    }
 }
 
 void HotGhostMom::drawDarkness(sf::RenderTarget &target) const {
