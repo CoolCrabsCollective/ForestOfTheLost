@@ -2,6 +2,7 @@
 // Created by cedric on 2022-10-03.
 //
 
+#include <GameAssets.h>
 #include "world/Beholder.h"
 
 Beholder::Beholder(World &world, sf::Vector2i position) : Monster(world, position,
