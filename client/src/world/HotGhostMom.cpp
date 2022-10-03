@@ -14,6 +14,8 @@ HotGhostMom::HotGhostMom(World &world, sf::Vector2i position) : Monster(world, p
 
 void HotGhostMom::tick(float delta) {
     tickMovement(delta);
+
+    targetPlayerInRange();
 }
 
 void HotGhostMom::targetPlayerInRange() {
@@ -30,10 +32,24 @@ void HotGhostMom::targetPlayerInRange() {
     if (!minRangeToPlayer && !maxRangeToPlayer) {
         moveTowardsPlayer();
     }
+
+    if (!removedOtherHotGhostMoms) {
+        for (HotGhostMom* hotGhostMom : world.getHotGhostMoms()) {
+            if (hotGhostMom != this) {
+                world.removeEntity(hotGhostMom);
+            }
+        }
+
+        removedOtherHotGhostMoms = true;
+    }
 }
 
 void HotGhostMom::moveTowardsPlayer() {
     sf::Vector2i playerPos = world.getPlayer().getPosition();
 
     move(playerPos);
+}
+
+void HotGhostMom::findNewSpot() {
+
 }

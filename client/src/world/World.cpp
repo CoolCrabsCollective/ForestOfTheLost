@@ -22,6 +22,7 @@
 #include "world/NPC.h"
 #include "world/TeddyKid.h"
 #include "world/Snake.h"
+#include "world/HotGhostMom.h"
 
 World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 		: assets(assets),
@@ -134,6 +135,7 @@ void World::generatePhase(GamePhase phase) {
 	monsters.clear();
     teddyKids.clear();
     cryingGirls.clear();
+    hotGhostMoms.clear();
 
 	for(Entity* entity : copy)
 		if(entity != &player)
@@ -296,6 +298,20 @@ void World::generatePhase(GamePhase phase) {
 		grayscaleness = 0.5;
 	else
 		grayscaleness = 1.0;
+}
+
+void World::spawnHotGhostMoms(CryingGirl* cryingGirl) {
+    int randDir = 0;
+    int randRadius = 0;
+
+    for (int i = 0; i<HOT_GHOST_MOM_SPAWN_COUNT; i++) {
+        randDir = rand() % 360;
+        randRadius = rand() % HOT_GHOST_MOM_MAX_SPAWN_RADIUS + HOT_GHOST_MOM_MIN_SPAWN_RADIUS;
+
+        HotGhostMom* sir_dick = new HotGhostMom(*this, sf::Vector2i(ceil(cos(randDir)*randRadius), ceil(sin(randDir)*randRadius)));
+        addEntity(sir_dick);
+        hotGhostMoms.push_back(sir_dick);
+    }
 }
 
 TerrainType World::getTerrainType(sf::Vector2i position) const {
@@ -572,6 +588,10 @@ const std::vector<Monster*>& World::get_monsters() const {
 
 const std::vector<CryingGirl *> &World::getCryingGirls() const {
     return cryingGirls;
+}
+
+const std::vector<HotGhostMom *> &World::getHotGhostMoms() const {
+    return hotGhostMoms;
 }
 
 void World::shake(sf::Vector2i vec) {

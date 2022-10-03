@@ -39,7 +39,7 @@ public:
     void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
     virtual void drawDarkness(sf::RenderTarget& target, sf::Shader* shader) const;
     sf::Vector2f getRenderPosition() const override;
-    void findNewSpot();
+    virtual void findNewSpot();
     virtual void moveTowardsPlayer();
     void move(sf::Vector2i des);
     void tickMovement(float delta);
