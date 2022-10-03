@@ -50,3 +50,7 @@ bool Tree::activate() {
 		world.getDialogBox().startDialog({ "This tree IS THICC BOI" });
 	return true;
 }
+
+void Tree::shake() {
+
+}

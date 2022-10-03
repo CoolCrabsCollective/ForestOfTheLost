@@ -22,6 +22,7 @@
 #include "world/NPC.h"
 #include "world/TeddyKid.h"
 #include "world/Snake.h"
+#include "world/HotGhostMom.h"
 
 World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 		: assets(assets),
@@ -134,6 +135,7 @@ void World::generatePhase(GamePhase phase) {
 	monsters.clear();
     teddyKids.clear();
     cryingGirls.clear();
+    hotGhostMoms.clear();
 
 	for(Entity* entity : copy)
 		if(entity != &player)
@@ -296,6 +298,20 @@ void World::generatePhase(GamePhase phase) {
 		grayscaleness = 0.5;
 	else
 		grayscaleness = 1.0;
+}
+
+void World::spawnHotGhostMoms(CryingGirl* cryingGirl) {
+    int randDir = 0;
+    int randRadius = 0;
+
+    for (int i = 0; i<HOT_GHOST_MOM_SPAWN_COUNT; i++) {
+        randDir = rand() % 360;
+        randRadius = rand() % HOT_GHOST_MOM_MAX_SPAWN_RADIUS + HOT_GHOST_MOM_MIN_SPAWN_RADIUS;
+
+        HotGhostMom* sir_dick = new HotGhostMom(*this, sf::Vector2i(ceil(cryingGirl->getPosition().x + cos(randDir)*randRadius), ceil(cryingGirl->getPosition().y + sin(randDir)*randRadius)));
+        addEntity(sir_dick);
+        hotGhostMoms.push_back(sir_dick);
+    }
 }
 
 TerrainType World::getTerrainType(sf::Vector2i position) const {
@@ -522,10 +538,18 @@ void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
 }
 
 void World::handleMonsterAttack(Monster& monster) {
+    // Terrible code pt. 1 (making wraiths visible when they are attacking you)
+    if (monster.daySprite.getTexture() == getAssets().get(GameAssets::INVISIBLE))
+        monster.daySprite.setTexture(*monster.nightSprite.getTexture());
+
     dialogBox.startDialog({monster.getAttackMessage(),}, [&]{
         timePaused = false;
         if (currentPhase != GamePhase::INITIAL)
             loadCheckPoint = true;
+
+        // Terrible code pt. 2
+        if (monster.daySprite.getTexture() == monster.nightSprite.getTexture())
+            monster.daySprite.setTexture(*getAssets().get(GameAssets::INVISIBLE));
     });
 }
 
@@ -564,4 +588,18 @@ const std::vector<Monster*>& World::get_monsters() const {
 
 const std::vector<CryingGirl *> &World::getCryingGirls() const {
     return cryingGirls;
+}
+
+const std::vector<HotGhostMom *> &World::getHotGhostMoms() const {
+    return hotGhostMoms;
+}
+
+void World::shake(sf::Vector2i vec) {
+    for(auto entity : entityMap[vec])
+    {
+        if(auto* hidingSpot = dynamic_cast<HidingSpot*>(entity))
+        {
+            hidingSpot->shake();
+        }
+    }
 }

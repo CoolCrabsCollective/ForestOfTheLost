@@ -12,8 +12,6 @@
 
 class Monster : public Entity {
 protected:
-    mutable sf::Sprite daySprite;
-    mutable sf::Sprite nightSprite;
     sf::Vector2f renderPosition = {};
     Direction currentDir = NORTH;
     Direction destinationDir = NORTH;
@@ -34,23 +32,20 @@ protected:
 
     float nextAttackCountdown = 0;
 public:
+    mutable sf::Sprite daySprite;
+    mutable sf::Sprite nightSprite;
     Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, sf::Texture* nightTexture);
     void tick(float delta) override;
     void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
     virtual void drawDarkness(sf::RenderTarget& target) const;
     sf::Vector2f getRenderPosition() const override;
-    void findNewSpot();
+    virtual void findNewSpot();
     virtual void moveTowardsPlayer();
     void move(sf::Vector2i des);
-
     void tickMovement(float delta);
-
     virtual void targetPlayerInRange();
-
     const std::shared_ptr<EntityState> &getState() const;
-
     void setState(const std::shared_ptr<EntityState> &state);
-
     std::string getAttackMessage();
 };
 

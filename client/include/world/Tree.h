@@ -22,6 +22,8 @@ class Tree : public HidingSpot, public Solid, public Interactable {
 public:
     Tree(World& world, const sf::Vector2i& position, TreeType tree_type);
 
+    void shake() override;
+
     bool isBlocking(sf::Vector2i vec);
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;

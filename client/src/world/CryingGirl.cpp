@@ -23,6 +23,9 @@ bool CryingGirl::activate() {
                     world.removeEntity(cryingGirl);
                 }
             }
+
+            world.spawnHotGhostMoms(this);
+
             removedOtherGirls = true;
         }
     });
