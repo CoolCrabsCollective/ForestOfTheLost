@@ -64,3 +64,11 @@ void Bush::tick(float delta) {
         bush_is_shaking = false;
     }
 }
+
+bool Bush::activate() {
+	if(bush_type == BUSH || bush_type == BUSH2)
+		world.getDialogBox().startDialog({ "Things can hide in this bush." });
+	else
+		world.getDialogBox().startDialog({ "This bush has been dead for a while..." });
+	return true;
+}

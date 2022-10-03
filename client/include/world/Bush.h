@@ -15,7 +15,7 @@ enum BushType {
     WITHERED_BUSH2
 };
 
-class Bush : public HidingSpot {
+class Bush : public HidingSpot, public Interactable {
 public:
 	Bush(World& world, const sf::Vector2i& position, BushType bushType);
 
@@ -24,6 +24,8 @@ public:
     void shake() override;
 
     void tick(float delta) override;
+
+	bool activate() override;
 
 protected:
     sf::Vector2f bush_shake_scale = { 1.0f, 1.0f };
