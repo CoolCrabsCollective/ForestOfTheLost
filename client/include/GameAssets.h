@@ -43,6 +43,7 @@ namespace GameAssets {
 
 	ASSET(wiz::TextureAsset, HEART, ("gfx/heart.png"))
     ASSET(wiz::TextureAsset, ITEM_TEDDY, ("gfx/teddy_bear.png"))
+	ASSET(wiz::TextureAsset, ITEM_BALL, ("gfx/ball.png"))
 
     ASSET(wiz::TextureAsset, DIALOG_BOX, ("gfx/dialog_box.png"))
 
@@ -123,6 +124,14 @@ namespace GameAssets {
     ASSET(wiz::TextureAsset, CRYING_GIRL_RIGHT, ("gfx/npcs/crying_girl/right.png"))
 
     ASSET(wiz::TextureAsset, LILY, ("gfx/npcs/crying_girl/polaroid.png"))
+
+	// Monster kid
+	ASSET(wiz::TextureAsset, MONSTER_KID_BACK, ("gfx/npcs/monster_kid/back.png"))
+	ASSET(wiz::TextureAsset, MONSTER_KID_FRONT, ("gfx/npcs/monster_kid/front.png"))
+	ASSET(wiz::TextureAsset, MONSTER_KID_LEFT, ("gfx/npcs/monster_kid/left.png"))
+	ASSET(wiz::TextureAsset, MONSTER_KID_RIGHT, ("gfx/npcs/monster_kid/right.png"))
+
+	ASSET(wiz::TextureAsset, MONSTER_KID_MONSTER, ("gfx/npcs/monster_kid/monster.png"))
 
     // EndGoal
     ASSET(wiz::TextureAsset, END_GOAL, ("gfx/end_goal.png"))

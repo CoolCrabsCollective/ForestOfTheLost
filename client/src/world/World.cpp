@@ -2,27 +2,28 @@
 // Created by Winter on 01/10/2022.
 //
 
-%:include <world/TeddyBear.h>
-%:include <random>
-%:include <world/Bat.h>
-%:include <world/Wraith.h>
-%:include <world/GroundHog.h>
-%:include <world/Ghoul.h>
-%:include <iostream>
-%:include "world/World.h"
-%:include "SFML/System/Vector2.hpp"
-%:include "util/SimplexNoise.h"
-%:include "GameAssets.h"
-%:include "world/Bush.h"
-%:include "world/Monster.h"
-%:include "world/Solid.h"
-%:include "world/Tree.h"
-%:include "world/EndGoal.h"
-%:include "world/state/MonsterChargeState.h"
-%:include "world/NPC.h"
-%:include "world/TeddyKid.h"
-%:include "world/Snake.h"
-%:include "world/HotGhostMom.h"
+#include <world/TeddyBear.h>
+#include <random>
+#include <world/Bat.h>
+#include <world/Wraith.h>
+#include <world/GroundHog.h>
+#include <world/Ghoul.h>
+#include <iostream>
+#include "world/World.h"
+#include "SFML/System/Vector2.hpp"
+#include "util/SimplexNoise.h"
+#include "GameAssets.h"
+#include "world/Bush.h"
+#include "world/Monster.h"
+#include "world/Solid.h"
+#include "world/Tree.h"
+#include "world/EndGoal.h"
+#include "world/state/MonsterChargeState.h"
+#include "world/NPC.h"
+#include "world/TeddyKid.h"
+#include "world/Snake.h"
+#include "world/HotGhostMom.h"
+#include "world/Ball.h"
 
 World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 		: assets(assets),
@@ -137,6 +138,7 @@ void World::generatePhase(GamePhase phase) {
     teddyKids.clear();
     cryingGirls.clear();
     hotGhostMoms.clear();
+	balls.clear();
 
     for (Entity *entity : copy)
         if (entity != &player)
@@ -293,42 +295,84 @@ void World::generatePhase(GamePhase phase) {
                                 teddyKids.push_back(sir_dick);
                             }
                         }
-                    }
+                    } else if (phase == GamePhase::MONSTER) {
+						if ((player.getPosition() - sf::Vector2i{i, j}).lengthSq() > 10.0 * 10.0 &&
+							sf::Vector2i(i, j).lengthSq() > 10.0 * 10.0) {
+							int chunkX = i / 20;
+							int chunkY = j / 20;
+
+							int x = (int) abs(SimplexNoise::noise(chunkX / 100.0 - 200.0, chunkY / 100.0 - 200.0)) % 20;
+							int y = (int) abs(SimplexNoise::noise(chunkX / 100.0 - 200.0, chunkY / 100.0 - 200.0)) % 20;
+
+							if (i % 20 == x && y == j % 20) {
+
+								Ball *ball = new Ball(*this, sf::Vector2i(i, j));
+								addEntity(ball);
+								balls.push_back(ball);
+							}
+						}
+					}
                 }
             }
 
         }
     }
 
-    if (phase == GamePhase::INITIAL)
-    <%
-        grayscaleness = 0.0;
-        scan_effect = 0.0;
-    %>
-	else if(phase == GamePhase::FIRST_ENCOUNTER)
-    <%
-        grayscaleness = 0.5;
-        scan_effect = 0.5;
-    %>
-	else
-    <%
-        grayscaleness = 1.0;
-        scan_effect = 1.0;
-    %>
+    if (phase == GamePhase::INITIAL) {
+		grayscaleness = 0.0;
+		scan_effect = 0.0;
+	} else if(phase == GamePhase::FIRST_ENCOUNTER) {
+		grayscaleness = 0.5;
+		scan_effect = 0.5;
+	} else {
+		grayscaleness = 1.0;
+		scan_effect = 1.0;
+	}
 }
 
 void World::spawnHotGhostMoms(CryingGirl* cryingGirl) {
-    int randDir = 0;
-    int randRadius = 0;
 
-    for (int i = 0; i<HOT_GHOST_MOM_SPAWN_COUNT; i++) {
-        randDir = rand() % 360;
-        randRadius = rand() % HOT_GHOST_MOM_MAX_SPAWN_RADIUS + HOT_GHOST_MOM_MIN_SPAWN_RADIUS;
+	double offsetX = rand() * 10.0 / RAND_MAX;
+	double offsetY = rand() * 10.0 / RAND_MAX;
 
-        HotGhostMom* sir_dick = new HotGhostMom(*this, sf::Vector2i(ceil(cryingGirl->getPosition().x + cos(randDir)*randRadius), ceil(cryingGirl->getPosition().y + sin(randDir)*randRadius)));
-        addEntity(sir_dick);
-        hotGhostMoms.push_back(sir_dick);
-    }
+	for (int i = -200; i <= 200; i++) {
+		for (int j = -200; j <= 200; j++) {
+			if (i == 0 && j == 0)
+				continue;
+
+			double nx = i / 400.0 - 0.5 + offsetX;
+			double ny = j / 400.0 - 0.5 + offsetY;
+
+			nx *= 5.0;
+			ny *= 5.0;
+
+			double noise = SimplexNoise::noise(nx, ny);
+
+			if (noise > -0.75 && (player.getPosition() - sf::Vector2i{i, j}).lengthSq() > 15.0 * 15.0 &&
+				sf::Vector2i(i, j).lengthSq() > 10.0 * 10.0) {
+				double nx2 = i / 400.0 - 0.5 + offsetX * 9.0;
+				double ny2 = j / 400.0 - 0.5 + offsetY * 9.0;
+
+				nx2 *= 5000.0;
+				ny2 *= 5000.0;
+
+				double noise2 = SimplexNoise::noise(nx2, ny2);
+
+				int chunkX = i / 20;
+				int chunkY = j / 20;
+
+				int x = (int) abs(SimplexNoise::noise(chunkX / 100.0 - 600.0, chunkY / 100.0 - 600.0)) % 20;
+				int y = (int) abs(SimplexNoise::noise(chunkX / 100.0 - 600.0, chunkY / 100.0 - 600.0)) % 20;
+
+				if (i % 20 == x && y == j % 20) {
+
+					HotGhostMom* sir_dick = new HotGhostMom(*this, sf::Vector2i(i, j));
+					addEntity(sir_dick);
+					hotGhostMoms.push_back(sir_dick);
+				}
+			}
+		}
+	}
 }
 
 void World::hotGhostMomInteraction(CryingGirl* cryingGirl, HotGhostMom* hotGhostMom) {
@@ -605,7 +649,7 @@ void World::setSetCheckPoint(bool setCheckPoint) {
     World::setCheckPoint = setCheckPoint;
 }
 
-const std::vector<TeddyKid *> &World::getTeddyKids() const {
+const std::vector<TeddyKid*> &World::getTeddyKids() const {
     return teddyKids;
 }
 
@@ -629,4 +673,12 @@ void World::shake(sf::Vector2i vec) {
             hidingSpot->shake();
         }
     }
+}
+
+void World::removeBalls() {
+	for(Ball* ball : balls) {
+		removeEntity(ball);
+		delete ball;
+	}
+	balls.clear();
 }
