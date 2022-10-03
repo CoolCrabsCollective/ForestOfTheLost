@@ -28,6 +28,8 @@ protected:
     std::shared_ptr<EntityState> state;
     bool hasLookedForSpot = false;
 
+    bool attacking = false;
+
     std::string attackMessage;
 
     float nextAttackCountdown = 0;
