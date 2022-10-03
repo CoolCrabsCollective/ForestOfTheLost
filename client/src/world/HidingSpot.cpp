@@ -8,7 +8,7 @@
 
 HidingSpot::HidingSpot(World &world, sf::Vector2i position) : Entity(world) {
     this->position = position;
-    this->sprite = sf::Sprite(*world.getAssets().get(GameAssets::HIDING_SPOT));
+    this->sprite = sf::Sprite(*world.getAssets().get(GameAssets::BUSH));
 }
 
 void HidingSpot::tick(float delta) {

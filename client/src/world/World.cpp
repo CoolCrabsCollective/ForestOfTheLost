@@ -129,7 +129,7 @@ void World::generatePhase(GamePhase phase) {
 					addEntity(new Tree(*this, { i, j }, type));
 				}
 				else if(noise2 > 0.5) {
-					addEntity(new Bush(*this, {i, j}));
+					addEntity(new Bush(*this, {i, j}, static_cast<BushType>((i + j) % 2)));
 				} else {
 					if(phase == GamePhase::INITIAL) {
 						if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0) {

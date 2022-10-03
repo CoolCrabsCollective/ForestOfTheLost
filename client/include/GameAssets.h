@@ -55,7 +55,11 @@ namespace GameAssets {
 	ASSET(wiz::TextureAsset, SAND_TERRAIN, ("gfx/terrain/sand.png"))
 
     // Hiding Spots
-    ASSET(wiz::TextureAsset, HIDING_SPOT, ("gfx/bush.png"))
+    ASSET(wiz::TextureAsset, BUSH, ("gfx/george_hw/bush.png"))
+    ASSET(wiz::TextureAsset, BUSH2, ("gfx/george_hw/bush2.png"))
+
+    ASSET(wiz::TextureAsset, WITHERED_BUSH, ("gfx/george_hw/withered.png"))
+    ASSET(wiz::TextureAsset, WITHERED_BUSH2, ("gfx/george_hw/withered2.png"))
 
 	// Tree
     ASSET(wiz::TextureAsset, ALIVE_TREE, ("gfx/tree/alive.png"))
