@@ -2,27 +2,27 @@
 // Created by Winter on 01/10/2022.
 //
 
-#include <world/TeddyBear.h>
-#include <random>
-#include <world/Bat.h>
-#include <world/Wraith.h>
-#include <world/GroundHog.h>
-#include <world/Ghoul.h>
-#include <iostream>
-#include "world/World.h"
-#include "SFML/System/Vector2.hpp"
-#include "util/SimplexNoise.h"
-#include "GameAssets.h"
-#include "world/Bush.h"
-#include "world/Monster.h"
-#include "world/Solid.h"
-#include "world/Tree.h"
-#include "world/EndGoal.h"
-#include "world/state/MonsterChargeState.h"
-#include "world/NPC.h"
-#include "world/TeddyKid.h"
-#include "world/Snake.h"
-#include "world/HotGhostMom.h"
+%:include <world/TeddyBear.h>
+%:include <random>
+%:include <world/Bat.h>
+%:include <world/Wraith.h>
+%:include <world/GroundHog.h>
+%:include <world/Ghoul.h>
+%:include <iostream>
+%:include "world/World.h"
+%:include "SFML/System/Vector2.hpp"
+%:include "util/SimplexNoise.h"
+%:include "GameAssets.h"
+%:include "world/Bush.h"
+%:include "world/Monster.h"
+%:include "world/Solid.h"
+%:include "world/Tree.h"
+%:include "world/EndGoal.h"
+%:include "world/state/MonsterChargeState.h"
+%:include "world/NPC.h"
+%:include "world/TeddyKid.h"
+%:include "world/Snake.h"
+%:include "world/HotGhostMom.h"
 
 World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 		: assets(assets),
@@ -73,15 +73,15 @@ void World::generatePhase(GamePhase phase) {
     double offsetX = rand() * 10.0 / RAND_MAX;
     double offsetY = rand() * 10.0 / RAND_MAX;
 
-	if(phase == GHOST) {
-        for (TeddyKid* teddyKid : teddyKids) {
+    if (phase == GHOST) {
+        for (TeddyKid *teddyKid : teddyKids) {
             removeEntity(teddyKid);
         }
 
-        for(int i = -200; i <= 200; i++) {
+        for (int i = -200; i <= 200; i++) {
             for (int j = -200; j <= 200; j++) {
-				if(i == 0 && j == 0)
-					continue;
+                if (i == 0 && j == 0)
+                    continue;
 
                 double nx = i / 400.0 - 0.5 + offsetX;
                 double ny = j / 400.0 - 0.5 + offsetY;
@@ -91,7 +91,8 @@ void World::generatePhase(GamePhase phase) {
 
                 double noise = SimplexNoise::noise(nx, ny);
 
-                if (noise > -0.75 && (player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0 && sf::Vector2i(i, j).lengthSq() > 10.0 * 10.0) {
+                if (noise > -0.75 && (player.getPosition() - sf::Vector2i{i, j}).lengthSq() > 10.0 * 10.0 &&
+                    sf::Vector2i(i, j).lengthSq() > 10.0 * 10.0) {
                     double nx2 = i / 400.0 - 0.5 + offsetX * 9.0;
                     double ny2 = j / 400.0 - 0.5 + offsetY * 9.0;
 
@@ -116,188 +117,196 @@ void World::generatePhase(GamePhase phase) {
             }
         }
 
-		return;
-	}
+        return;
+    }
 
 #ifdef ENTITY_DEBUG
-	for(int i = 0; i < entities.size(); i++) {
+    for(int i = 0; i < entities.size(); i++) {
         for(int j = 0; j < entities.size(); j++) {
             if(i != j && entities[i] == entities[j])
                 std::cout << "FUCK!!!" << std::endl;
         }
-	}
+    }
 #endif
 
-	std::vector<Entity*> copy = entities;
+    std::vector<Entity *> copy = entities;
 
-	entities.clear();
-	entityMap.clear();
-	monsters.clear();
+    entities.clear();
+    entityMap.clear();
+    monsters.clear();
     teddyKids.clear();
     cryingGirls.clear();
     hotGhostMoms.clear();
 
-	for(Entity* entity : copy)
-		if(entity != &player)
-			delete entity;
+    for (Entity *entity : copy)
+        if (entity != &player)
+            delete entity;
 
-	addEntity(&player);
-	player.teleport({0, 0});
-	terrainMap.clear();
+    addEntity(&player);
+    player.teleport({0, 0});
+    terrainMap.clear();
 
-	for(int i = -200; i <= 200; i++) {
-		for(int j = -200; j <= 200; j++) {
-			double nx = i / 400.0 - 0.5 + offsetX;
-			double ny = j / 400.0 - 0.5 + offsetY;
+    for (int i = -200; i <= 200; i++) {
+        for (int j = -200; j <= 200; j++) {
+            double nx = i / 400.0 - 0.5 + offsetX;
+            double ny = j / 400.0 - 0.5 + offsetY;
 
-			nx *= 5.0;
-			ny *= 5.0;
+            nx *= 5.0;
+            ny *= 5.0;
 
-			double noise = SimplexNoise::noise(nx, ny);
+            double noise = SimplexNoise::noise(nx, ny);
 
-			if(sf::Vector2i { i, j }.lengthSq() <= 10.0 * 10.0)
-				noise += (100 - sf::Vector2i { i, j }.lengthSq()) / 50.0;
+            if (sf::Vector2i{i, j}.lengthSq() <= 10.0 * 10.0)
+                noise += (100 - sf::Vector2i{i, j}.lengthSq()) / 50.0;
 
-			if(noise < -0.75)
-				terrainMap[sf::Vector2i(i, j)] = TerrainType::WATER;
-			else if(noise < -0.7)
-				terrainMap[sf::Vector2i(i, j)] = TerrainType::SAND;
-			else if(noise > 1.5f)
-				terrainMap[sf::Vector2i(i, j)] = TerrainType::GRASS;
+            if (noise < -0.75)
+                terrainMap[sf::Vector2i(i, j)] = TerrainType::WATER;
+            else if (noise < -0.7)
+                terrainMap[sf::Vector2i(i, j)] = TerrainType::SAND;
+            else if (noise > 1.5f)
+                terrainMap[sf::Vector2i(i, j)] = TerrainType::GRASS;
 
-			if(i == 0 && j == 0)
-				continue;
+            if (i == 0 && j == 0)
+                continue;
 
-			if(noise > -0.75) {
-				double nx2 = i / 400.0 - 0.5 + offsetX * 9.0;
-				double ny2 = j / 400.0 - 0.5 + offsetY * 9.0;
+            if (noise > -0.75) {
+                double nx2 = i / 400.0 - 0.5 + offsetX * 9.0;
+                double ny2 = j / 400.0 - 0.5 + offsetY * 9.0;
 
-				nx2 *= 5000.0;
-				ny2 *= 5000.0;
+                nx2 *= 5000.0;
+                ny2 *= 5000.0;
 
-				double noise2 = SimplexNoise::noise(nx2, ny2);
+                double noise2 = SimplexNoise::noise(nx2, ny2);
 
-				double prob = rand() * 1.0 / RAND_MAX;
+                double prob = rand() * 1.0 / RAND_MAX;
 
-				if(noise2 > 0.9) {
-					TreeType type;
-					if(phase == GamePhase::INITIAL)
-					{
-						if(prob < 0.95)
-							type = TreeType::ALIVE;
-						else
-							type = TreeType::SQUIRREL;
-					} else if(phase == GamePhase::FIRST_ENCOUNTER) {
-						if(prob < 0.4) {
-							type = TreeType::ALIVE;
-						} else if(prob < 0.9) {
-							type = TreeType::DEAD;
-						} else {
-							type = TreeType::THICK_DEAD;
-						}
-					} else {
-						if(prob < 0.9) {
-							type = TreeType::DEAD;
-						} else {
-							type = TreeType::THICK_DEAD;
-						}
-					}
+                if (noise2 > 0.9) {
+                    TreeType type;
+                    if (phase == GamePhase::INITIAL) {
+                        if (prob < 0.95)
+                            type = TreeType::ALIVE;
+                        else
+                            type = TreeType::SQUIRREL;
+                    } else if (phase == GamePhase::FIRST_ENCOUNTER) {
+                        if (prob < 0.4) {
+                            type = TreeType::ALIVE;
+                        } else if (prob < 0.9) {
+                            type = TreeType::DEAD;
+                        } else {
+                            type = TreeType::THICK_DEAD;
+                        }
+                    } else {
+                        if (prob < 0.9) {
+                            type = TreeType::DEAD;
+                        } else {
+                            type = TreeType::THICK_DEAD;
+                        }
+                    }
 
-					for(int o = -1; o <= 1; o++)
-						for(int p = -1; p <= 1; p++)
-							for(Entity* entity : getEntitiesAt({i + o, j + p}))
-								if(dynamic_cast<Tree*>(entity))
-									goto notree;
+                    for (int o = -1; o <= 1; o++)
+                        for (int p = -1; p <= 1; p++)
+                            for (Entity *entity : getEntitiesAt({i + o, j + p}))
+                                if (dynamic_cast<Tree *>(entity))
+                                    goto notree;
 
-					addEntity(new Tree(*this, { i, j }, type));
-					for(int o = -1; o <= 1; o++)
-						for(int p = -1; p <= 1; p++)
-							if(!terrainMap.contains(sf::Vector2i(i + o, j + p)))
-								terrainMap[sf::Vector2i(i + o, j + p)] = TerrainType::GRASS;
-					notree:;
-				}
-				else if(noise2 > 0.7) {
+                    addEntity(new Tree(*this, {i, j}, type));
+                    for (int o = -1; o <= 1; o++)
+                        for (int p = -1; p <= 1; p++)
+                            if (!terrainMap.contains(sf::Vector2i(i + o, j + p)))
+                                terrainMap[sf::Vector2i(i + o, j + p)] = TerrainType::GRASS;
+                    notree:;
+                } else if (noise2 > 0.7) {
 
-					BushType type;
-					if(phase == GamePhase::INITIAL)
-					{
-						if(prob < 0.5)
-							type = BushType::BUSH;
-						else
-							type = BushType::BUSH2;
-					} else if(phase == GamePhase::FIRST_ENCOUNTER) {
-						if(prob < 0.25) {
-							type = BushType::BUSH;
-						} else if(prob < 0.5) {
-							type = BushType::BUSH2;
-						} else if(prob < 0.75) {
-							type = BushType::WITHERED_BUSH;
-						} else {
-							type = BushType::WITHERED_BUSH2;
-						}
-					} else {
-						if(prob < 0.5)
-							type = BushType::WITHERED_BUSH;
-						else
-							type = BushType::WITHERED_BUSH2;
-					}
+                    BushType type;
+                    if (phase == GamePhase::INITIAL) {
+                        if (prob < 0.5)
+                            type = BushType::BUSH;
+                        else
+                            type = BushType::BUSH2;
+                    } else if (phase == GamePhase::FIRST_ENCOUNTER) {
+                        if (prob < 0.25) {
+                            type = BushType::BUSH;
+                        } else if (prob < 0.5) {
+                            type = BushType::BUSH2;
+                        } else if (prob < 0.75) {
+                            type = BushType::WITHERED_BUSH;
+                        } else {
+                            type = BushType::WITHERED_BUSH2;
+                        }
+                    } else {
+                        if (prob < 0.5)
+                            type = BushType::WITHERED_BUSH;
+                        else
+                            type = BushType::WITHERED_BUSH2;
+                    }
 
 
-					for(int o = -1; o <= 1; o++)
-						for(int p = -1; p <= 1; p++)
-							for(Entity* entity : getEntitiesAt({i + o, j + p}))
-								if(dynamic_cast<Bush*>(entity))
-									goto nobush;
+                    for (int o = -1; o <= 1; o++)
+                        for (int p = -1; p <= 1; p++)
+                            for (Entity *entity : getEntitiesAt({i + o, j + p}))
+                                if (dynamic_cast<Bush *>(entity))
+                                    goto nobush;
 
-					addEntity(new Bush(*this, {i, j}, type));
-					for(int o = -1; o <= 1; o++)
-						for(int p = -1; p <= 1; p++)
-							if(!terrainMap.contains(sf::Vector2i(i + o, j + p)))
-								terrainMap[sf::Vector2i(i + o, j + p)] = TerrainType::GRASS;
-					nobush:;
-				} else {
-					if(phase == GamePhase::INITIAL) {
-						if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0 && sf::Vector2i(i, j).lengthSq() > 10.0 * 10.0) {
-							int chunkX = i / 20;
-							int chunkY = j / 20;
+                    addEntity(new Bush(*this, {i, j}, type));
+                    for (int o = -1; o <= 1; o++)
+                        for (int p = -1; p <= 1; p++)
+                            if (!terrainMap.contains(sf::Vector2i(i + o, j + p)))
+                                terrainMap[sf::Vector2i(i + o, j + p)] = TerrainType::GRASS;
+                    nobush:;
+                } else {
+                    if (phase == GamePhase::INITIAL) {
+                        if ((player.getPosition() - sf::Vector2i{i, j}).lengthSq() > 10.0 * 10.0 &&
+                            sf::Vector2i(i, j).lengthSq() > 10.0 * 10.0) {
+                            int chunkX = i / 20;
+                            int chunkY = j / 20;
 
-							int x = (int)abs(SimplexNoise::noise(chunkX / 100.0, chunkY / 100.0)) % 20;
-							int y = (int)abs(SimplexNoise::noise(chunkX / 100.0, chunkY / 100.0)) % 20;
+                            int x = (int) abs(SimplexNoise::noise(chunkX / 100.0, chunkY / 100.0)) % 20;
+                            int y = (int) abs(SimplexNoise::noise(chunkX / 100.0, chunkY / 100.0)) % 20;
 
-							if(i % 20 == x && y == j % 20) {
+                            if (i % 20 == x && y == j % 20) {
 
-								Entity* teddy_bear = new TeddyBear(*this, sf::Vector2i(i, j));
-								addEntity(teddy_bear);
-							}
-						}
-					} else if(phase == GamePhase::FIRST_ENCOUNTER) {
-						if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0 && sf::Vector2i(i, j).lengthSq() > 10.0 * 10.0) {
-							int chunkX = i / 20;
-							int chunkY = j / 20;
+                                Entity *teddy_bear = new TeddyBear(*this, sf::Vector2i(i, j));
+                                addEntity(teddy_bear);
+                            }
+                        }
+                    } else if (phase == GamePhase::FIRST_ENCOUNTER) {
+                        if ((player.getPosition() - sf::Vector2i{i, j}).lengthSq() > 10.0 * 10.0 &&
+                            sf::Vector2i(i, j).lengthSq() > 10.0 * 10.0) {
+                            int chunkX = i / 20;
+                            int chunkY = j / 20;
 
-							int x = (int)abs(SimplexNoise::noise(chunkX / 100.0 - 200.0, chunkY / 100.0 - 200.0)) % 20;
-							int y = (int)abs(SimplexNoise::noise(chunkX / 100.0 - 200.0, chunkY / 100.0 - 200.0)) % 20;
+                            int x = (int) abs(SimplexNoise::noise(chunkX / 100.0 - 200.0, chunkY / 100.0 - 200.0)) % 20;
+                            int y = (int) abs(SimplexNoise::noise(chunkX / 100.0 - 200.0, chunkY / 100.0 - 200.0)) % 20;
 
-							if(i % 20 == x && y == j % 20) {
+                            if (i % 20 == x && y == j % 20) {
 
-								TeddyKid* sir_dick = new TeddyKid(*this, sf::Vector2i(i, j));
-								addEntity(sir_dick);
+                                TeddyKid *sir_dick = new TeddyKid(*this, sf::Vector2i(i, j));
+                                addEntity(sir_dick);
                                 teddyKids.push_back(sir_dick);
-							}
-						}
-					}
-				}
-			}
+                            }
+                        }
+                    }
+                }
+            }
 
-		}
-	}
+        }
+    }
 
-	if(phase == GamePhase::INITIAL)
-		grayscaleness = 0.0;
+    if (phase == GamePhase::INITIAL)
+    <%
+        grayscaleness = 0.0;
+        scan_effect = 0.0;
+    %>
 	else if(phase == GamePhase::FIRST_ENCOUNTER)
-		grayscaleness = 0.5;
+    <%
+        grayscaleness = 0.5;
+        scan_effect = 0.5;
+    %>
 	else
-		grayscaleness = 1.0;
+    <%
+        grayscaleness = 1.0;
+        scan_effect = 1.0;
+    %>
 }
 
 void World::spawnHotGhostMoms(CryingGirl* cryingGirl) {

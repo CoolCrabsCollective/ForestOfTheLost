@@ -16,9 +16,9 @@ float malformed_euclidean_distance(vec2 v1, vec2 v2, float xStretch) {
 }
 
 float opacityScanline = .2;
-float opacityNoise = .4;
-float flickering = 0.1;
-float scan_count = 600.0;
+float opacityNoise = .35;
+float flickering = 0.8;
+float scan_count = 500.0;
 
 float random (vec2 st) {
     return fract(sin(dot(st.xy, vec2(12.9898,78.233)))*43758.5453123);
@@ -75,7 +75,7 @@ void main()
     vec3 scanlines = vec3(sl.x, sl.y, sl.x);
     grayscale_color += grayscale_color * scanlines * opacityScanline * scan_effect;
     grayscale_color += grayscale_color * vec3(random(gl_TexCoord[0].xy*timeAccumulator)) * opacityNoise * scan_effect;
-    grayscale_color += grayscale_color * sin(110.0*timeAccumulator) * flickering * scan_effect;
+    grayscale_color += grayscale_color * sin(110.0*) * flickering * scan_effect;
 
     gl_FragColor = vec4(grayscale_color, grayscale_alpha);
 }

@@ -143,12 +143,12 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 
 	spookyShader->setUniform("timeAccumulator",  world.getTimeAccumulator());
 	spookyShader->setUniform("grayscaleness", world.getGrayscaleness());
+	spookyShader->setUniform("scan_effect", world.getScanEffect());
 	frameBuffer.display(); // done drawing fbo
 	fbo_sprite.setTexture(frameBuffer.getTexture());
 	target.clear();
 
 	if(world.getPhase() == INITIAL && !world.isChangingPhaseNext()) {
-        spookyShader->setUniform("scan_effect", 0.0f);
         target.draw(fbo_sprite);
     }
 	else {
@@ -158,7 +158,6 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 								 ? spookyness
 								 : 1.0f);
 
-        spookyShader->setUniform("scan_effect", std::max(std::min(1.0f, (world.getTimeAccumulator() - 20000.f)/ 10000.f), 0.0f));
 		target.draw(fbo_sprite, spookyShader);
 	}
 

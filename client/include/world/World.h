@@ -56,6 +56,7 @@ class World : public Tickable, public sf::Drawable {
     bool timePaused = false;
 
 	float grayscaleness = 0.0f;
+	float scan_effect = 0.0f;
 
 	float timeAccumulator = 0.0f;
 	float tenSecAccumulator = 0.0f;
@@ -111,6 +112,10 @@ public:
 
 	inline float getTimeAccumulator() const {
 		return timeAccumulator;
+	}
+
+	inline float getScanEffect() const {
+	    return scan_effect;
 	}
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
