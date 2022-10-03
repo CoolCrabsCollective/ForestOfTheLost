@@ -60,15 +60,31 @@ void World::spawnEnemy(GamePhase phase, sf::Vector2i position) {
 		else
 			monster = new GroundHog(*this, position);
 	} else if(phase == FIRST_ENCOUNTER) {
-		if (val < 0.5)
+		if (val < 0.2)
 			monster = new Wraith(*this, position);
 		else
-			monster = new Ghoul(*this, position);
+			monster = new Bat(*this, position);
+	} else if(phase == GHOST) {
+		bool hasGhostMom = false;
+
+		for(Monster* current : monsters)
+			if(dynamic_cast<HotGhostMom*>(current))
+				hasGhostMom = true;
+
+		if(!hasGhostMom && hotGhostMomsCanSpawn) {
+			monster = new HotGhostMom(*this, position);
+		} else {
+			if(val < 0.5)
+				monster = new Wraith(*this, position);
+			else
+				monster = new Ghoul(*this, position);
+		}
+
 	} else if(phase == MONSTER) {
 		bool hasMonsterKid = false;
 
 		for(Monster* current : monsters)
-			if(dynamic_cast<Monster*>(current))
+			if(dynamic_cast<MonsterKidMonster*>(current))
 				hasMonsterKid = true;
 
 		if(!hasMonsterKid) {
@@ -156,7 +172,6 @@ void World::generatePhase(GamePhase phase) {
     monsters.clear();
     teddyKids.clear();
     cryingGirls.clear();
-    hotGhostMoms.clear();
 	balls.clear();
 
     for (Entity *entity : copy)
@@ -348,51 +363,6 @@ void World::generatePhase(GamePhase phase) {
 	} else {
 		grayscaleness = 1.0;
 		scan_effect = 1.0;
-	}
-}
-
-void World::spawnHotGhostMoms(CryingGirl* cryingGirl) {
-
-	double offsetX = rand() * 10.0 / RAND_MAX;
-	double offsetY = rand() * 10.0 / RAND_MAX;
-
-	for (int i = -200; i <= 200; i++) {
-		for (int j = -200; j <= 200; j++) {
-			if (i == 0 && j == 0)
-				continue;
-
-			double nx = i / 400.0 - 0.5 + offsetX;
-			double ny = j / 400.0 - 0.5 + offsetY;
-
-			nx *= 5.0;
-			ny *= 5.0;
-
-			double noise = SimplexNoise::noise(nx, ny);
-
-			if (noise > -0.75 && (player.getPosition() - sf::Vector2i{i, j}).lengthSq() > 15.0 * 15.0 &&
-				sf::Vector2i(i, j).lengthSq() > 10.0 * 10.0) {
-				double nx2 = i / 400.0 - 0.5 + offsetX * 9.0;
-				double ny2 = j / 400.0 - 0.5 + offsetY * 9.0;
-
-				nx2 *= 5000.0;
-				ny2 *= 5000.0;
-
-				double noise2 = SimplexNoise::noise(nx2, ny2);
-
-				int chunkX = i / 20;
-				int chunkY = j / 20;
-
-				int x = (int) abs(SimplexNoise::noise(chunkX / 100.0 - 600.0, chunkY / 100.0 - 600.0)) % 20;
-				int y = (int) abs(SimplexNoise::noise(chunkX / 100.0 - 600.0, chunkY / 100.0 - 600.0)) % 20;
-
-				if (i % 20 == x && y == j % 20) {
-
-					HotGhostMom* sir_dick = new HotGhostMom(*this, sf::Vector2i(i, j));
-					addEntity(sir_dick);
-					hotGhostMoms.push_back(sir_dick);
-				}
-			}
-		}
 	}
 }
 
@@ -719,10 +689,6 @@ const std::vector<Monster*>& World::get_monsters() const {
 
 const std::vector<CryingGirl *> &World::getCryingGirls() const {
     return cryingGirls;
-}
-
-const std::vector<HotGhostMom *> &World::getHotGhostMoms() const {
-    return hotGhostMoms;
 }
 
 void World::shake(sf::Vector2i vec) {
