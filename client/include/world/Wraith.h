@@ -17,5 +17,4 @@ public:
 protected:
 };
 
-
 #endif //LD51_CLIENT_WRAITH_H

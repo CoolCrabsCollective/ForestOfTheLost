@@ -522,10 +522,18 @@ void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
 }
 
 void World::handleMonsterAttack(Monster& monster) {
+    // Terrible code pt. 1 (making wraiths visible when they are attacking you)
+    if (monster.daySprite.getTexture() == getAssets().get(GameAssets::INVISIBLE))
+        monster.daySprite.setTexture(*monster.nightSprite.getTexture());
+
     dialogBox.startDialog({monster.getAttackMessage(),}, [&]{
         timePaused = false;
         if (currentPhase != GamePhase::INITIAL)
             loadCheckPoint = true;
+
+        // Terrible code pt. 2
+        if (monster.daySprite.getTexture() == monster.nightSprite.getTexture())
+            monster.daySprite.setTexture(*getAssets().get(GameAssets::INVISIBLE));
     });
 }
 
