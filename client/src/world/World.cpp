@@ -321,10 +321,13 @@ void World::addEntity(Entity* entity) {
 
 void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
 
-    if(std::remove(entityMap[oldPosition].begin(), entityMap[oldPosition].end(), entity) == entityMap[oldPosition].end())
-    {
+	auto toRemove = std::find(entityMap[oldPosition].begin(), entityMap[oldPosition].end(), entity);
+
+    if(toRemove == entityMap[oldPosition].end()) {
         throw std::runtime_error("Tried to moving an entity not in entity map (IQ issue)");
     }
+
+	entityMap[oldPosition].erase(toRemove);
 
 	if (entityMap.contains(entity->getPosition()))
 		entityMap[entity->getPosition()].push_back(entity);
@@ -337,7 +340,7 @@ void World::removeEntity(Entity* entity) {
 		throw std::runtime_error("Entity map doesn't contain position to remove at");
 
 	auto removePos = std::find(entityMap[entity->getPosition()].begin(),
-							  entityMap[entity->getPosition()].end(), entity);
+							   entityMap[entity->getPosition()].end(), entity);
 
 	if(removePos == entityMap[entity->getPosition()].end())
 	    throw std::runtime_error("Tried to removing an entity not in entity map (skill issue)");
