@@ -20,6 +20,7 @@ protected:
     float actionProgress = 0;
     float movingSpeed = 2;
     float rotationSpeed = 5;
+    float scale = 1;
 
     sf::Vector2i partDestination = {};
 
@@ -29,6 +30,8 @@ protected:
     bool hasLookedForSpot = false;
 
     std::string attackMessage;
+
+    float nextAttackCountdown = 0;
 public:
     Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, sf::Texture* nightTexture);
     void tick(float delta) override;

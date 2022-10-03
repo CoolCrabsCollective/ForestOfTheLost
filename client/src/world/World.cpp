@@ -72,22 +72,26 @@ void World::generatePhase(GamePhase phase) {
 		return;
 	}
 
+#ifdef ENTITY_DEBUG
 	for(int i = 0; i < entities.size(); i++) {
         for(int j = 0; j < entities.size(); j++) {
             if(i != j && entities[i] == entities[j])
-            {
                 std::cout << "FUCK!!!" << std::endl;
-            }
         }
 	}
+#endif
 
-	for(Entity* entity : entities)
-		if(entity != &player)
-			delete entity;
+	std::vector<Entity*> copy = entities;
 
 	entities.clear();
 	entityMap.clear();
 	monsters.clear();
+    teddyKids.clear();
+
+	for(Entity* entity : copy)
+		if(entity != &player)
+			delete entity;
+
 	addEntity(&player);
 	terrainMap.clear();
 
@@ -155,11 +159,28 @@ void World::generatePhase(GamePhase phase) {
 
 							if(i % 20 == x && y == j % 20) {
 
-								Entity* sir_dick = new TeddyKid(*this, sf::Vector2i(i, j));
+								TeddyKid* sir_dick = new TeddyKid(*this, sf::Vector2i(i, j));
 								addEntity(sir_dick);
+                                teddyKids.push_back(sir_dick);
 							}
 						}
-					}
+					} else if(phase == GamePhase::GHOST) {
+                        if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 2.0 * 2.0) {
+                            // TODO: Update world gen, it was copied from above lmao
+                            int chunkX = i / 20;
+                            int chunkY = j / 20;
+
+                            int x = (int)abs(SimplexNoise::noise(chunkX / 100.0 - 200.0, chunkY / 100.0 - 200.0)) % 20;
+                            int y = (int)abs(SimplexNoise::noise(chunkX / 100.0 - 200.0, chunkY / 100.0 - 200.0)) % 20;
+
+                            if(i % 20 == x && y == j % 20) {
+
+                                TeddyKid* sir_dick = new TeddyKid(*this, sf::Vector2i(i, j));
+                                addEntity(sir_dick);
+                                teddyKids.push_back(sir_dick);
+                            }
+                        }
+                    }
 				}
 			}
 
@@ -308,9 +329,11 @@ const std::vector<Entity *> &World::getEntitiesAt(sf::Vector2i position) const {
 }
 
 void World::addEntity(Entity* entity) {
+#ifdef ENTITY_DEBUG
 	for(auto it = entities.begin(); it != entities.end(); it++)
 		if(*it == entity)
 			throw std::invalid_argument("Attempt to add an entity that is already there FUCKTARD");
+#endif
 
     entities.push_back(entity);
     if (entityMap.contains(entity->getPosition()))
@@ -320,11 +343,7 @@ void World::addEntity(Entity* entity) {
 }
 
 void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
-
-    if(std::remove(entityMap[oldPosition].begin(), entityMap[oldPosition].end(), entity) == entityMap[oldPosition].end())
-    {
-        throw std::runtime_error("Tried to moving an entity not in entity map (IQ issue)");
-    }
+    std::remove(entityMap[oldPosition].begin(), entityMap[oldPosition].end(), entity);
 
 	if (entityMap.contains(entity->getPosition()))
 		entityMap[entity->getPosition()].push_back(entity);
@@ -333,14 +352,32 @@ void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
 }
 
 void World::removeEntity(Entity* entity) {
-	if(std::remove(entityMap[entity->getPosition()].begin(), entityMap[entity->getPosition()].end(), entity) == entityMap[entity->getPosition()].end())
+	if(!entityMap.contains(entity->getPosition()))
+		throw std::runtime_error("Entity map doesn't contain position to remove at");
+
+	auto removePos = std::find(entityMap[entity->getPosition()].begin(),
+							   entityMap[entity->getPosition()].end(), entity);
+
+	if(removePos == entityMap[entity->getPosition()].end())
 	    throw std::runtime_error("Tried to removing an entity not in entity map (skill issue)");
-	if(std::remove(entities.begin(), entities.end(), entity) == entities.end())
+
+	entityMap[entity->getPosition()].erase(removePos);
+
+#ifdef ENTITY_DEBUG
+	if(std::find(entityMap[entity->getPosition()].begin(),
+				 entityMap[entity->getPosition()].end(), entity) != entityMap[entity->getPosition()].end())
+		throw std::runtime_error("Found entity to be inside entity map after successful removal");
+#endif
+
+	removePos = std::find(entities.begin(), entities.end(), entity);
+
+	if(removePos == entities.end())
 	    throw std::runtime_error("Tried to remove an entity not in entities vector");
+
+	entities.erase(removePos);
 }
 
 void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
-
 	sf::Vector2f viewSize = VIEW_SIZE;
 	sf::Vector2i start = getPlayer().getPosition() - sf::Vector2i(static_cast<int>(ceil(viewSize.x / 2.0f)),
 																  static_cast<int>(ceil(viewSize.y / 2.0f))) - sf::Vector2i{3, 3};
@@ -382,8 +419,6 @@ void World::handleMonsterAttack(Monster& monster) {
         timePaused = false;
         if (currentPhase != GamePhase::INITIAL)
             loadCheckPoint = true;
-        else
-            removeEntity(&monster);
     });
 }
 
@@ -410,4 +445,12 @@ bool World::isSetCheckPoint() const {
 
 void World::setSetCheckPoint(bool setCheckPoint) {
     World::setCheckPoint = setCheckPoint;
+}
+
+const std::vector<TeddyKid *> &World::getTeddyKids() const {
+    return teddyKids;
+}
+
+const std::vector<Monster*>& World::get_monsters() const {
+	return monsters;
 }

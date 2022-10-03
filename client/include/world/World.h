@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "WIZ/asset/AssetLoader.h"
 #include "DialogBox.h"
+#include "TeddyKid.h"
 
 class Entity;
 class Player;
@@ -35,6 +36,7 @@ class World : public Tickable, public sf::Drawable {
 	wiz::AssetLoader& assets;
 	std::vector<Entity*> entities;
 	std::vector<Monster*> monsters;
+    std::vector<TeddyKid*> teddyKids;
 	Player player;
 
 	std::unordered_map<TerrainType, sf::Texture*> terrain_textures;
@@ -137,7 +139,10 @@ public:
 
     void resetAccumulator();
 
-private:
+	const std::vector<Monster*>& get_monsters() const;
+
+    const std::vector<TeddyKid *> &getTeddyKids() const;
+
 	void generatePhase(GamePhase phase);
 };
 

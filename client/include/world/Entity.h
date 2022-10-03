@@ -20,7 +20,7 @@ protected:
 public:
 	Entity(World& world) : world(world) {}
 
-	virtual ~Entity() = default;
+	~Entity() override;
 
 	inline World& getWorld() {
 		return world;
