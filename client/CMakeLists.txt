@@ -141,12 +141,14 @@ add_custom_command(TARGET ${PARENT_PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
 	${PROJECT_SOURCE_DIR}/res $<TARGET_FILE_DIR:${PARENT_PROJECT_NAME}>/res)
 
-# kek
-add_custom_command(
-        OUTPUT t.txt
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/..
-        COMMAND play res/sfx/ahhh.ogg
-)
+if(NOT WIN32)
+    # kek
+    add_custom_command(
+            TARGET ${PARENT_PROJECT_NAME} POST_BUILD
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/..
+            COMMAND play res/sfx/ahhh.ogg
+    )
+endif()
 
 
 # Copy openal32.dll for windows

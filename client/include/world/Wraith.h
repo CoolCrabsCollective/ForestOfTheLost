@@ -14,7 +14,11 @@
 class Wraith : public Monster {
 public:
     explicit Wraith(World &world, sf::Vector2i position);
-protected:
+
+
+	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
+
+	void drawDarkness(sf::RenderTarget& target) const override;
 };
 
 #endif //LD51_CLIENT_WRAITH_H

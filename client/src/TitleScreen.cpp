@@ -28,8 +28,8 @@ void TitleScreen::render(sf::RenderTarget& target) {
 }
 
 void TitleScreen::show() {
-	logo.setTexture(*getAssets().get(GameAssets::LOGO));
-	background.setTexture(*getAssets().get(GameAssets::BACKGROUND));
+	//logo.setTexture(*getAssets().get(GameAssets::LOGO));
+	//background.setTexture(*getAssets().get(GameAssets::BACKGROUND));
 	spookyShader = getAssets().get(GameAssets::SPOOKY_SHADER);
 
 	getGame().addWindowListener(this);

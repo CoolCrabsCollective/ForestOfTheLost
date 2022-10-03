@@ -12,8 +12,6 @@
 class Monster : public Entity {
 protected:
     sf::Vector2f renderPosition = {};
-    Direction currentDir = NORTH;
-    Direction destinationDir = NORTH;
     float actionProgress = 0;
     float movingSpeed = 2;
     float rotationSpeed = 5;

@@ -53,9 +53,7 @@ void World::spawnEnemy(GamePhase phase, sf::Vector2i position) {
 	Monster* monster;
 
 	if(phase == INITIAL) {
-		if(val < 0.33)
-			monster = new Bat(*this, position);
-		else if(val < 0.66)
+		if(val < 0.5)
 			monster = new Snake(*this, position);
 		else
 			monster = new GroundHog(*this, position);

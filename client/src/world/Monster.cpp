@@ -52,7 +52,6 @@ void Monster::tick(float delta) {
 
 void Monster::tickMovement(float delta) {
     bool moving = position != partDestination;
-    bool rotating = currentDir != destinationDir;
 
     renderPosition = (sf::Vector2f) position;
     if (moving) {
@@ -75,10 +74,6 @@ void Monster::tickMovement(float delta) {
 //            bushSound.play();
         } else {
             renderPosition = (sf::Vector2f) position + sf::Vector2f(partDestination - position) * actionProgress;
-        }
-    } else if (rotating) {
-        if (actionProgress > 1) {
-            currentDir = destinationDir;
         }
     }
 }
@@ -106,7 +101,7 @@ void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) con
     if (position == destination)
         return;
 
-    daySprite.setPosition({renderPosition.x, -renderPosition.y});
+    daySprite.setPosition({renderPosition.x - scale / 4.0f, -renderPosition.y - scale / 4.0f});
     daySprite.setScale({ scale / daySprite.getTexture()->getSize().x, scale / daySprite.getTexture()->getSize().y });
     target.draw(daySprite);
 }
@@ -114,7 +109,7 @@ void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) con
 void Monster::drawDarkness(sf::RenderTarget &target) const {
     if(this->getWorld().getPhase() > GamePhase::INITIAL)
     {
-        nightSprite.setPosition({renderPosition.x, -renderPosition.y});
+        nightSprite.setPosition({renderPosition.x - scaleDark / 4.0f, -renderPosition.y - scaleDark / 4.0f});
         nightSprite.setScale({ scaleDark / nightSprite.getTexture()->getSize().x, scaleDark / nightSprite.getTexture()->getSize().y });
         target.draw(nightSprite);
     }

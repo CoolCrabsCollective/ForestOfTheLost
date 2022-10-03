@@ -35,9 +35,7 @@ namespace GameAssets {
 	ASSET(wiz::FontAsset, VT323_TTF, ("font/VT323-Regular.ttf"))
 
 	ASSET(wiz::TextureAsset, PLAYER, ("gfx/player.png"))
-	ASSET(wiz::TextureAsset, BACKGROUND, ("gfx/background.jpg"))
 	ASSET(wiz::TextureAsset, WHITE_PIXEL, ("gfx/white_pixel.png"))
-	ASSET(wiz::TextureAsset, LOGO, ("gfx/logo.png"))
 
 	// Eyes
 	ASSET(wiz::TextureAsset, SPOOKY_EYES, ("gfx/spooky_face.png"))
