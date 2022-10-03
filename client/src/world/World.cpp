@@ -89,7 +89,7 @@ void World::generatePhase(GamePhase phase) {
 
                 double noise = SimplexNoise::noise(nx, ny);
 
-                if (noise > -0.75 && (player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0) {
+                if (noise > -0.75 && (player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0 && sf::Vector2i(i, j).lengthSq() > 10.0 * 10.0) {
                     double nx2 = i / 400.0 - 0.5 + offsetX * 9.0;
                     double ny2 = j / 400.0 - 0.5 + offsetY * 9.0;
 
@@ -172,22 +172,54 @@ void World::generatePhase(GamePhase phase) {
 
 				double noise2 = SimplexNoise::noise(nx2, ny2);
 
+				double prob = rand() * 1.0 / RAND_MAX;
+
 				if(noise2 > 0.9) {
 					TreeType type;
 					if(phase == GamePhase::INITIAL)
-						type = TreeType::ALIVE;
-					else if(phase == GamePhase::FIRST_ENCOUNTER)
-						type = TreeType::DEAD;
-                    else
-                        type = TreeType::THICK_DEAD;
+					{
+						if(prob < 0.95)
+							type = TreeType::ALIVE;
+						else
+							type = TreeType::SQUIRREL;
+					} else if(phase == GamePhase::FIRST_ENCOUNTER) {
+						if(prob < 0.4) {
+							type = TreeType::ALIVE;
+						} else if(prob < 0.9) {
+							type = TreeType::DEAD;
+						} else {
+							type = TreeType::THICK_DEAD;
+						}
+					} else {
+						if(prob < 0.9) {
+							type = TreeType::DEAD;
+						} else {
+							type = TreeType::THICK_DEAD;
+						}
+					}
+
+					for(int o = -1; o <= 1; o++)
+						for(int p = -1; p <= 1; p++)
+							for(Entity* entity : getEntitiesAt({i + o, j + p}))
+								if(dynamic_cast<Tree*>(entity))
+									goto notree;
 
 					addEntity(new Tree(*this, { i, j }, type));
+					notree:;
 				}
-				else if(noise2 > 0.5) {
+				else if(noise2 > 0.7) {
+
+					for(int o = -1; o <= 1; o++)
+						for(int p = -1; p <= 1; p++)
+							for(Entity* entity : getEntitiesAt({i + o, j + p}))
+								if(dynamic_cast<Bush*>(entity))
+									goto nobush;
+
 					addEntity(new Bush(*this, {i, j}, static_cast<BushType>(std::abs(i + j) % 2)));
+					nobush:;
 				} else {
 					if(phase == GamePhase::INITIAL) {
-						if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0) {
+						if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0 && sf::Vector2i(i, j).lengthSq() > 10.0 * 10.0) {
 							int chunkX = i / 20;
 							int chunkY = j / 20;
 
@@ -201,7 +233,7 @@ void World::generatePhase(GamePhase phase) {
 							}
 						}
 					} else if(phase == GamePhase::FIRST_ENCOUNTER) {
-						if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 2.0 * 2.0) {
+						if((player.getPosition() - sf::Vector2i {i, j}).lengthSq() > 10.0 * 10.0 && sf::Vector2i(i, j).lengthSq() > 10.0 * 10.0) {
 							int chunkX = i / 20;
 							int chunkY = j / 20;
 

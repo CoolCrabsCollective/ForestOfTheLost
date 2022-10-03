@@ -63,6 +63,7 @@ namespace GameAssets {
 
 	// Tree
     ASSET(wiz::TextureAsset, ALIVE_TREE, ("gfx/tree/alive.png"))
+	ASSET(wiz::TextureAsset, SQUIRREL_TREE, ("gfx/tree/squirrel_tree.png"))
 	ASSET(wiz::TextureAsset, DEAD_TREE, ("gfx/tree/dead.png"))
 	ASSET(wiz::TextureAsset, THICK_DEAD_TREE, ("gfx/tree/thick_dead.png"))
 
