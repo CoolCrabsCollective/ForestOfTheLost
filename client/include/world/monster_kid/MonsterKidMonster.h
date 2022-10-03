@@ -9,7 +9,8 @@
 #include "world/Monster.h"
 
 class MonsterKidMonster : public Monster {
-
+public:
+	MonsterKidMonster(World& world, const sf::Vector2i& position);
 };
 
 

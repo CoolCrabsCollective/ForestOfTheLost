@@ -24,6 +24,7 @@
 #include "world/Snake.h"
 #include "world/HotGhostMom.h"
 #include "world/Ball.h"
+#include "world/monster_kid/MonsterKidMonster.h"
 
 World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 		: assets(assets),
@@ -61,7 +62,20 @@ void World::spawnEnemy(GamePhase phase, sf::Vector2i position) {
 		else
 			monster = new Ghoul(*this, position);
 	} else if(phase == MONSTER) {
-		return;
+		bool hasMonsterKid = false;
+
+		for(Monster* current : monsters)
+			if(dynamic_cast<Monster*>(current))
+				hasMonsterKid = true;
+
+		if(!hasMonsterKid) {
+			monster = new MonsterKidMonster(*this, position);
+		} else {
+			if (val < 0.5)
+				monster = new Wraith(*this, position);
+			else
+				monster = new Ghoul(*this, position);
+		}
 	} else {
 		return;
 	}
@@ -440,15 +454,15 @@ int enemyCountForPhase(GamePhase phase) {
 	switch (phase) {
 
 		case INITIAL:
-			return 5;
+			return 4;
 		case FIRST_ENCOUNTER:
-			return 10;
+			return 4;
 		case GHOST:
-			return 10;
+			return 6;
 		case MONSTER:
-			return 15;
+			return 8;
 		case FINAL:
-			return 15;
+			return 10;
 	}
 }
 

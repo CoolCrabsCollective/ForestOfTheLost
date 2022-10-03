@@ -10,7 +10,6 @@
 class Ghoul : public Monster {
 public:
     explicit Ghoul(World &world, sf::Vector2i position);
-protected:
 };
 
 
