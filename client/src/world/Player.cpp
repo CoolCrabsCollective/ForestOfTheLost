@@ -129,7 +129,7 @@ void Player::tick(float delta) {
                 walkSound.setPitch(1.5 + ((rand() % 11) / 10));
                 walkSound.play();
             }
-        } else
+        } else if(!lockMovement)
 			destinationDir = inputDir.value();
 
         frames.clear();
@@ -210,6 +210,13 @@ bool Player::isLockMovement() const {
 }
 
 void Player::interact() {
+
+	bool moving = position != destination;
+	bool rotating = currentDir != destinationDir;
+
+	if(moving || rotating || lockMovement)
+		return;
+
 	if(lastInteract > std::chrono::system_clock::now() - std::chrono::milliseconds(500))
 		return;
 

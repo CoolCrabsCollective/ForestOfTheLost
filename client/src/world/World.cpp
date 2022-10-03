@@ -519,8 +519,9 @@ void World::tick(float delta) {
                                   "Now I see the true face of these monsters...",
                                   "These entities...",
                                   "Am I stuck here forever?",
-                                  "[The mystery is solved but you are trapped in this ethereal plane forever]",
-                                  "[Thank you for playing!]"
+                                  "[The mystery is solved but you are trapped in this ethereal plane for eternity]",
+                                  "[Thank you for playing!]",
+                                  "[Game by: Adrien, Alexander, Cedric and William]"
                             });
                             break;
                     };

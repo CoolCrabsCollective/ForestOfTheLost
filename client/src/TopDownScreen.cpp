@@ -240,6 +240,6 @@ void TopDownScreen::windowClosed() {
 }
 
 void TopDownScreen::keyReleased(const sf::Event::KeyEvent& keyEvent) {
-	if(keyEvent.code == sf::Keyboard::Escape)
-		world.generatePhase(static_cast<GamePhase>(world.getPhase() + 1));
+	//if(keyEvent.code == sf::Keyboard::Escape)
+	//	world.generatePhase(static_cast<GamePhase>(world.getPhase() + 1));
 }
