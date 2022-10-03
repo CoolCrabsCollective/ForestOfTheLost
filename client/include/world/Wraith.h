@@ -14,9 +14,6 @@
 class Wraith : public Monster {
 public:
     explicit Wraith(World &world, sf::Vector2i position);
-
-    void drawDarkness(sf::RenderTarget &target, sf::Shader *shader) const override;
-
 protected:
 };
 

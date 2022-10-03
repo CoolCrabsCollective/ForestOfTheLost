@@ -340,7 +340,6 @@ void World::removeEntity(Entity* entity) {
 }
 
 void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
-
 	sf::Vector2f viewSize = VIEW_SIZE;
 	sf::Vector2i start = getPlayer().getPosition() - sf::Vector2i(static_cast<int>(ceil(viewSize.x / 2.0f)),
 																  static_cast<int>(ceil(viewSize.y / 2.0f))) - sf::Vector2i{3, 3};
@@ -382,7 +381,6 @@ void World::handleMonsterAttack(Monster& monster) {
         timePaused = false;
         if (currentPhase != GamePhase::INITIAL)
             loadCheckPoint = true;
-            //removeEntity(&monster);
     });
 }
 
