@@ -26,7 +26,7 @@ protected:
 
     bool attacking = false;
 
-    std::string attackMessage;
+    std::vector<std::string> attackMessage;
 
     float nextAttackCountdown = 0;
 public:
@@ -42,7 +42,7 @@ public:
     void move(sf::Vector2i des);
     void tickMovement(float delta);
     virtual void targetPlayerInRange();
-    std::string getAttackMessage();
+    const std::vector<std::string>& getAttackMessage();
 };
 
 

@@ -6,7 +6,7 @@
 #include "world/GroundHog.h"
 
 GroundHog::GroundHog(World &world, sf::Vector2i position) : Monster(world, position, world.getAssets().get(GameAssets::GROUND_HOG), world.getAssets().get(GameAssets::PACIFIC_EYES)){
-    attackMessage = "A cute groundhog bumps into you. Watch out, next time it may be something a lot more dangerous!";
+    attackMessage = {"A cute groundhog bumps into you. Watch out, next time it may be something a lot more dangerous!"};
 }
 
 void GroundHog::drawDarkness(sf::RenderTarget &target) const {

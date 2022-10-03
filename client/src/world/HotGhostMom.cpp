@@ -8,7 +8,7 @@
 HotGhostMom::HotGhostMom(World &world, sf::Vector2i position) : Monster(world, position,
                                                             world.getAssets().get(GameAssets::HOT_GHOST_MOM),
                                                             world.getAssets().get(GameAssets::SPOOKY_EYES)){
-    attackMessage = "How TF did you get killed by the ghost mom?!?!? lmao skill issue.";
+    attackMessage = {"How TF did you get killed by the ghost mom?!?!? lmao skill issue."};
     scale = 2;
 }
 
