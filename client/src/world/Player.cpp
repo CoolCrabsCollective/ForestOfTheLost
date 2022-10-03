@@ -29,6 +29,10 @@ Player::Player(World& world)
 	collisionSound.setBuffer(*world.getAssets().get(GameAssets::COLLISION));
     walkSound.setBuffer(*world.getAssets().get(GameAssets::WALK_SOUND));
     walkSound.setVolume(50);
+    heartBeatSound.setBuffer(*world.getAssets().get(GameAssets::HEART_BEAT_SOUND));
+    heartBeatSound.setVolume(25);
+    heartBeatSound.setPitch(1.2);
+
     playerShader = world.getAssets().get(GameAssets::PLAYER_SHADER);
 
     setAnimationSprite(&sprite);
@@ -44,6 +48,11 @@ void Player::move(std::optional<Direction> direction) {
 }
 
 void Player::tick(float delta) {
+    timeSinceLastHeartBeat += delta;
+    if (timeSinceLastHeartBeat >= heartBeatDelay) {
+        heartBeatSound.play();
+        timeSinceLastHeartBeat = 0;
+    }
 
     last_delta = delta;
 
@@ -204,9 +213,11 @@ void Player::teleport(sf::Vector2i newPos) {
 	world.moveEntity(oldPos, this);
 }
 
+void Player::setHeartBeatDelay(float delay) {
+    heartBeatDelay = delay;
+}
+
 void Player::animateHit() {
     hit_animation_is_playing = true;
     hit_animation_current = 0.0f;
 }
-
-
