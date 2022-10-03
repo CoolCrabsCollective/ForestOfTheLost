@@ -7,5 +7,5 @@
 
 Wraith::Wraith(World &world, sf::Vector2i position) : Monster(world, position, world.getAssets().get(GameAssets::INVISIBLE), world.getAssets().get(GameAssets::WRAITH)){
     attackMessage = "Cold. Why am I so cold? A piercing scream fills your ears. Your own.  A wraith has killed you.";
-    scale = 4.0f;
+    scale = 3.0f;
 }
