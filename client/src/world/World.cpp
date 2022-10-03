@@ -333,10 +333,27 @@ void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
 }
 
 void World::removeEntity(Entity* entity) {
-	if(std::remove(entityMap[entity->getPosition()].begin(), entityMap[entity->getPosition()].end(), entity) == entityMap[entity->getPosition()].end())
+	if(!entityMap.contains(entity->getPosition()))
+		throw std::runtime_error("Entity map doesn't contain position to remove at");
+
+	auto removePos = std::find(entityMap[entity->getPosition()].begin(),
+							  entityMap[entity->getPosition()].end(), entity);
+
+	if(removePos == entityMap[entity->getPosition()].end())
 	    throw std::runtime_error("Tried to removing an entity not in entity map (skill issue)");
-	if(std::remove(entities.begin(), entities.end(), entity) == entities.end())
+
+	entityMap[entity->getPosition()].erase(removePos);
+
+	if(std::find(entityMap[entity->getPosition()].begin(),
+				 entityMap[entity->getPosition()].end(), entity) != entityMap[entity->getPosition()].end())
+		throw std::runtime_error("Found entity to be inside entity map after successful removal");
+
+	removePos = std::find(entities.begin(), entities.end(), entity);
+
+	if(removePos == entities.end())
 	    throw std::runtime_error("Tried to remove an entity not in entities vector");
+
+	entities.erase(removePos);
 }
 
 void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
@@ -410,4 +427,8 @@ bool World::isSetCheckPoint() const {
 
 void World::setSetCheckPoint(bool setCheckPoint) {
     World::setCheckPoint = setCheckPoint;
+}
+
+const std::vector<Monster*>& World::get_monsters() const {
+	return monsters;
 }

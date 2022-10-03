@@ -137,6 +137,8 @@ public:
 
     void resetAccumulator();
 
+	const std::vector<Monster*>& get_monsters() const;
+
 private:
 	void generatePhase(GamePhase phase);
 };
