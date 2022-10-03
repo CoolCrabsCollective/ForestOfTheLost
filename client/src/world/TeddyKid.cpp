@@ -13,10 +13,10 @@ TeddyKid::TeddyKid(World& world, const sf::Vector2i& position)
 								{WEST, world.getAssets().get(GameAssets::TEDDY_KID_LEFT)}}) {}
 
 bool TeddyKid::activate() {
-	getWorld().getDialogBox().startDialog({"Kid: Thank you for bringing my teddy back.",
+	getWorld().getDialogBox().startDialog({"Kid: Thank you for bringing my teddy back",
 										   "You: What are you doing here? Are you alone?",
 										   "Kid: ...",
-                                           "You: I'm looking for a little girl. Her name's Lily. Have you seen her?",
+                                           "You: I'm looking for a little girl. Her name is Lily. Have you seen her?",
                                            "Kid: ...",
                                            }, [&](){
         world.generatePhase(GHOST);

@@ -15,8 +15,8 @@ CryingGirl::CryingGirl(World& world, const sf::Vector2i& position)
 bool CryingGirl::activate() {
     getWorld().getDialogBox().startDialog({"Lily: *crying*",
                                            "You: What's wrong?",
-                                           "Lily: I lost my mother when I was young. I saw my mother's ghostly silhouette at the edge of this forest...",
-                                           "Lily: Now I'm lost. Can you help me find my mother and bring her back here?"}, [&](){
+                                           "Lily: My mother passed away when I was a baby. I thought I saw her at the edge of this forest...",
+                                           "Lily: Now I'm lost. Bring her back to me please mister?"}, [&](){
 
         if (!removedOtherGirls) {
             for (CryingGirl* cryingGirl : world.getCryingGirls()) {

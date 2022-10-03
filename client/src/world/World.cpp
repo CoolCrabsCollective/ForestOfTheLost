@@ -467,8 +467,6 @@ void World::tick(float delta) {
 		}
 
 		if(tenSecAccumulator > 10000.0) {
-            std::cout << "10 seconds passed!" << std::endl;
-
 			if(countBlinkBeforePhaseChange != -1) {
 				countBlinkBeforePhaseChange--;
 				if(countBlinkBeforePhaseChange == -1 && currentPhase < FINAL) {
@@ -483,8 +481,9 @@ void World::tick(float delta) {
                             break;
                         case MONSTER:
                             dialogBox.startDialog({
-                                  "These... things....",
+                                  "Not Again! No!",
                                   "God almighty...",
+                                  "What are these things?...",
                               });
                             AHHH_SOUND.play();
                             break;
