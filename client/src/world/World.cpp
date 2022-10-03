@@ -74,8 +74,15 @@ void World::spawnEnemy(GamePhase phase, sf::Vector2i position) {
 			if(dynamic_cast<HotGhostMom*>(current))
 				hasGhostMom = true;
 
+        sf::Vector2i diff = position - cryingGirlPos;
+
+        int distance = (int) sqrt(pow(diff.x, 2) + pow(diff.y, 2));
+
+        if (MIN_HOT_GIRL_GHOST_SPAWN_RADIUS > distance)
+            hasGhostMom = true; // Don't spawn ghost mom within this radius
+
 		if(!hasGhostMom && hotGhostMomsCanSpawn) {
-			monster = new HotGhostMom(*this, position);
+			monster = new HotGhostMom(*this, position);hasGhostMom = true;
 		} else {
 			if(val < 0.5)
 				monster = new Wraith(*this, position);
