@@ -520,7 +520,8 @@ void World::tick(float delta) {
                                   "These entities...",
                                   "Am I stuck here forever?",
                                   "[The mystery is solved but you are trapped in this ethereal plane for eternity]",
-                                  "[Thank you for playing!]"
+                                  "[Thank you for playing!]",
+                                  "[Game by: Adrien, Alexander, Cedric and William]"
                             });
                             break;
                     };
