@@ -50,16 +50,16 @@ void LoadingScreen::show() {
 	sprite.setTexture(*getGame().getAssets().get(GameAssets::WHITE_PIXEL));
 
 #ifdef OS_WINDOWS
-	message.setString("Children of the Lost...");
+	message.setString("Forest of the Lost");
 #endif
 #ifdef OS_UNIX
-	message.setString("Children of the Lost");
+	message.setString("Forest of the Lost");
 #endif
 #ifdef OS_MAC
-	message.setString("Children of the Lost");
+	message.setString("Forest of the Lost");
 #endif
 #ifdef OS_SWITCH
-	message.setString("Children of the Lost");
+	message.setString("Forest of the Lost");
 #endif
 
 	message.setFont(*getGame().getAssets().get(GameAssets::SANS_TTF));

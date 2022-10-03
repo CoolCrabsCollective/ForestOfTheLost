@@ -16,7 +16,8 @@ bool CryingGirl::activate() {
     getWorld().getDialogBox().startDialog({"Lily: *crying*",
                                            "You: What's wrong?",
                                            "Lily: My mother passed away when I was a baby. I thought I saw her at the edge of this forest...",
-                                           "Lily: Now I'm lost. Bring her back to me please mister?"}, [&](){
+                                           "Lily: Now I'm lost. Bring her back to me please mister?",
+                                           "*she continues crying*"}, [&](){
 
         if (!removedOtherGirls) {
             for (CryingGirl* cryingGirl : world.getCryingGirls()) {
