@@ -149,6 +149,12 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 	spookyShader->setUniform("timeAccumulator",  world.getTimeAccumulator());
 	spookyShader->setUniform("grayscaleness", world.getGrayscaleness());
 	spookyShader->setUniform("scan_effect", world.getScanEffect());
+	spookyShader->setUniform("redness", 0.0f);
+	
+	if(world.getPhase() == FINAL) {
+		spookyShader->setUniform("redness", 1.0f);
+	}
+	
 	frameBuffer.display(); // done drawing fbo
 	fbo_sprite.setTexture(frameBuffer.getTexture());
 	target.clear();
