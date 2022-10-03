@@ -8,7 +8,7 @@
 Beholder::Beholder(World &world, sf::Vector2i position) : Monster(world, position,
                                                             world.getAssets().get(GameAssets::BEHOLDER),
                                                             world.getAssets().get(GameAssets::BEHOLDER_EYES)){
-    attackMessage = "Spindly fingers tear into your flesh. Empty eye sockets stare into your soul. You have been killed by a ghoul.";
+    attackMessage = "A foul creature from another plane appears before you. Teeth from the beholder's jaw tear your flesh, shredding your skin while looking at you with that giant eyeball.";
     scale = 3;
     scaleDark = 3;
 }

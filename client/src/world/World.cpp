@@ -9,6 +9,7 @@
 #include <world/GroundHog.h>
 #include <world/Ghoul.h>
 #include <iostream>
+#include <world/Beholder.h>
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
 #include "util/SimplexNoise.h"
@@ -74,7 +75,7 @@ void World::spawnEnemy(GamePhase phase, sf::Vector2i position) {
 			if (val < 0.5)
 				monster = new Wraith(*this, position);
 			else
-				monster = new Ghoul(*this, position);
+				monster = new Beholder(*this, position);
 		}
 	} else {
 		return;
