@@ -29,6 +29,8 @@ protected:
     bool hasLookedForSpot = false;
 
     std::string attackMessage;
+
+    float nextAttackCountdown = 0;
 public:
     Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, sf::Texture* nightTexture);
     void tick(float delta) override;

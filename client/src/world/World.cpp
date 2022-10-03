@@ -378,8 +378,7 @@ void World::handleMonsterAttack(Monster& monster) {
         timePaused = false;
         if (currentPhase != GamePhase::INITIAL)
             loadCheckPoint = true;
-        else
-            removeEntity(&monster);
+            //removeEntity(&monster);
     });
 }
 
