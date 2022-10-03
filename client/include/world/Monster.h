@@ -32,7 +32,7 @@ protected:
 
     float nextAttackCountdown = 0;
 
-    sf::Sound bushSound;
+    //sf::Sound bushSound;
 public:
     mutable sf::Sprite daySprite;
     mutable sf::Sprite nightSprite;

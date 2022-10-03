@@ -80,6 +80,8 @@ class World : public Tickable, public sf::Drawable {
 	void spawnEnemy(GamePhase phase, sf::Vector2i position);
 
 	std::chrono::system_clock::time_point last_monster_spawn = std::chrono::system_clock::now();
+
+	sf::Sound AHHH_SOUND;
 public:
 	constexpr const static sf::Vector2f VIEW_SIZE = { 24.0f, 13.5f };
 

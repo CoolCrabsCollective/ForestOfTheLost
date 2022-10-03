@@ -39,6 +39,8 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
 	terrain_textures[TerrainType::WATER] = assets.get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = assets.get(GameAssets::SAND_TERRAIN);
 
+	AHHH_SOUND.setBuffer(*assets.get(GameAssets::AHHH_SOUND));
+
 	// srand(20201002);
 	generatePhase(GamePhase::INITIAL);
 }
@@ -487,6 +489,8 @@ void World::tick(float delta) {
 				countBlinkBeforePhaseChange--;
 				if(countBlinkBeforePhaseChange == -1 && currentPhase < FINAL) {
 					generatePhase(static_cast<GamePhase>(currentPhase + 1));
+					if(currentPhase == MONSTER)
+						AHHH_SOUND.play();
 				}
 			}
 
@@ -661,8 +665,16 @@ void World::handleMonsterAttack(Monster& monster) {
     getPlayer().animateHit();
     dialogBox.startDialog({monster.getAttackMessage(),}, [&]{
         timePaused = false;
-        if (currentPhase != GamePhase::INITIAL)
-            loadCheckPoint = true;
+        if (currentPhase != GamePhase::INITIAL) {
+
+			loadCheckPoint = true;
+
+			for(Monster* monster : monsters) {
+				removeEntity(monster);
+				delete monster;
+			}
+			monsters.clear();
+		}
 
         // Terrible code pt. 2
         if (monster.daySprite.getTexture() == monster.nightSprite.getTexture())

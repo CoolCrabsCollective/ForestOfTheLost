@@ -41,7 +41,7 @@ void Bush::draw(sf::RenderTarget& target, const sf::RenderStates& states) const 
 
     sprite.setOrigin({sprite.getTexture()->getSize().x / 2.f, sprite.getTexture()->getSize().y / 2.f});
 	sprite.setPosition({static_cast<float>(position.x) - 0.125f + 1.25f/2.0f,
-                     -static_cast<float>(position.y) + 0.25f + 1.25f/2.0f});
+                     -static_cast<float>(position.y) - 0.25f + 1.25f/2.0f});
 
 	if(bush_is_shaking)
 	    sprite.setScale({sprite.getScale().x * bush_shake_scale.x, sprite.getScale().y * bush_shake_scale.y });
