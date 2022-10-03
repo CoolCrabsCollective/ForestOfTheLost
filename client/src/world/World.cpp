@@ -9,6 +9,7 @@
 #include <world/GroundHog.h>
 #include <world/Ghoul.h>
 #include <iostream>
+#include <world/Beholder.h>
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
 #include "util/SimplexNoise.h"
@@ -76,7 +77,7 @@ void World::spawnEnemy(GamePhase phase, sf::Vector2i position) {
 			if (val < 0.5)
 				monster = new Wraith(*this, position);
 			else
-				monster = new Ghoul(*this, position);
+				monster = new Beholder(*this, position);
 		}
 	} else {
 		return;
@@ -329,6 +330,8 @@ void World::generatePhase(GamePhase phase) {
 								balls.push_back(ball);
 							}
 						}
+
+                        setCheckPoint = true;
 					}
                 }
             }
@@ -489,6 +492,7 @@ void World::tick(float delta) {
 				countBlinkBeforePhaseChange--;
 				if(countBlinkBeforePhaseChange == -1 && currentPhase < FINAL) {
 					generatePhase(static_cast<GamePhase>(currentPhase + 1));
+                    player.setHeartBeatDelay(player.getHeartBeatDelay() / 2);
 					if(currentPhase == MONSTER)
 						AHHH_SOUND.play();
 				}
@@ -664,10 +668,8 @@ void World::handleMonsterAttack(Monster& monster) {
 
     getPlayer().animateHit();
     dialogBox.startDialog({monster.getAttackMessage(),}, [&]{
-        timePaused = false;
         if (currentPhase != GamePhase::INITIAL) {
-
-			loadCheckPoint = true;
+            loadCheckPoint = true;
 
 			for(Monster* monster : monsters) {
 				removeEntity(monster);

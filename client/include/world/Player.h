@@ -74,6 +74,8 @@ public:
 
     void setHeartBeatDelay(float delay);
 
+    float getHeartBeatDelay();
+
 	void animateHit();
 };
 
