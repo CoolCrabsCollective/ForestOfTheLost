@@ -12,6 +12,7 @@
 
 enum TreeType {
 	ALIVE,
+	SQUIRREL,
 	DEAD,
 	THICK_DEAD
 };
