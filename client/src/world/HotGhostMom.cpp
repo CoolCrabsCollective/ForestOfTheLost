@@ -15,7 +15,16 @@ HotGhostMom::HotGhostMom(World &world, sf::Vector2i position) : Monster(world, p
 void HotGhostMom::tick(float delta) {
     tickMovement(delta);
 
-    targetPlayerInRange();
+    if (!cryingGirl) {
+        targetPlayerInRange();
+        checkForCryingGirl();
+    } else {
+        if (position == destination) {
+            // reached crying girl, start cutscene
+
+            // TODO: write cutscene for crying girl and ghost mom interaction
+        }
+    }
 }
 
 void HotGhostMom::targetPlayerInRange() {
@@ -61,4 +70,24 @@ void HotGhostMom::drawDarkness(sf::RenderTarget &target) const {
     daySprite.setPosition({renderPosition.x, -renderPosition.y});
     daySprite.setScale({ scale / daySprite.getTexture()->getSize().x, scale / daySprite.getTexture()->getSize().y });
     target.draw(daySprite);
+}
+
+void HotGhostMom::checkForCryingGirl() {
+    for (int searchX = position.x  - searchGirlRadius ; searchX <= position.x + searchGirlRadius ; searchX++) {
+        for (int searchY = position.y - searchGirlRadius; searchY <= position.y + searchGirlRadius; searchY++) {
+            if (searchX == position.x && searchY == position.y)
+                continue;
+
+            auto entitiesAt = world.getEntitiesAt({searchX, searchY});
+
+            for (Entity *entity: entitiesAt) {
+                cryingGirl = dynamic_cast<CryingGirl *>(entity);
+
+                if (cryingGirl) {
+                    move(cryingGirl->getPosition() - vectorToUnitVector(cryingGirl->getPosition()));
+                    return;
+                }
+            }
+        }
+    }
 }
