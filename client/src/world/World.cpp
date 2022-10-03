@@ -661,12 +661,15 @@ void World::handleMonsterAttack(Monster& monster) {
     {
         if(isGotBalls())
         {
-            dialogBox.startDialog({"Monster Kid: Oh you have a ball! Let's play!"}, [&]{
+            dialogBox.startDialog({"Monster Kid: Oh you have a ball! Let's play!"}, [&, monsterKid]{
                 MonsterKidHealed* healedKid = new MonsterKidHealed(*this, monsterKid->getPosition());
                 addEntity(healedKid);
 
-                auto pos = std::find(getEntities().begin(), getEntities().end(), monsterKid);
-                entities.erase(pos);
+                auto pos = std::find(monsters.begin(), monsters.end(), monsterKid);
+                if (pos == monsters.end()) {
+                    throw std::runtime_error("Tried to removing an monster not in monster vector (get fucked idiot)");
+                }
+                monsters.erase(pos);
                 removeEntity(monsterKid);
                 delete monsterKid;
 
