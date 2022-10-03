@@ -55,7 +55,7 @@ void HotGhostMom::moveTowardsPlayer() {
 
     move(moveTo);
 
-    world.moveEntity(oldPos, cryingGirl);
+    world.moveEntity(oldPos, this);
 }
 
 void HotGhostMom::findNewSpot() {
@@ -88,7 +88,7 @@ void HotGhostMom::checkForCryingGirl() {
                 if (cryingGirl) {
                     sf::Vector2i oldPos = position;
                     move(cryingGirl->getPosition() - vectorToUnitVector(cryingGirl->getPosition()));
-                    world.moveEntity(oldPos, cryingGirl);
+                    world.moveEntity(oldPos, this);
                     return;
                 }
             }
