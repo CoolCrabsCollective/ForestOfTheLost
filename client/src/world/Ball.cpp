@@ -14,8 +14,9 @@ bool Ball::activate() {
 	if(taken)
 		return false;
 
-	world.getDialogBox().startDialog({ "You found an old ball." }, [&]() {
+	world.getDialogBox().startDialog({ "You found an old ball. The ghost mom said the monster kid likes toys, maybe I should try playing ball with him." }, [&]() {
 		taken = true;
+		world.setGotBalls(true);
 		world.removeBalls();
 	});
 	return true;

@@ -12,5 +12,6 @@ MonsterKidMonster::MonsterKidMonster(World& world,
 				  world.getAssets().get(GameAssets::MONSTER_KID_MONSTER)) {
 	scale = 2.0;
 	scaleDark = 2.0;
+	attackMessage = "Monster Kid: Why don't you have any toys for me?";
 
 }

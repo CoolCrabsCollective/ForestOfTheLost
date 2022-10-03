@@ -18,7 +18,7 @@ void HotGhostMom::tick(float delta) {
     if (!cryingGirl) {
         targetPlayerInRange();
         checkForCryingGirl();
-    } else if (position == destination && !ghostMomReachCryingGirl) {
+    } else if (position == destination && !ghostMomReachCryingGirl && playerTargeted) {
         // reached crying girl, start cutscene
 
         world.getDialogBox().startDialog({"Ghost Mom: Lily... I'm so happy to see you!", "Ghost Mom: Sir, thank you so much for bringing me back to Lily! This place is dangerous, be careful. There are many lost children in this forest. Some have been transformed into evil beings but they are simply children. Perhaps, bringing them toys could heal them."}, [&](){
@@ -39,7 +39,10 @@ void HotGhostMom::targetPlayerInRange() {
     bool maxRangeToPlayer = distance >= MAX_RANGE_TO_PLAYER;
 
     if (!maxRangeToPlayer) {
+        playerTargeted = true;
         moveTowardsPlayer();
+    } else {
+        playerTargeted = false;
     }
 }
 
@@ -48,7 +51,11 @@ void HotGhostMom::moveTowardsPlayer() {
 
     sf::Vector2i moveTo = playerPos + MIN_RANGE_TO_PLAYER*vectorToUnitVector(playerPos);
 
+    sf::Vector2i oldPos = position;
+
     move(moveTo);
+
+    world.moveEntity(oldPos, cryingGirl);
 }
 
 void HotGhostMom::findNewSpot() {
@@ -79,7 +86,9 @@ void HotGhostMom::checkForCryingGirl() {
                 cryingGirl = dynamic_cast<CryingGirl *>(entity);
 
                 if (cryingGirl) {
+                    sf::Vector2i oldPos = position;
                     move(cryingGirl->getPosition() - vectorToUnitVector(cryingGirl->getPosition()));
+                    world.moveEntity(oldPos, cryingGirl);
                     return;
                 }
             }

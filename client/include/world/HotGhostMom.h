@@ -15,6 +15,8 @@ class HotGhostMom : public Monster {
 
     bool ghostMomReachCryingGirl = false;
 
+    bool playerTargeted = false;
+
     CryingGirl* cryingGirl = nullptr;
 
 public:
