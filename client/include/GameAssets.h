@@ -42,6 +42,7 @@ namespace GameAssets {
 	ASSET(wiz::TextureAsset, SPOOKY_EYES, ("gfx/spooky_face.png"))
     ASSET(wiz::TextureAsset, PACIFIC_EYES, ("gfx/pacific_eyes.png"))
     ASSET(wiz::TextureAsset, BEHOLDER_EYES, ("gfx/enemies/beholder_eyes.png"))
+    ASSET(wiz::TextureAsset, SKULL_EYES, ("gfx/enemies/skull_eyes.png"))
 
 	ASSET(wiz::TextureAsset, HEART, ("gfx/heart.png"))
     ASSET(wiz::TextureAsset, ITEM_TEDDY, ("gfx/teddy_bear.png"))
@@ -77,6 +78,7 @@ namespace GameAssets {
     // Monsters
     ASSET(wiz::TextureAsset, BAT, ("gfx/bat2.png"))
     ASSET(wiz::TextureAsset, SNAKE, ("gfx/enemies/snake.png"))
+    ASSET(wiz::TextureAsset, SKULL, ("gfx/enemies/skull.png"))
     ASSET(wiz::TextureAsset, GROUND_HOG, ("gfx/marmotte.png"))
     ASSET(wiz::TextureAsset, WRAITH, ("gfx/wraith.png"))
     ASSET(wiz::TextureAsset, GHOUL, ("gfx/ghoul.png"))
