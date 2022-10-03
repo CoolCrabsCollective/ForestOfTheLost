@@ -36,13 +36,15 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
           entityMap(),
 		  terrain_textures(),
 		  dialogBox(dialogBox),
-		  monsters() {
+		  monsters(),
+		  gameOverSound() {
 	terrain_textures[TerrainType::SHORT_GRASS] = assets.get(GameAssets::SHORT_GRASS_TERRAIN);
 	terrain_textures[TerrainType::GRASS] = assets.get(GameAssets::GRASS_TERRAIN);
 	terrain_textures[TerrainType::WATER] = assets.get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = assets.get(GameAssets::SAND_TERRAIN);
 
 	AHHH_SOUND.setBuffer(*assets.get(GameAssets::AHHH_SOUND));
+	gameOverSound.setBuffer(*assets.get(GameAssets::GAMEOVER));
 
 	// srand(20201002);
 	generatePhase(GamePhase::INITIAL);
