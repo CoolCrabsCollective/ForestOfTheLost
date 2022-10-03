@@ -67,6 +67,8 @@ class World : public Tickable, public sf::Drawable {
 
 	bool got_balls = false;
 
+	bool monsterKidCanSpawn = true;
+
     MonsterKidHealed* healedKid = nullptr;
 public:
     bool isGotBalls() const;
@@ -183,6 +185,10 @@ public:
 
 	inline void setHotGhostMomsCanSpawn() {
 		hotGhostMomsCanSpawn = true;
+	}
+
+	inline void setHotGhostMomsCantSpawn() {
+	    hotGhostMomsCanSpawn = false;
 	}
 };
 
