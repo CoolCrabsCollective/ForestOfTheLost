@@ -11,6 +11,7 @@
 #include <iostream>
 #include <world/Beholder.h>
 #include <world/Skull.h>
+#include <world/monster_kid/MonsterKidHealed.h>
 #include "world/World.h"
 #include "SFML/System/Vector2.hpp"
 #include "util/SimplexNoise.h"
@@ -636,6 +637,33 @@ void World::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
 }
 
 void World::handleMonsterAttack(Monster& monster) {
+
+    if(MonsterKidMonster* monsterKid = dynamic_cast<MonsterKidMonster*>(&monster))
+    {
+        if(isGotBalls())
+        {
+            dialogBox.startDialog({"Hey do you want to play ball?", "Monster Kid: Yes."}, [&]{
+                MonsterKidHealed* healedKid = new MonsterKidHealed(*this, monsterKid->getPosition());
+                addEntity(healedKid);
+
+                auto pos = std::find(getEntities().begin(), getEntities().end(), monsterKid);
+                entities.erase(pos);
+                removeEntity(monsterKid);
+                delete monsterKid;
+
+                dialogBox.startDialog({
+                    "Kid: I'm healed... Thanks for playing ball with me."
+                }, [&]{
+
+                    removeEntity(healedKid);
+                    delete healedKid;
+                    changePhaseIn(2);
+                });
+            });
+            return;
+        }
+    }
+
     // Terrible code pt. 1 (making wraiths visible when they are attacking you)
     if (monster.daySprite.getTexture() == getAssets().get(GameAssets::INVISIBLE))
         monster.daySprite.setTexture(*monster.nightSprite.getTexture());
@@ -712,4 +740,12 @@ void World::removeBalls() {
 		delete ball;
 	}
 	balls.clear();
+}
+
+bool World::isGotBalls() const {
+    return got_balls;
+}
+
+void World::setGotBalls(bool gotBalls) {
+    got_balls = gotBalls;
 }

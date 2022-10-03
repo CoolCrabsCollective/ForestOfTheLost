@@ -64,7 +64,15 @@ class World : public Tickable, public sf::Drawable {
 	float timeAccumulator = 0.0f;
 	float tenSecAccumulator = 0.0f;
 
-	GamePhase currentPhase = INITIAL;
+	bool got_balls = false;
+public:
+    bool isGotBalls() const;
+
+    void setGotBalls(bool gotBalls);
+
+private:
+
+    GamePhase currentPhase = INITIAL;
 	int countBlinkBeforePhaseChange = -1;
 
 	DialogBox& dialogBox;
