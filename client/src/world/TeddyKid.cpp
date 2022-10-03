@@ -18,6 +18,7 @@ bool TeddyKid::activate() {
 										   "Kid: ...",
                                            "You: I'm looking for a little girl. Her name is Lily. Have you seen her?",
                                            "Kid: ...",
+                                           "*He fades away*",
                                            }, [&](){
         world.generatePhase(GHOST);
 	});

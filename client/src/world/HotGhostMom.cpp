@@ -28,7 +28,8 @@ void HotGhostMom::tick(float delta) {
                                           "Ghost: Children who become lost here change...",
                                           "Ghost: They go bad...",
                                           "You: I don't understand...",
-                                          "Ghost: But they are simply children after all. Bring them pieces of their past. Remind them who they are!"}, [&](){
+                                          "Ghost: But they are simply children after all. Bring them pieces of their past. Remind them who they are!",
+                                          "*They both fade away*"}, [&](){
             world.hotGhostMomInteraction(cryingGirl, this);
         });
 

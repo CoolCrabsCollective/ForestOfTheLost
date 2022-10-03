@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
 	mode = sf::VideoMode(1280, 720, 32);
 #endif
 
-	std::shared_ptr<sf::RenderWindow> window = std::make_shared<sf::RenderWindow>(mode, "Children of the Lost");
+	std::shared_ptr<sf::RenderWindow> window = std::make_shared<sf::RenderWindow>(mode, "Forest of the Lost");
 
 	SpookyGame game(window, logger, loader);
 
