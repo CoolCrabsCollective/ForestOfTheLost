@@ -75,7 +75,7 @@ void main()
     vec3 scanlines = vec3(sl.x, sl.y, sl.x);
     grayscale_color += grayscale_color * scanlines * opacityScanline * scan_effect;
     grayscale_color += grayscale_color * vec3(random(gl_TexCoord[0].xy*timeAccumulator)) * opacityNoise * scan_effect;
-    grayscale_color += grayscale_color * sin(110.0*) * flickering * scan_effect;
+    grayscale_color += grayscale_color * sin(110.0) * flickering * scan_effect;
 
     gl_FragColor = vec4(grayscale_color, grayscale_alpha);
 }

@@ -159,9 +159,9 @@ void World::generatePhase(GamePhase phase) {
             if (sf::Vector2i{i, j}.lengthSq() <= 10.0 * 10.0)
                 noise += (100 - sf::Vector2i{i, j}.lengthSq()) / 50.0;
 
-            if (noise < -0.75)
+            if (noise < -0.75 || ((i == -200 || i == 200) && (j == -200 || j == 200)))
                 terrainMap[sf::Vector2i(i, j)] = TerrainType::WATER;
-            else if (noise < -0.7)
+            else if (noise < -0.7 || ((i == -199 || i == 199) && (j == -199 || j == 199)))
                 terrainMap[sf::Vector2i(i, j)] = TerrainType::SAND;
             else if (noise > 1.5f)
                 terrainMap[sf::Vector2i(i, j)] = TerrainType::GRASS;
