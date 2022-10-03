@@ -31,6 +31,8 @@ protected:
     std::string attackMessage;
 
     float nextAttackCountdown = 0;
+
+    sf::Sound bushSound;
 public:
     mutable sf::Sprite daySprite;
     mutable sf::Sprite nightSprite;
