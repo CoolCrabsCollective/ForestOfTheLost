@@ -405,9 +405,10 @@ void World::tick(float delta) {
     }
 
     if (loadCheckPoint) {
-        moveEntity(player.getPosition(), &player);
+        sf::Vector2i oldPos = player.getPosition();
         player.setPosition(playerCheckpointPos);
         player.setDestination(playerCheckpointPos);
+        moveEntity(oldPos, &player);
         loadCheckPoint = false;
     }
 
