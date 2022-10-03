@@ -9,7 +9,7 @@
 #include "HidingSpot.h"
 
 enum BushType {
-    BUSH,
+    BUSH = 0,
     BUSH2,
     WITHERED_BUSH,
     WITHERED_BUSH2

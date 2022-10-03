@@ -25,6 +25,8 @@ Bush::Bush(World& world, const sf::Vector2i& position, BushType bush)
         case WITHERED_BUSH2:
             tex = world.getAssets().get(GameAssets::WITHERED_BUSH2);
             break;
+        default:
+            throw std::runtime_error("You're dumb");
     }
     this->sprite.setTexture(*tex, true);
 }
