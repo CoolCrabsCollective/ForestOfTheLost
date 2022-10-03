@@ -379,10 +379,10 @@ void World::addEntity(Entity* entity) {
 void World::moveEntity(sf::Vector2i oldPosition, Entity *entity) {
     auto removePos = std::find(entityMap[oldPosition].begin(), entityMap[oldPosition].end(), entity);
 
-	if(removePos == entityMap[entity->getPosition()].end())
+	if(removePos == entityMap[oldPosition].end())
 		throw std::runtime_error("Tried to move an entity not in entity map (may pain permeates into your suffering)");
 
-	entityMap[entity->getPosition()].erase(removePos);
+	entityMap[oldPosition].erase(removePos);
 
 	if (entityMap.contains(entity->getPosition()))
 		entityMap[entity->getPosition()].push_back(entity);
