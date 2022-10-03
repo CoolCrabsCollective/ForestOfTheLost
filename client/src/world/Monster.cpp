@@ -32,13 +32,14 @@ void Monster::tick(float delta) {
 
     tickMovement(delta);
 
-    if (attacking && nextAttackCountdown < 1250) {
+    if (world.getPhase() == INITIAL && attacking && nextAttackCountdown < 1250) {
         world.setTimePaused(false);
         attacking = false;
     }
 
     if (nextAttackCountdown <= 0) {
         targetPlayerInRange();
+        attacking = false;
     }
 
     if (position == world.getPlayer().getPosition() && nextAttackCountdown <= 0) {

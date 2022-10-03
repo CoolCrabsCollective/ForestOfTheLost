@@ -641,6 +641,8 @@ void World::handleMonsterAttack(Monster& monster) {
     dialogBox.startDialog({monster.getAttackMessage(),}, [&]{
         if (currentPhase != GamePhase::INITIAL) {
             loadCheckPoint = true;
+            timePaused = false;
+        }
 
 			for(Monster* monster : monsters) {
 				removeEntity(monster);
