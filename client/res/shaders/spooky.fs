@@ -5,6 +5,7 @@ uniform float timeAccumulator;
 uniform float grayscaleness;
 uniform float spookyness;
 uniform float scan_effect;
+uniform float redness;
 
 #define PI 3.141592654
 float PHI = 1.61803398874989484820459;

@@ -12,7 +12,7 @@
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
 		: Screen(game),
-	      dialogBox(game.getAssets().get(GameAssets::VT323_TTF), game.getAssets().get(GameAssets::DIALOG_BOX)),
+	      dialogBox(game.getAssets(), game.getAssets().get(GameAssets::VT323_TTF), game.getAssets().get(GameAssets::DIALOG_BOX)),
 		  world(game.getAssets(), dialogBox),
           mappingDatabase(),
           lily(*game.getAssets().get(GameAssets::LILY)),

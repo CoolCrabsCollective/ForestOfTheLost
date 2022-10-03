@@ -36,7 +36,7 @@ void Monster::tick(float delta) {
         attacking = false;
     }
 
-    if (nextAttackCountdown <= 0) {
+    if (nextAttackCountdown <= 0 && !world.isTimePaused()) {
         targetPlayerInRange();
         attacking = false;
     }
@@ -86,6 +86,7 @@ void Monster::targetPlayerInRange() {
     bool nextToPlayer = diff.lengthSq() < 1.1;
 
     if (nextToPlayer) {
+		world.gameOverSound.play();
 		world.setTimePaused(true);
         moveTowardsPlayer();
     }
