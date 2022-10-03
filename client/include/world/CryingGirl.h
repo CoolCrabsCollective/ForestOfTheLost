@@ -8,6 +8,8 @@
 #include "NPC.h"
 
 class CryingGirl : public NPC {
+    bool removedOtherGirls = false;
+
 public:
     CryingGirl(World& world, const sf::Vector2i& position);
 

@@ -6,6 +6,7 @@
 #define LD51_CLIENT_TERRAIN_H
 
 enum TerrainType {
+	SHORT_GRASS,
 	GRASS,
 	WATER,
 	SAND

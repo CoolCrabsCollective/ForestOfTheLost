@@ -40,9 +40,10 @@ public:
     virtual void drawDarkness(sf::RenderTarget& target, sf::Shader* shader) const;
     sf::Vector2f getRenderPosition() const override;
     void findNewSpot();
-    void moveTowardsPlayer();
+    virtual void moveTowardsPlayer();
     void move(sf::Vector2i des);
-    void targetPlayerInRange();
+    void tickMovement(float delta);
+    virtual void targetPlayerInRange();
     const std::shared_ptr<EntityState> &getState() const;
     void setState(const std::shared_ptr<EntityState> &state);
     std::string getAttackMessage();

@@ -12,6 +12,7 @@
 
 enum TreeType {
 	ALIVE,
+	SQUIRREL,
 	DEAD,
 	THICK_DEAD
 };
@@ -20,6 +21,8 @@ class Tree : public HidingSpot, public Solid, public Interactable {
 	TreeType tree_type;
 public:
     Tree(World& world, const sf::Vector2i& position, TreeType tree_type);
+
+    void shake() override;
 
     bool isBlocking(sf::Vector2i vec);
 

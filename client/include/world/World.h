@@ -147,6 +147,8 @@ public:
 
     const std::vector<CryingGirl *> &getCryingGirls() const;
 
+    void shake(sf::Vector2i vec);
+
     void generatePhase(GamePhase phase);
 };
 

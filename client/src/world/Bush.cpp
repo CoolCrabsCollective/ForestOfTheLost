@@ -31,8 +31,36 @@ Bush::Bush(World& world, const sf::Vector2i& position, BushType bush)
     this->sprite.setTexture(*tex, true);
 }
 
+void Bush::shake() {
+    bush_is_shaking = true;
+    bush_delta = 0.0f;
+}
+
 void Bush::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
-	sprite.setPosition({static_cast<float>(position.x - 0.125f), -static_cast<float>(position.y + 0.25f)});
-	sprite.setScale({ 1.25f / sprite.getTexture()->getSize().x, 1.25f / sprite.getTexture()->getSize().y });
+    sprite.setScale({ 1.25f / sprite.getTexture()->getSize().x, 1.25f / sprite.getTexture()->getSize().y });
+
+    sprite.setOrigin({sprite.getTexture()->getSize().x / 2.f, sprite.getTexture()->getSize().y / 2.f});
+	sprite.setPosition({static_cast<float>(position.x) - 0.125f + sprite.getScale().x,
+                     -static_cast<float>(position.y) + 0.25f + sprite.getScale().y});
+
+	if(bush_is_shaking)
+	    sprite.setScale({sprite.getScale().x * bush_shake_scale.x, sprite.getScale().y * bush_shake_scale.y });
 	target.draw(sprite);
+}
+
+void Bush::tick(float delta) {
+    HidingSpot::tick(delta);
+    if(bush_is_shaking)
+    {
+        bush_shake_scale = {
+                1.0f + (std::cos(bush_shake_speed * bush_delta / 1000.f)) * bush_shake_intensity.x,
+                1.0f + (std::cos(bush_shake_speed * bush_delta / 1000.f)) * bush_shake_intensity.y,
+        };
+        bush_delta += delta;
+    }
+
+    if(bush_delta >= bush_shake_time)
+    {
+        bush_is_shaking = false;
+    }
 }

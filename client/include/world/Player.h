@@ -59,6 +59,8 @@ public:
     bool isLockMovement() const;
 
     void setLockMovement(bool lockMovement);
+
+	void teleport(sf::Vector2i position);
 };
 
 

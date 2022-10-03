@@ -27,6 +27,21 @@ void Monster::tick(float delta) {
         hasLookedForSpot = true;
     }
 
+    tickMovement(delta);
+
+    if (nextAttackCountdown <= 0)
+        targetPlayerInRange();
+
+    if (position == world.getPlayer().getPosition() && nextAttackCountdown <= 0) {
+        world.handleMonsterAttack(*this);
+        nextAttackCountdown = 2000; // 2 seconds
+        findNewSpot();
+    }
+
+    state->tick(delta);
+}
+
+void Monster::tickMovement(float delta) {
     bool moving = position != partDestination;
     bool rotating = currentDir != destinationDir;
 
@@ -44,6 +59,8 @@ void Monster::tick(float delta) {
             if (partDestination != destination) {
                 partDestination = position + vectorToUnitVector(destination - position);
             }
+
+            world.shake(position);
         } else {
             renderPosition = (sf::Vector2f) position + sf::Vector2f(partDestination - position) * actionProgress;
         }
@@ -52,17 +69,6 @@ void Monster::tick(float delta) {
             currentDir = destinationDir;
         }
     }
-
-    if (nextAttackCountdown <= 0)
-        targetPlayerInRange();
-
-    if (position == world.getPlayer().getPosition() && nextAttackCountdown <= 0) {
-        world.handleMonsterAttack(*this);
-        nextAttackCountdown = 2000; // 2 seconds
-        findNewSpot();
-    }
-
-    state->tick(delta);
 }
 
 void Monster::targetPlayerInRange() {
@@ -80,6 +86,7 @@ void Monster::targetPlayerInRange() {
 void Monster::move(sf::Vector2i des) {
     destination = des;
     partDestination = position + vectorToUnitVector(destination - position);
+    world.shake(position);
 }
 
 void Monster::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {

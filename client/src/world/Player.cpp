@@ -162,4 +162,15 @@ void Player::interact() {
 	noInteractSound.play();
 }
 
+void Player::teleport(sf::Vector2i newPos) {
+	if(newPos == position)
+		return;
+
+	sf::Vector2i oldPos = position;
+	position = newPos;
+	destination = newPos;
+	renderPosition = (sf::Vector2f) position;
+	world.moveEntity(oldPos, this);
+}
+
 

@@ -21,7 +21,18 @@ public:
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
 
+    void shake() override;
+
+    void tick(float delta) override;
+
 protected:
+    sf::Vector2f bush_shake_scale = { 1.0f, 1.0f };
+    sf::Vector2f bush_shake_intensity { 0.2f, 0.05f };
+    float bush_delta = 0.0f;
+    float bush_shake_time = 500.f;
+    float bush_shake_speed = 30.0f;
+    bool bush_is_shaking = false;
+
     BushType bush_type;
 };
 

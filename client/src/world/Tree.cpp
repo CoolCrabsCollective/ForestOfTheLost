@@ -14,6 +14,10 @@ Tree::Tree(World& world, const sf::Vector2i& position, TreeType tree_type)
 			tex = world.getAssets().get(GameAssets::ALIVE_TREE);
 			break;
 
+		case SQUIRREL:
+			tex = world.getAssets().get(GameAssets::SQUIRREL_TREE);
+			break;
+
 		case DEAD:
 			tex = world.getAssets().get(GameAssets::DEAD_TREE);
 			break;
@@ -38,9 +42,15 @@ void Tree::draw(sf::RenderTarget& target, const sf::RenderStates& states) const 
 bool Tree::activate() {
 	if(tree_type == ALIVE)
 		world.getDialogBox().startDialog({ "This tree looks normal." });
+	else if(tree_type == SQUIRREL)
+		world.getDialogBox().startDialog({ "This tree has a squirrel family living in it!" });
 	else if(tree_type == DEAD)
 		world.getDialogBox().startDialog({ "This tree looks creepy." });
 	else
 		world.getDialogBox().startDialog({ "This tree IS THICC BOI" });
 	return true;
+}
+
+void Tree::shake() {
+
 }
