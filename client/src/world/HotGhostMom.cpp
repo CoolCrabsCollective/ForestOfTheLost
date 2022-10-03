@@ -57,8 +57,8 @@ void HotGhostMom::findNewSpot() {
 void HotGhostMom::draw(sf::RenderTarget& target, const sf::RenderStates& states) const {
 }
 
-void HotGhostMom::drawDarkness(sf::RenderTarget &target, sf::Shader* shader) const {
+void HotGhostMom::drawDarkness(sf::RenderTarget &target) const {
     daySprite.setPosition({renderPosition.x, -renderPosition.y});
     daySprite.setScale({ scale / daySprite.getTexture()->getSize().x, scale / daySprite.getTexture()->getSize().y });
-    target.draw(daySprite, shader);
+    target.draw(daySprite);
 }
