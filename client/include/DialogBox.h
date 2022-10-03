@@ -12,10 +12,14 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <functional>
+#include "WIZ/asset/AssetLoader.h"
+#include "SFML/Audio/Sound.hpp"
 
 class DialogBox : public sf::Drawable, public Tickable {
+	
+	sf::Sound dialog_click;
 public:
-    explicit DialogBox(sf::Font* font, sf::Texture* texture);
+    explicit DialogBox(wiz::AssetLoader& assets, sf::Font* font, sf::Texture* texture);
     void interact();
 
     void tick(float delta) override;

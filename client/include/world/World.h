@@ -69,6 +69,8 @@ public:
     bool isGotBalls() const;
 
     void setGotBalls(bool gotBalls);
+	
+	sf::Sound gameOverSound;
 
 private:
 

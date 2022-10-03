@@ -3,12 +3,15 @@
 //
 
 #include "DialogBox.h"
+#include "WIZ/asset/AssetLoader.h"
+#include "GameAssets.h"
 
 #include <utility>
 #include <SFML/Graphics.hpp>
 
-DialogBox::DialogBox(sf::Font* font, sf::Texture* texture) : font(font), sprite(*texture){
-
+DialogBox::DialogBox(wiz::AssetLoader& assets, sf::Font* font, sf::Texture* texture) 
+	: font(font), sprite(*texture), dialog_click() {
+	dialog_click.setBuffer(*assets.get(GameAssets::DIALOG_CLICK));
 }
 
 void DialogBox::interact() {
@@ -76,6 +79,7 @@ void DialogBox::next() {
     currentTextProgressTime = 0;
     if (dialogIndex < dialog.size())
         currentMaximumProgressTime = maximumTextProgressTime * (static_cast<float>(dialog[dialogIndex][0].size() + dialog[dialogIndex][1].size()) / static_cast<float>(line_max_chars));
+	dialog_click.play();
 }
 
 void DialogBox::complete() {

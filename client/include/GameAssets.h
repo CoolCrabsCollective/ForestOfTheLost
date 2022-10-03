@@ -21,6 +21,7 @@ namespace GameAssets {
 
 	// Music
 	ASSET(wiz::MusicAsset, SUSPICIOUS_FOREST_MUSIC, ("music/suspicious_forest.ogg"))
+    ASSET(wiz::MusicAsset, LILYS_THEME_MUSIC, ("music/lilys_theme.ogg"))
 
 	// Sounds
 	ASSET(wiz::SoundAsset, COLLISION, ("sfx/collision.ogg"))
@@ -30,6 +31,8 @@ namespace GameAssets {
     ASSET(wiz::SoundAsset, BUSH_SOUND, ("sfx/bush.ogg"))
     ASSET(wiz::SoundAsset, HEART_BEAT_SOUND, ("sfx/heart_beat.ogg"))
 	ASSET(wiz::SoundAsset, AHHH_SOUND, ("sfx/ahhh.ogg"))
+	ASSET(wiz::SoundAsset, GAMEOVER, ("sfx/gameover.ogg"))
+	ASSET(wiz::SoundAsset, DIALOG_CLICK, ("sfx/dialog_click.ogg"))
 
 	ASSET(wiz::FontAsset, SANS_TTF, ("font/sans.ttf"))
 	ASSET(wiz::FontAsset, VT323_TTF, ("font/VT323-Regular.ttf"))

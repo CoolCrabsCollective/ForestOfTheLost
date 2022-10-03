@@ -5,6 +5,7 @@ uniform float timeAccumulator;
 uniform float grayscaleness;
 uniform float spookyness;
 uniform float scan_effect;
+uniform float redness;
 
 #define PI 3.141592654
 float PHI = 1.61803398874989484820459;
@@ -77,5 +78,5 @@ void main()
     grayscale_color += grayscale_color * vec3(random(gl_TexCoord[0].xy*timeAccumulator)) * opacityNoise * scan_effect;
     grayscale_color += grayscale_color * sin(110.0) * flickering * scan_effect;
 
-    gl_FragColor = vec4(grayscale_color, grayscale_alpha);
+    gl_FragColor = vec4(grayscale_color * (1 - redness) + vec3(grayscale_color.x, 0, 0) * redness, grayscale_alpha);
 }

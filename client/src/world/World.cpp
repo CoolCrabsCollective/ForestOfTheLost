@@ -36,13 +36,15 @@ World::World(wiz::AssetLoader& assets, DialogBox& dialogBox)
           entityMap(),
 		  terrain_textures(),
 		  dialogBox(dialogBox),
-		  monsters() {
+		  monsters(),
+		  gameOverSound() {
 	terrain_textures[TerrainType::SHORT_GRASS] = assets.get(GameAssets::SHORT_GRASS_TERRAIN);
 	terrain_textures[TerrainType::GRASS] = assets.get(GameAssets::GRASS_TERRAIN);
 	terrain_textures[TerrainType::WATER] = assets.get(GameAssets::WATER_TERRAIN);
 	terrain_textures[TerrainType::SAND] = assets.get(GameAssets::SAND_TERRAIN);
 
 	AHHH_SOUND.setBuffer(*assets.get(GameAssets::AHHH_SOUND));
+	gameOverSound.setBuffer(*assets.get(GameAssets::GAMEOVER));
 
 	// srand(20201002);
 	generatePhase(GamePhase::INITIAL);
@@ -472,8 +474,27 @@ void World::tick(float delta) {
 				if(countBlinkBeforePhaseChange == -1 && currentPhase < FINAL) {
 					generatePhase(static_cast<GamePhase>(currentPhase + 1));
                     player.setHeartBeatDelay(player.getHeartBeatDelay() / 2);
-					if(currentPhase == MONSTER)
-						AHHH_SOUND.play();
+                    switch (currentPhase) {
+                        case FIRST_ENCOUNTER:
+                            dialogBox.startDialog({
+                                 "What?...",
+                                 "Where am I?...",
+                             });
+                            break;
+                        case MONSTER:
+                            dialogBox.startDialog({
+                                  "These... things....",
+                                  "God almighty...",
+                              });
+                            AHHH_SOUND.play();
+                            break;
+                        case FINAL:
+                            dialogBox.startDialog({
+                                  "The illusion is broken...",
+                                  "Now I see the true face of these monsters..."
+                            });
+                            break;
+                    };
 				}
 			}
 

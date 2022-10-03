@@ -12,7 +12,7 @@
 
 TopDownScreen::TopDownScreen(wiz::Game& game)
 		: Screen(game),
-	      dialogBox(game.getAssets().get(GameAssets::VT323_TTF), game.getAssets().get(GameAssets::DIALOG_BOX)),
+	      dialogBox(game.getAssets(), game.getAssets().get(GameAssets::VT323_TTF), game.getAssets().get(GameAssets::DIALOG_BOX)),
 		  world(game.getAssets(), dialogBox),
           mappingDatabase(),
           lily(*game.getAssets().get(GameAssets::LILY)),
@@ -149,6 +149,12 @@ void TopDownScreen::render(sf::RenderTarget& target) {
 	spookyShader->setUniform("timeAccumulator",  world.getTimeAccumulator());
 	spookyShader->setUniform("grayscaleness", world.getGrayscaleness());
 	spookyShader->setUniform("scan_effect", world.getScanEffect());
+	spookyShader->setUniform("redness", 0.0f);
+	
+	if(world.getPhase() == FINAL) {
+		spookyShader->setUniform("redness", 1.0f);
+	}
+	
 	frameBuffer.display(); // done drawing fbo
 	fbo_sprite.setTexture(frameBuffer.getTexture());
 	target.clear();
