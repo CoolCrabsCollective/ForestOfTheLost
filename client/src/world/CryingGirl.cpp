@@ -30,6 +30,8 @@ bool CryingGirl::activate() {
             world.setSetCheckPoint(true);
 
             removedOtherGirls = true;
+
+            world.setCryingGirlPos(position);
         }
     });
     return NPC::activate();

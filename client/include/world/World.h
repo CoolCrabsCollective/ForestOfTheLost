@@ -94,6 +94,9 @@ private:
 	std::chrono::system_clock::time_point last_monster_spawn = std::chrono::system_clock::now();
 
 	sf::Sound AHHH_SOUND;
+
+    const int MIN_HOT_GIRL_GHOST_SPAWN_RADIUS = 20;
+    sf::Vector2i cryingGirlPos = {};
 public:
 	constexpr const static sf::Vector2f VIEW_SIZE = { 24.0f, 13.5f };
 
@@ -158,6 +161,10 @@ public:
 	inline GamePhase getPhase() const {
 		return currentPhase;
 	}
+
+    inline void setCryingGirlPos(sf::Vector2i pos) {
+        cryingGirlPos = pos;
+    }
 
     void handleMonsterAttack(Monster& monster);
 
