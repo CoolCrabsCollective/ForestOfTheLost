@@ -25,26 +25,3 @@ cd bin/<your platform>/
 ```
 
 Make sure you distribute all files that are in the `bin/<your platform>` folder. .so, .dll and res/ folder are all required by the game.
-
-## Switch
-
-### Development setup
-
-This development setup only needs to be done once for the Switch. After this you can just build according to the method below.
-
-#### Install Pacman
-
-For Ubuntu:
-
-Download Debian install package [here](https://github.com/devkitPro/pacman/releases/tag/v1.0.2)
-
-* `sudo dpkg -i devkitpro-pacman.amd64.deb`
-
-For ArchLinux:
-
-Customize your existing pacman installation using this guide: https://devkitpro.org/wiki/devkitPro_pacman
-
-#### use Pacman to install devkitA64 for compilation toolchains
-* `sudo dkp-pacman -S switch-dev`
-  (Hit enter to use all repositories by default)
-
