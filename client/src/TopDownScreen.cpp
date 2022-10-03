@@ -205,8 +205,10 @@ void TopDownScreen::drawUI(sf::RenderTarget &target) {
     }
 
     target.draw(dialogBox);
-	//fpsText.setString("FPS: " + std::to_string(fps));
-	target.draw(fpsText);
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::F12)) {
+		fpsText.setString("FPS: " + std::to_string(fps));
+		target.draw(fpsText);
+	}
 }
 
 void TopDownScreen::show() {
@@ -220,7 +222,7 @@ void TopDownScreen::show() {
     spookyShader = getAssets().get(GameAssets::SPOOKY_SHADER);
     eyesShader = getAssets().get(GameAssets::EYES_SHADER);
 
-	//fpsText.setString("FPS: ");
+	fpsText.setString("FPS: ");
 	fpsText.setPosition(sf::Vector2f(50, 650));
 	fpsText.setCharacterSize(20);
 	fpsText.setFont(*getGame().getAssets().get(GameAssets::SANS_TTF));
