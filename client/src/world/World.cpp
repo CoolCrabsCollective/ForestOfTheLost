@@ -90,7 +90,7 @@ void World::spawnEnemy(GamePhase phase, sf::Vector2i position) {
 			if(dynamic_cast<MonsterKidMonster*>(current))
 				hasMonsterKid = true;
 
-		if(!hasMonsterKid) {
+		if(!hasMonsterKid && monsterKidCanSpawn) {
 			monster = new MonsterKidMonster(*this, position);
 		} else {
 			if (val < 0.5)
@@ -692,6 +692,7 @@ void World::handleMonsterAttack(Monster& monster) {
     {
         if(isGotBalls())
         {
+            monsterKidCanSpawn = false;
             dialogBox.startDialog({"Monster Kid: Oh you have a ball! Let's play!"}, [&, monsterKid]{
                 healedKid = new MonsterKidHealed(*this, monsterKid->getPosition());
                 addEntity(healedKid);

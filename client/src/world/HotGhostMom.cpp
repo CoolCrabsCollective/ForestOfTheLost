@@ -21,6 +21,7 @@ void HotGhostMom::tick(float delta) {
     } else if (position == destination && !ghostMomReachCryingGirl && playerTargeted) {
         // reached crying girl, start cutscene
 
+        world.setHotGhostMomsCantSpawn();
         world.getAssets().get(GameAssets::LILYS_THEME_MUSIC)->play();
         world.getDialogBox().startDialog({"Ghost: Lily... I'm so happy to see you!",
                                           "*The spirit turns towards you*",
