@@ -17,7 +17,7 @@ Monster::Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, s
 
     renderPosition = {static_cast<float>(position.x), static_cast<float>(-position.y)};
 
-    attackMessage = "A monster attacked you!"; // shitty default attack message
+    attackMessage = {"A monster attacked you!"}; // shitty default attack message
 }
 
 void Monster::tick(float delta) {
@@ -158,7 +158,7 @@ sf::Vector2f Monster::getRenderPosition() const {
     return renderPosition;
 }
 
-std::string Monster::getAttackMessage() {
+const std::vector<std::string>& Monster::getAttackMessage() {
     return attackMessage;
 }
 

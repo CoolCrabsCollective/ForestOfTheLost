@@ -691,7 +691,7 @@ void World::handleMonsterAttack(Monster& monster) {
         monster.daySprite.setTexture(*monster.nightSprite.getTexture());
 
     getPlayer().animateHit();
-    dialogBox.startDialog({monster.getAttackMessage(),}, [&]{
+    dialogBox.startDialog(monster.getAttackMessage(), [&]{
         if (currentPhase != GamePhase::INITIAL) {
             loadCheckPoint = true;
             timePaused = false;

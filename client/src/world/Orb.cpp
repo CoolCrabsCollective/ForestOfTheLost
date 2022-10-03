@@ -8,7 +8,7 @@
 Orb::Orb(World &world, sf::Vector2i position) : Monster(world, position,
                                                                         world.getAssets().get(GameAssets::ORB),
                                                                         world.getAssets().get(GameAssets::ORB)){
-    attackMessage = "Bruh, these orbs aren't supposed to kill you. Lmao";
+    attackMessage = {"Bruh, these orbs aren't supposed to kill you. Lmao"};
     scale = 1;
     hasLookedForSpot = false;
 }
