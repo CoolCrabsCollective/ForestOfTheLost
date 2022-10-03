@@ -641,7 +641,7 @@ void World::handleMonsterAttack(Monster& monster) {
     {
         if(isGotBalls())
         {
-            dialogBox.startDialog({"Hey do you want to play ball?", "Monster Kid: Yes."}, [&]{
+            dialogBox.startDialog({"Monster Kid: Oh you have a ball! Let's play!"}, [&]{
                 MonsterKidHealed* healedKid = new MonsterKidHealed(*this, monsterKid->getPosition());
                 addEntity(healedKid);
 
