@@ -19,8 +19,10 @@ Monster::Monster(World &world, sf::Vector2i position, sf::Texture* dayTexture, s
 }
 
 void Monster::tick(float delta) {
-    if(!hasLookedForSpot) {
+    if (nextAttackCountdown > 0)
+        nextAttackCountdown -= delta;
 
+    if(!hasLookedForSpot) {
         findNewSpot();
         hasLookedForSpot = true;
     }
@@ -51,10 +53,13 @@ void Monster::tick(float delta) {
         }
     }
 
-    targetPlayerInRange();
+    if (nextAttackCountdown <= 0)
+        targetPlayerInRange();
 
-    if (position == world.getPlayer().getPosition()) {
+    if (position == world.getPlayer().getPosition() && nextAttackCountdown <= 0) {
         world.handleMonsterAttack(*this);
+        nextAttackCountdown = 1000;
+        findNewSpot();
     }
 
     state->tick(delta);
