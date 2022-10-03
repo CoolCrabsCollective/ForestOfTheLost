@@ -9,6 +9,6 @@ Skull::Skull(World &world, sf::Vector2i position) : Monster(world, position,
                                                                   world.getAssets().get(GameAssets::SKULL),
                                                                   world.getAssets().get(GameAssets::SKULL_EYES)){
     attackMessage = "A spooky scary skeleton sends shivers down your spine.... The shrieking skull shocks your soul and seals your doom tonight...";
-    scale = 2;
-    scaleDark = 2;
+    scale = 1;
+    scaleDark = 1;
 }

@@ -15,8 +15,8 @@ Player::Player(World& world)
 	  Alive<int>(3),
 	  textureMap(),
 	  Solid(),
-	  currentDir(NORTH),
-	  destinationDir(NORTH),
+	  currentDir(SOUTH),
+	  destinationDir(SOUTH),
 	  interactSound(),
 	  noInteractSound(){
 	textureMap[Direction::NORTH] = world.getAssets().get(GameAssets::PLAYER_BACK);
