@@ -70,8 +70,6 @@ void Monster::tickMovement(float delta) {
 
             world.shake(position);
 
-            // Commented out: the bush sound is annoying AF
-//            bushSound.play();
         } else {
             renderPosition = (sf::Vector2f) position + sf::Vector2f(partDestination - position) * actionProgress;
         }

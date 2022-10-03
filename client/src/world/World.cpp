@@ -474,8 +474,27 @@ void World::tick(float delta) {
 				if(countBlinkBeforePhaseChange == -1 && currentPhase < FINAL) {
 					generatePhase(static_cast<GamePhase>(currentPhase + 1));
                     player.setHeartBeatDelay(player.getHeartBeatDelay() / 2);
-					if(currentPhase == MONSTER)
-						AHHH_SOUND.play();
+                    switch (currentPhase) {
+                        case FIRST_ENCOUNTER:
+                            dialogBox.startDialog({
+                                 "What?...",
+                                 "Where am I?...",
+                             });
+                            break;
+                        case MONSTER:
+                            dialogBox.startDialog({
+                                  "These... things....",
+                                  "God almighty...",
+                              });
+                            AHHH_SOUND.play();
+                            break;
+                        case FINAL:
+                            dialogBox.startDialog({
+                                  "The illusion is broken...",
+                                  "Now I see the true face of these monsters..."
+                            });
+                            break;
+                    };
 				}
 			}
 

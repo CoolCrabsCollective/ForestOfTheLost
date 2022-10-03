@@ -8,10 +8,17 @@
 #include "Monster.h"
 
 class Orb : public Monster {
+    float timeSinceLastMovement = 0.0;
+    float movementInterval = 100;
+
 public:
     Orb(World &world, sf::Vector2i position);
 
     void tick(float delta) override;
+
+    void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
+
+    void drawDarkness(sf::RenderTarget& target) const override;
 
     void targetPlayerInRange() override;
 
