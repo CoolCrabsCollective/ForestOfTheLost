@@ -20,9 +20,9 @@ class HotGhostMom : public Monster {
     CryingGirl* cryingGirl = nullptr;
 
 public:
-    explicit HotGhostMom(World &world, sf::Vector2i position);
+    HotGhostMom(World &world, sf::Vector2i position);
 
-    void tick(float delta);
+    void tick(float delta) override;
 
     void targetPlayerInRange() override;
 
