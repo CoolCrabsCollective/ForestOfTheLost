@@ -1,27 +1,41 @@
 # Forest of the Lost
-This project is meant to be a ready to run WizEngine template project for Windows, Linux and Switch. You can clone or fork this repo and start making your game. All dependencies (SFML, WizEngine) are handled by the project.
 
-# Deploying the client
+*This game was made of Ludum Dare 51! Check out the page [here](https://ldjam.com/events/ludum-dare/51/forest-of-the-lost).*
 
-## Desktop
 
-### Building
+## Introduction
 
-```
-cd client
-cmake -B build -S .
-cd build
-make
-cd ..
-```
+Children keep going missing. The only things connecting the disappearances is the forest: The Forest of the Lost. You are a detective 🔎 tasked with finding Lily, the latest of the missing children. This sinister forest holds mysteries never before uncovered by human hands. Will you uncover them? or will you become lost yourself?
 
-This will produce an executable and copy required assets in the folder `client/bin/<your platform>/`. (e.g. `client/bin/linux64` on 64 bits Linux systems)
+Forest of the Lost is a story-driven cosmic horror exploration game. The goal of the game is to uncover the mysteries of the forest while avoiding monsters that hide amongst the trees and bushes. **Every 10 seconds** they change hiding spots. Try to remember where they are to avoid them.
 
-### Executing
+### Lily is Missing
 
-```
-cd bin/<your platform>/
-./<Executable name> # Name will change according to your project name
-```
+![Intro](https://user-images.githubusercontent.com/8527540/197392016-e361146f-cf41-476e-9492-f3a71ee79966.png)
 
-Make sure you distribute all files that are in the `bin/<your platform>` folder. .so, .dll and res/ folder are all required by the game.
+### Last known location... I already know...
+
+![Forest](https://user-images.githubusercontent.com/8527540/197392025-0d380646-a09d-4ab6-af1b-4fcf56c6f261.png)
+
+### Hello? Lily?
+
+![Dark Forest](https://user-images.githubusercontent.com/8527540/197392047-ab3a00ea-549b-4ace-91be-3b446d2d9a91.png)
+
+
+### Where am I?
+
+![Deep Forest](https://user-images.githubusercontent.com/8527540/197392064-7185f58b-b7dd-473c-84f5-6ba54af40428.png)
+
+
+## How to play
+
+- The arrow keys or WASD to move
+- Space or Enter to interact with the world
+- Look for items on the ground and characters to talk to
+- Find Lily
+
+**Every 10 seconds** darkness swallows the screen leaving you with information on the position of the normally invisible enemies. Make sure you don't get to close to them! 
+
+## Development Information
+
+Children of the Lost is the 2nd game written [WizEngine](https://github.com/WheezyWiseWizards/WizEngine): a custom [SFML](https://github.com/SFML/SFML) fork written in C++ that was developed for our Ludum Dare entries. The engine supports porting to the Nintendo Switch (Homebrew) (like our LD50 entry [Final Forest](https://ldjam.com/events/ludum-dare/50/final-forest)). We just focused on the desktop ports for this entry.
